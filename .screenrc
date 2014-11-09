@@ -1,0 +1,12 @@
+vbell off
+escape ^Z^Z
+defencoding UTF-8
+defscrollback 10240
+startup_message off
+hardstatus alwayslastline "%H | %w %= | %Y-%m-%d %c"
+
+bind r eval 'command -c resize'
+bind -c resize ^]  command
+bind -c resize j eval 'resize +1' 'command -c resize'
+bind -c resize k eval 'resize -1' 'command -c resize'
+
