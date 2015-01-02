@@ -1,5 +1,5 @@
 alias ls='\ls --time-style=long-iso'
-alias ll='ls -lhF'
+alias ll='ls -lhp'
 alias la='ll -a'
 
 export EDITOR=vi
