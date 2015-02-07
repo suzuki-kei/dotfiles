@@ -12,3 +12,5 @@ alias ls='\ls'
 alias ll='ls -lhpLT'
 alias la='ll -a'
 
+alias gosh='rlwrap gosh'
+
