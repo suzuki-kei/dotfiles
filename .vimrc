@@ -46,10 +46,10 @@ set nobackup
 "     unix : <CR>
 set fileformats=unix,dos,mac
 
-" vim 内部, ファイル, ターミナルのエンコーディング.
+" vim 内部, ターミナル, ファイルのエンコーディング.
 set encoding=utf-8
-set fileencoding=utf-8
 set termencoding=utf-8
+set fileencodings=utf-8,iso-2022-jp,sjis,euc-jp
 
 " ------------------------------------------------------------------------------
 "  Search
