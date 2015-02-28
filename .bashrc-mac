@@ -8,6 +8,10 @@ export HISTFILESIZE=7777777
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export HISTCONTROL=ignoredups
 
+if [ -f /usr/libexec/java_home ]; then
+    export JAVA_HOME=`/usr/libexec/java_home`
+fi
+
 alias ls='\ls'
 alias ll='ls -lhpLT'
 alias la='ll -a'
