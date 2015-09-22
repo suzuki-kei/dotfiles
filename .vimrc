@@ -62,7 +62,7 @@ set whichwrap=b,s,h,l,<,>
 set incsearch
 
 " 検索ヒット時のハイライト表示.
-set nohlsearch
+set hlsearch
 
 " 検索時の大文字小文字の区別.
 set ignorecase
