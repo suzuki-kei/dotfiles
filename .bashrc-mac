@@ -8,6 +8,9 @@ export HISTFILESIZE=7777777
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export HISTCONTROL=ignoredups
 
+# see https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Analytics.md
+export HOMEBREW_NO_ANALYTICS=1
+
 if [ -f /usr/libexec/java_home ]; then
     export JAVA_HOME=`/usr/libexec/java_home`
 fi
