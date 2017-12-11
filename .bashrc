@@ -1,3 +1,7 @@
+if [ -d ~/dotfiles/scripts ]; then
+    export PATH=~/dotfiles/scripts:$PATH
+fi
+
 export EDITOR=vi
 export HISTSIZE=7777777
 export HISTFILESIZE=7777777
