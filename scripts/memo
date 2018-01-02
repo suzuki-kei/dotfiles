@@ -18,7 +18,7 @@ SYNOPSIS
 
 PARAMETERS
     CATEGORY
-        Specify the memo category.  The `default` is default category name.
+        Specify the memo category. The `default` is default category name.
 
 OPTIONS
     -d DIRECTORY
