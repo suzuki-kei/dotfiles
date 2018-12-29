@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+
+cat <<EOS
+Trust the programmer.
+Don't prevent the programmer from doing what needs to be done.
+Keep the language small and simple.
+Provide only one way to do an operation.
+Make it fast, even if it is not guaranteed to be portable.
+EOS
