@@ -2,10 +2,77 @@
 
 set -eu
 
+C_LANGUAGE_VERSION=${1:-}
+
+function main
+{
+    case "${C_LANGUAGE_VERSION}" in
+        -h)
+            print_usage
+            ;;
+        -c89)
+            print_c89_version
+            ;;
+        -c11)
+            print_c11_version
+            ;;
+        *)
+            print_c89_version
+            ;;
+    esac
+}
+
+function print_usage
+{
 cat <<EOS
-Trust the programmer.
-Don't prevent the programmer from doing what needs to be done.
-Keep the language small and simple.
-Provide only one way to do an operation.
-Make it fast, even if it is not guaranteed to be portable.
+NAME
+    `basename $0` -- Show "Keep the spirit of C"
+
+SYNOPSIS
+    `basename $0` [-c89] [-c11]
+
+OPTIONS
+    -c89
+        Print "Keep the spirit of C" of C89 edition.
+
+    -c11
+        Print "Keep the spirit of C" of C11 edition.
+
+    -h
+        Print usage and exit.
 EOS
+}
+
+function print_c89_version
+{
+cat <<EOS
+
+    Keep the spirit of C (C89)
+
+    * Trust the programmer.
+    * Don't prevent the programmer from doing what needs to be done.
+    * Keep the language small and simple.
+    * Provide only one way to do an operation.
+    * Make it fast, even if it is not guaranteed to be portable.
+
+EOS
+}
+
+function print_c11_version
+{
+cat <<EOS
+
+    Keep the spirit of C (C11)
+
+    (a) Trust the programmer.
+    (b) Don't prevent the programmer from doing what needs to be done.
+    (c) Keep the language small and simple.
+    (d) Provide only one way to do an operation.
+    (e) Make it fast, even if it is not guaranteed to be portable.
+    (f) Make support for safety and security demonstrable.
+
+EOS
+}
+
+main
+
