@@ -20,4 +20,5 @@ alias ll='ls -lhpLT'
 alias la='ll -a'
 
 alias gosh='rlwrap gosh'
+alias gforth='rlwrap gforce'
 
