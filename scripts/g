@@ -1,0 +1,17 @@
+
+set -eu
+
+target=${1:-}
+
+case "${target}" in
+    "")
+        open -n -a "Google Chrome" --args --incognito "https://google.com"
+        ;;
+    http*)
+        open -n -a "Google Chrome" --args --incognito "${target}"
+        ;;
+    *)
+        open -n -a "Google Chrome" --args --incognito "https://www.google.com/search?q=${target}"
+        ;;
+esac
+
