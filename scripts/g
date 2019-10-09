@@ -2,18 +2,25 @@
 
 set -eu
 
-target=${1:-}
-chrome_options="--args --incognito"
+function g
+{
+    local target="${1:-}"
+    local chrome_options="--args --incognito"
 
-case "${target}" in
-    "")
-        open -n -a "Google Chrome" ${chrome_options} "https://google.com"
-        ;;
-    http*)
-        open -n -a "Google Chrome" ${chrome_options} "${target}"
-        ;;
-    *)
-        open -n -a "Google Chrome" ${chrome_options} "https://www.google.com/search?q=${target}"
-        ;;
-esac
+    case "${target}" in
+        "")
+            local url="https://google.com"
+            ;;
+        http*)
+            local url="${target}"
+            ;;
+        *)
+            local url="https://www.google.com/search?q=${target}"
+            ;;
+    esac
+
+    open -n -a "Google Chrome" ${chrome_options} "${url}"
+}
+
+g "${1:-}"
 
