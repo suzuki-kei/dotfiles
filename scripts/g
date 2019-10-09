@@ -4,7 +4,7 @@ set -eu
 
 function g
 {
-    local target="${1:-}"
+    local target="$@"
     local chrome_options="--args --incognito"
 
     case "${target}" in
@@ -22,5 +22,5 @@ function g
     open -n -a "Google Chrome" ${chrome_options} "${url}"
 }
 
-g "${1:-}"
+g "$@"
 
