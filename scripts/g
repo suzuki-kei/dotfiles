@@ -4,7 +4,7 @@ set -eu
 
 function g
 {
-    local target="$@"
+    local target=$(echo -n "$@" | jq -sMRr "@uri")
     local chrome_options="--args --incognito"
 
     case "${target}" in
