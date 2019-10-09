@@ -3,16 +3,17 @@
 set -eu
 
 target=${1:-}
+chrome_options="--args --incognito"
 
 case "${target}" in
     "")
-        open -n -a "Google Chrome" --args --incognito "https://google.com"
+        open -n -a "Google Chrome" ${chrome_options} "https://google.com"
         ;;
     http*)
-        open -n -a "Google Chrome" --args --incognito "${target}"
+        open -n -a "Google Chrome" ${chrome_options} "${target}"
         ;;
     *)
-        open -n -a "Google Chrome" --args --incognito "https://www.google.com/search?q=${target}"
+        open -n -a "Google Chrome" ${chrome_options} "https://www.google.com/search?q=${target}"
         ;;
 esac
 
