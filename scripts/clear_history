@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -eu
-
-history -c; history -w
-echo -n | pbcopy
