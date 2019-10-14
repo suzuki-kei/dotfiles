@@ -4,7 +4,7 @@ set -eu
 
 function g
 {
-    local target=$(echo -n "$@" | jq -sMRr "@uri")
+    local target="$@"
     local chrome_options="--args --incognito"
 
     case "${target}" in
@@ -15,7 +15,7 @@ function g
             local url="${target}"
             ;;
         *)
-            local url="https://www.google.com/search?q=${target}"
+            local url="https://www.google.com/search?q=$(echo -n ${target} | jq -sMRr '@uri')"
             ;;
     esac
 
