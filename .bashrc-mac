@@ -29,3 +29,13 @@ function clear_history
     history -w
 }
 
+function date_with_defaults
+{
+    if [ -z "$@" ]; then
+        date "+%Y-%m-%d %H:%M:%S %Z"
+    else
+        date "$@"
+    fi
+}
+alias date=date_with_defaults
+
