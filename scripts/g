@@ -15,7 +15,8 @@ function g
             local url="${target}"
             ;;
         *)
-            local url="https://www.google.com/search?q=$(echo -n ${target} | jq -sMRr '@uri')"
+            local keyword=$(echo -n ${target} | jq -sMRr '@uri')
+            local url="https://www.google.com/search?q=${keyword}"
             ;;
     esac
 
