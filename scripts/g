@@ -9,7 +9,7 @@ function g
 
     case "${target}" in
         "")
-            local url="chrome://chrome-urls/"
+            local url="https://google.com"
             ;;
         http*)
             local url="${target}"
