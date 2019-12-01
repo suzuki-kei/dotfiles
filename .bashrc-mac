@@ -12,6 +12,10 @@ export HISTFILESIZE=7777777
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export HISTCONTROL=ignoredups
 
+if [ -d /usr/local/opt/ruby/bin ]; then
+    export PATH="/usr/local/opt/ruby/bin:$PATH"
+fi
+
 # see https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Analytics.md
 export HOMEBREW_NO_ANALYTICS=1
 
