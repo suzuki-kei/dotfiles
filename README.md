@@ -16,6 +16,7 @@
     brew install grep
     brew install rlwrap
     brew install jq
+    brew install git
     brew install tig
     brew install watch
 
