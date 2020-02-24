@@ -1,31 +1,36 @@
-if [ -f /usr/local/etc/bash_completion ]; then
-    source /usr/local/etc/bash_completion
-fi
+#!/bin/bash
 
-if [ -d ~/dotfiles/scripts ]; then
-    export PATH=~/dotfiles/scripts:$PATH
-fi
+# ------------------------------------------------------------------------------
+#  Bash Settings (general)
+# ------------------------------------------------------------------------------
 
+export PAGER=less
 export EDITOR=vi
+
+# ------------------------------------------------------------------------------
+#  Bash Settings (history command)
+# ------------------------------------------------------------------------------
+
 export HISTSIZE=7777777
 export HISTFILESIZE=7777777
 export HISTTIMEFORMAT="%Y-%m-%d %T "
 export HISTCONTROL=ignoredups
 
-if [ -d /usr/local/opt/ruby/bin ]; then
-    export PATH="/usr/local/opt/ruby/bin:$PATH"
-fi
+# ------------------------------------------------------------------------------
+#  Aliases (ls command)
+# ------------------------------------------------------------------------------
 
-# see https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/Analytics.md
-export HOMEBREW_NO_ANALYTICS=1
-
-alias ls='\ls'
-alias ll='ls -lhpLT'
+alias ls='\ls --time-style=long-iso'
+alias ll='ls -lhp'
 alias la='ll -a'
 
-alias gosh='rlwrap gosh'
-alias gforth='rlwrap gforce'
+# ------------------------------------------------------------------------------
+#  Custom Commands
+# ------------------------------------------------------------------------------
 
+export PATH="$(cd $(dirname $0); pwd)/scripts:$PATH"
+
+# クリップボードとコマンド履歴を消去する.
 function clear_history
 {
     echo -n | pbcopy
@@ -33,6 +38,7 @@ function clear_history
     history -w
 }
 
+# date の出力形式を変更する.
 function date_with_defaults
 {
     if [ -z "$@" ]; then
@@ -42,4 +48,53 @@ function date_with_defaults
     fi
 }
 alias date=date_with_defaults
+
+# ------------------------------------------------------------------------------
+#  Homebrew
+# ------------------------------------------------------------------------------
+
+# see https://github.com/Homebrew/brew/blob/master/docs/Analytics.md
+export HOMEBREW_NO_ANALYTICS=1
+
+# brew install bash-completion
+if [[ -f "/usr/local/etc/bash_completion" ]]; then
+    source "/usr/local/etc/bash_completion"
+fi
+
+# brew install coreutils
+if [[ -d "/usr/local/opt/coreutils/libexec/gnubin" ]]; then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+
+# brew install findutils
+if [[ -d "/usr/local/opt/findutils/libexec/gnubin" ]]; then
+    export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/findutils/libexec/gnuman"
+fi
+
+# brew install gnu-sed
+if [[ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
+    export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman"
+fi
+
+# brew install gawk
+if [[ -d "/usr/local/opt/gawk/libexec/gnubin/" ]]; then
+    export PATH="/usr/local/opt/gawk/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/gawk/libexec/gnuman"
+fi
+
+# brew install grep
+if [[ -d "/usr/local/opt/grep/libexec/gnubin" ]]; then
+    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
+fi
+
+# brew install gauche
+if which gosh > /dev/null; then
+    if which rlwrap > /dev/null; then
+        alias gosh='rlwrap gosh'
+    fi
+fi
 
