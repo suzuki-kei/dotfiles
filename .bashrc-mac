@@ -50,7 +50,14 @@ function date_with_defaults
 alias date=date_with_defaults
 
 # Amazon.co.jp の商品ページ URL を正規化する.
-alias normalize_amazon_link="sed -E 's/(https:\/\/www.amazon.co.jp\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*/\1\2\3/'"
+function normalize_amazon_link
+{
+    if [[ -z "$@" ]]; then
+        cat - | sed -E 's/(https:\/\/www.amazon.co.jp\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*/\1\2\3/'
+    else
+        echo -n "$1" | sed -E 's/(https:\/\/www.amazon.co.jp\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*/\1\2\3/'
+    fi
+}
 
 # ------------------------------------------------------------------------------
 #  Homebrew
