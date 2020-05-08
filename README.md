@@ -22,6 +22,7 @@
 
     # Programming Languages
     brew install gauche
+    brew install python
 
 ### リポジトリを clone し, bashrc を上書きする
 
