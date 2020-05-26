@@ -19,6 +19,7 @@
     brew install git
     brew install tig
     brew install watch
+    brew install pwgen
 
     # Programming Languages
     brew install gauche
