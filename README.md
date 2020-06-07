@@ -20,6 +20,7 @@
     brew install tig
     brew install watch
     brew install pwgen
+    brew install figlet
 
     # Programming Languages
     brew install gauche
