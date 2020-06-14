@@ -2,74 +2,147 @@
 
 set -eu
 
-MEMO_DIR="${HOME}/.memo"
-CATEGORY='default'
-SHOW_HELP='no'
-LIST_CATEGORIES='no'
+function trace
+{
+    if ${TRACE}; then
+        echo "$@"
+    fi
+}
 
-function usage
+function main
+{
+    setup_settings $@
+    ${EXECUTION_FUNCTION}
+}
+
+function show_usage
 {
     cat <<EOS
 NAME
     memo -- open memo file.
 
 SYNOPSIS
-    memo [-d DIRECTORY] [-l] [CATEGORY]
+    memo [-d MEMO_DIR] [-h] [-l] [-x] MEMO_TITLE
 
 PARAMETERS
-    CATEGORY
-        Specify the memo category. The 'default' is default category name.
+    MEMO_TITLE
+        Specify the memo title. If ommit, 'default' is used.
 
 OPTIONS
-    -d DIRECTORY
+    -d MEMO_DIR
         Specify the base directory to store memo files.
 
     -l
-        List the existing categories.
+        List the existing memo titles.
 
     -h
         Display the help message.
+
+    -x
+        Display the trace message.
 EOS
 }
 
-function main
+function setup_settings
 {
-    while getopts 'd:c:lh' OPTION
+    parse_command_line_options $@
+
+    # 処理のトレースログを出力する場合は true.
+    TRACE=${TRACE:-false}
+    trace "[var] TRACE=${TRACE}"
+
+    # メモを保存するディレクトリ.
+    MEMO_DIR="${MEMO_DIR:-${HOME}/.memo}"
+    trace "[var] MEMO_DIR=${MEMO_DIR}"
+
+    # メモのタイトル.
+    MEMO_TITLE="${MEMO_TITLE:-default}"
+    trace "[var] MEMO_TITLE=${MEMO_TITLE}"
+
+    # 使い方を表示して終了する場合は true.
+    SHOW_USAGE=${SHOW_USAGE:-false}
+    trace "[var] SHOW_USAGE=${SHOW_USAGE}"
+
+    # メモのタイトル一覧を表示して終了する場合は true.
+    LIST_TITLES=${LIST_TITLES:-false}
+    trace "[var] LIST_TITLES=${LIST_TITLES}"
+
+    # 実行する関数.
+    EXECUTION_FUNCTION=open_memo
+    if ${LIST_TITLES}; then
+        EXECUTION_FUNCTION=list_titles
+    fi
+    if ${SHOW_USAGE}; then
+        EXECUTION_FUNCTION=show_usage
+    fi
+    trace "[var] EXECUTION_FUNCTION=${EXECUTION_FUNCTION}"
+
+    # メモの編集に使用するエディタ.
+    EDITOR=${EDITOR:-vi}
+    trace "[var] EDITOR=${EDITOR}"
+}
+
+function parse_command_line_options
+{
+    while getopts 'd:hlx' OPTION
     do
         case "${OPTION}" in
             d)
                 MEMO_DIR="${OPTARG}"
                 ;;
-            c)
-                CATEGORY="${OPTARG}"
-                ;;
             l)
-                LIST_CATEGORIES='yes'
+                LIST_TITLES=true
                 ;;
             h)
-                SHOW_HELP='yes'
+                SHOW_USAGE=true
+                ;;
+            x)
+                TRACE=true
                 ;;
             *)
-                usage
+                show_usage
                 exit 1
                 ;;
         esac
     done
 
-    mkdir -p "${MEMO_DIR}"
+    shift $((OPTIND - 1))
 
-    if [ "${SHOW_HELP}" = 'yes' ]; then
-        usage
-        exit 0
+    if [[ $# -ge 1 ]]; then
+        MEMO_TITLE="$1"
+        shift 1
     fi
 
-    if [ "${LIST_CATEGORIES}" = 'yes' ]; then
-        ls -1 "${MEMO_DIR}" | cut -d '.' -f 2 | sort | uniq
-        exit 0
+    if [[ $# -ge 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit 2
     fi
+}
 
-    local current_file_path="${MEMO_DIR}/memo.${CATEGORY}.$(date '+%Y-%m-%d').txt"
-    local previous_file_path="$(find "${MEMO_DIR}" -type f -name 'memo.*.txt' | sort | tail -1)"
+function prepare_memo_dir
+{
+    if [[ ! -f "${MEMO_DIR}" ]]; then
+        trace "[create] ${MEMO_DIR}"
+        mkdir -p "${MEMO_DIR}"
+    fi
+}
+
+function list_titles
+{
+    prepare_memo_dir
+    ls -1 "${MEMO_DIR}" | sed -E 's/^memo\.|\.[0-9]{4}-[0-9]{2}-[0-9]{2}.txt$//g' | sort | uniq
+}
+
+function open_memo
+{
+    prepare_memo_dir
+
+    local current_file_path="${MEMO_DIR}/memo.${MEMO_TITLE}.$(date '+%Y-%m-%d').txt"
+    trace "[var] current_file_path=${current_file_path}"
+
+    local previous_file_path="$(find "${MEMO_DIR}" -type f -name 'memo.${MEMO_TITLE}.*.txt' | sort | tail -1)"
+    trace "[var] previous_file_path=${previous_file_path}"
+
     if [ ! -f "${current_file_path}" -a -f "${previous_file_path}" ]; then
         cp -pi "${previous_file_path}" "${current_file_path}"
     fi
