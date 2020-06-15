@@ -140,7 +140,7 @@ function open_memo
     local current_file_path="${MEMO_DIR}/memo.${MEMO_TITLE}.$(date '+%Y-%m-%d').txt"
     trace "[var] current_file_path=${current_file_path}"
 
-    local previous_file_path="$(find "${MEMO_DIR}" -type f -name 'memo.${MEMO_TITLE}.*.txt' | sort | tail -1)"
+    local previous_file_path="$(find "${MEMO_DIR}" -type f -name "memo.${MEMO_TITLE}.*.txt" | sort | tail -1)"
     trace "[var] previous_file_path=${previous_file_path}"
 
     if [ ! -f "${current_file_path}" -a -f "${previous_file_path}" ]; then
