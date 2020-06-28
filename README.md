@@ -21,6 +21,7 @@
     brew install watch
     brew install pwgen
     brew install figlet
+    brew install nkf
 
     # Programming Languages
     brew install gauche
