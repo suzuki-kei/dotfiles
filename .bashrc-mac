@@ -41,7 +41,7 @@ function clear_history
 # date の出力形式を変更する.
 function date_with_defaults
 {
-    if [ -z "$@" ]; then
+    if [ $# == 0 ]; then
         date "+%Y-%m-%d %H:%M:%S %Z"
     else
         date "$@"
