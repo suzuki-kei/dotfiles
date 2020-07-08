@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [[ "$TERM" == "screen" ]]; then
+    target="${1:-$(pwd)}"
+    sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
+    screen -S "${sockname}" -X chdir "${target}"
+fi
+
