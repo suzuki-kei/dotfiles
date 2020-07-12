@@ -30,7 +30,7 @@
 ### リポジトリを clone し, bashrc を上書きする
 
     git clone git@github.com:suzuki-kei/dotfiles.git
-    echo "source $(pwd)/dotfiles/.bashrc-mac" > ~/.bashrc
+    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
 
 ## INSTALL (Linux)
 
@@ -41,5 +41,5 @@
 ### リポジトリを clone し, bashrc を上書きする
 
     git clone git@github.com:suzuki-kei/dotfiles.git
-    source $(pwd)/dotfiles/.bashrc-mac > ~/.bashrc
+    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
 
