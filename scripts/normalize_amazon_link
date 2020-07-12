@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+
+# Amazon.co.jp の商品ページ URL を正規化する.
+if [[ -z "$@" ]]; then
+    cat - | sed -E 's/(https:\/\/www.amazon.co.jp\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*/\1\2\3/'
+else
+    echo -n "$1" | sed -E 's/(https:\/\/www.amazon.co.jp\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*/\1\2\3/'
+fi
+
