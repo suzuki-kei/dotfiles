@@ -4,8 +4,11 @@ set -eu
 
 function g
 {
-    local target="$@"
-    local chrome_options="--args --incognito"
+    if [[ -z "$@" && -p /dev/stdin ]]; then
+        local target="$(cat -)"
+    else
+        local target="$@"
+    fi
 
     case "${target}" in
         "")
@@ -20,6 +23,7 @@ function g
             ;;
     esac
 
+    local chrome_options="--args --incognito"
     open -n -a "Google Chrome" ${chrome_options} "${url}"
 }
 
