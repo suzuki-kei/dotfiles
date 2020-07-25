@@ -51,7 +51,7 @@ function main
 {
     parse_arguments "$@"
 
-    if ${SHOW_USAGE:-false}; then
+    if ${SHOW_USAGE}; then
         show_usage
         exit ${EXIT_STATUS_SUCCESS}
     fi
