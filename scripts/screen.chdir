@@ -71,6 +71,7 @@ function main
     readonly ${VERBOSE:=false}
 
     screen_chdir "${1:-$(pwd)}"
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
 #
