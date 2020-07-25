@@ -2,11 +2,9 @@
 
 set -eu
 
-C_LANGUAGE_VERSION=${1:-}
-
 function main
 {
-    case "${C_LANGUAGE_VERSION}" in
+    case "${1:-}" in
         -h)
             print_usage
             ;;
@@ -74,5 +72,5 @@ cat <<EOS
 EOS
 }
 
-main
+main "$@"
 
