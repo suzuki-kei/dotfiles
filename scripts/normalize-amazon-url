@@ -47,40 +47,24 @@ EOS`
 #
 # Entry point.
 #
-function main
-{
-    parse_arguments "$@"
-
-    if ${SHOW_USAGE}; then
-        show_usage
-        exit ${EXIT_STATUS_SUCCESS}
-    fi
-
-    normalize_amazon_url "$@"
-    exit ${EXIT_STATUS_SUCCESS}
-}
-
-#
-# Parse command line arguments and define global variables.
+#     1. parse command line arguments.
+#     2. define global variables.
+#     3. Performs the processing according to the arguments.
 #
 # Arguments:
 #     The command line arguments.
 #
-# Globals:
-#     Define SHOW_USAGE.
-#
-function parse_arguments
+function main
 {
-    SHOW_USAGE=false
-
     while getopts 'h' OPTION
     do
         case "${OPTION}" in
             h)
-                SHOW_USAGE=true
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
                 ;;
             *)
-                show_usage
+                echo "${USAGE}"
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
@@ -92,14 +76,9 @@ function parse_arguments
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
-}
 
-#
-# Show usage.
-#
-function show_usage
-{
-    echo "${USAGE}"
+    normalize_amazon_url "$@"
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
 #
