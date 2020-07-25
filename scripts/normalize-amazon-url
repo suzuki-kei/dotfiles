@@ -57,6 +57,7 @@ function main
     fi
 
     normalize_amazon_link "$@"
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
 #
