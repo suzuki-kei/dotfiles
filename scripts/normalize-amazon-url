@@ -77,16 +77,22 @@ function main
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
 
-    normalize_amazon_url "$@"
+    normalize_amazon_url "${1:-}"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
 #
 # Normalize the URL of Amazon product pages.
 #
+# Arguments:
+#     The URL of Amazon product page. If ommit, read from STDIN.
+#
+# Output:
+#     Writes normalized URL to STDOUT.
+#
 function normalize_amazon_url
 {
-    (test -z "$@" && cat - || echo -n "$1") \
+    (test -z "${1:-}" && cat - || echo -n "$1") \
         | sed -E 's/^(https:\/\/www\.amazon[^/]+\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*$/\1\2\3/'
 }
 
