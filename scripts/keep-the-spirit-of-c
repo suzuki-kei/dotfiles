@@ -2,20 +2,29 @@
 
 set -eu
 
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
 function main
 {
     case "${1:-}" in
         -h)
             show_usage
+            exit ${EXIT_STATUS_SUCCESS}
             ;;
         -89 | -c89)
             show_c89_version
+            exit ${EXIT_STATUS_SUCCESS}
             ;;
         -11 | -c11)
             show_c11_version
+            exit ${EXIT_STATUS_SUCCESS}
             ;;
         *)
-            show_c89_version
+            echo "illegal option(s) -- $@" >&2
+            show_usage
+            exit ${EXIT_STATUS_INVALID_ARGUMENT}
             ;;
     esac
 }
@@ -38,6 +47,10 @@ OPTIONS
 
     -h
         Show usage and exit.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS
 }
 
