@@ -6,42 +6,42 @@ function main
 {
     case "${1:-}" in
         -h)
-            print_usage
+            show_usage
             ;;
         -c89)
-            print_c89_version
+            show_c89_version
             ;;
         -c11)
-            print_c11_version
+            show_c11_version
             ;;
         *)
-            print_c89_version
+            show_c89_version
             ;;
     esac
 }
 
-function print_usage
+function show_usage
 {
 cat <<EOS
 NAME
-    `basename $0` -- Show "Keep the spirit of C"
+    $(basename "$0") - Show "Keep the spirit of C".
 
 SYNOPSIS
-    `basename $0` [-c89] [-c11]
+    $(basename "$0") [-h] [-c89] [-c11]
 
 OPTIONS
     -c89
-        Print "Keep the spirit of C" of C89 edition.
+        Show "Keep the spirit of C" of C89 edition.
 
     -c11
-        Print "Keep the spirit of C" of C11 edition.
+        Show "Keep the spirit of C" of C11 edition.
 
     -h
-        Print usage and exit.
+        Show usage and exit.
 EOS
 }
 
-function print_c89_version
+function show_c89_version
 {
 cat <<EOS
 
@@ -56,7 +56,7 @@ cat <<EOS
 EOS
 }
 
-function print_c11_version
+function show_c11_version
 {
 cat <<EOS
 
