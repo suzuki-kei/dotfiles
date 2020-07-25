@@ -1,0 +1,114 @@
+#!/bin/bash
+
+set -eu
+
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - Normalize the URL of Amazon product pages.
+
+    SYNOPSIS
+        $(basename "$0") [OPTION...] [URL]
+
+    DESCRIPTION
+        $(basename "$0") normalizes the URL of Amazon product pages.
+
+    OPTIONS
+        -h Show usage and exit.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+
+    EXAMPLE
+        Specify Amazon product page URL in the argument.
+
+            $ normalize_amazon_link 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx'
+            https://www.amazon.co.jp/dp/B07FQ4DJ7X
+
+        You can also specify the URL with a pipe.
+
+            $ echo 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx' | normalize_amazon_link
+            https://www.amazon.co.jp/dp/B07FQ4DJ7X
+
+        If you don't specify the URL, it will be interactive mode.
+
+            $ normalize_amazon_link
+            https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx
+            https://www.amazon.co.jp/dp/B07FQ4DJ7X
+            https://www.amazon.co.jp/Kindle+Papershite/dp/B07HCSQ48P?xxx
+            https://www.amazon.co.jp/dp/B07HCSQ48P
+            ...
+EOS`
+
+#
+# Entry point.
+#
+function main
+{
+    parse_arguments "$@"
+
+    if ${SHOW_USAGE:-false}; then
+        show_usage
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    normalize_amazon_link "$@"
+}
+
+#
+# Parse command line arguments and define global variables.
+#
+# Arguments:
+#     The command line arguments.
+#
+# Globals:
+#     Define SHOW_USAGE.
+#
+function parse_arguments
+{
+    SHOW_USAGE=false
+
+    while getopts 'h' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                SHOW_USAGE=true
+                ;;
+            *)
+                show_usage
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+}
+
+#
+# Show usage.
+#
+function show_usage
+{
+    echo "${USAGE}"
+}
+
+#
+# Normalize the URL of Amazon product pages.
+#
+function normalize_amazon_link
+{
+    (test -z "$@" && cat - || echo -n "$1") \
+        | sed -E 's/^(https:\/\/www\.amazon[^/]+\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*$/\1\2\3/'
+}
+
+main "$@"
+
