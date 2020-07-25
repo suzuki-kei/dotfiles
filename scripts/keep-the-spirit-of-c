@@ -8,10 +8,10 @@ function main
         -h)
             show_usage
             ;;
-        -c89)
+        -89 | -c89)
             show_c89_version
             ;;
-        -c11)
+        -11 | -c11)
             show_c11_version
             ;;
         *)
@@ -27,13 +27,13 @@ NAME
     $(basename "$0") - Show "Keep the spirit of C".
 
 SYNOPSIS
-    $(basename "$0") [-h] [-c89] [-c11]
+    $(basename "$0") [-h] [-89|-c89] [-11|-c11]
 
 OPTIONS
-    -c89
+    -89, -c89
         Show "Keep the spirit of C" of C89 edition.
 
-    -c11
+    -11, -c11
         Show "Keep the spirit of C" of C11 edition.
 
     -h
