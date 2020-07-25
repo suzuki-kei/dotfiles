@@ -26,17 +26,17 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
     EXAMPLE
         Specify Amazon product page URL in the argument.
 
-            $ normalize_amazon_link 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx'
+            $ normalize-amazon-url 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx'
             https://www.amazon.co.jp/dp/B07FQ4DJ7X
 
         You can also specify the URL with a pipe.
 
-            $ echo 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx' | normalize_amazon_link
+            $ echo 'https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx' | normalize-amazon-url
             https://www.amazon.co.jp/dp/B07FQ4DJ7X
 
         If you don't specify the URL, it will be interactive mode.
 
-            $ normalize_amazon_link
+            $ normalize-amazon-url
             https://www.amazon.co.jp/Kindle/dp/B07FQ4DJ7X?xxx
             https://www.amazon.co.jp/dp/B07FQ4DJ7X
             https://www.amazon.co.jp/Kindle+Papershite/dp/B07HCSQ48P?xxx
@@ -56,7 +56,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    normalize_amazon_link "$@"
+    normalize_amazon_url "$@"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -105,7 +105,7 @@ function show_usage
 #
 # Normalize the URL of Amazon product pages.
 #
-function normalize_amazon_link
+function normalize_amazon_url
 {
     (test -z "$@" && cat - || echo -n "$1") \
         | sed -E 's/^(https:\/\/www\.amazon[^/]+\/).*(dp|gp\/product)(\/[0-9a-zA-Z]+).*$/\1\2\3/'
