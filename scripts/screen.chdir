@@ -1,8 +1,99 @@
 #!/bin/bash
 
-if [[ "$TERM" == "screen" ]]; then
-    target="${1:-$(pwd)}"
-    sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
-    screen -S "${sockname}" -X chdir "${target}"
-fi
+set -eu
+
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_NOT_IN_SCREEN=1
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - Change the current directory of screen.
+
+    SYNOPSIS
+        $(basename "$0") [-h] [-v] [TARGET]
+
+    DESCRIPTION
+        $(basename "$0") changes the current directory of attached screen.
+        TARGET is new current directory (default is pwd).
+
+    OPTIONS
+        -h Show usage and exit.
+        -v Show message verbosely.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+#
+# Entry point.
+#
+#     1. parse command line arguments.
+#     2. define global variables.
+#     3. Performs the processing according to the arguments.
+#
+# Arguments:
+#     The command line arguments.
+#
+# Globals:
+#     Define VERBOSE.
+#
+function main
+{
+    while getopts 'hv' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            v)
+                VERBOSE=true
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ $# -gt 0 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+
+    readonly ${VERBOSE:=false}
+
+    screen_chdir "${1:-$(pwd)}"
+}
+
+#
+# Change the current directory of screen.
+#
+# Globals:
+#     VERBOSE: if true print message verbosely. default false.
+#
+# Arguments:
+#     $1: New current directory path. default is pwd.
+#
+function screen_chdir
+{
+    if [[ "$TERM" == "screen" ]]; then
+        local target="${1:-$(pwd)}"
+        local sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
+        screen -S "${sockname}" -X chdir "${target}"
+        ${VERBOSE:-false} && echo "change to ${target}"
+    else
+        echo "Not in screen: \$TERM=$TERM" >&2
+        exit ${EXIT_STATUS_NOT_IN_SCREEN}
+    fi
+}
+
+main "$@"
 
