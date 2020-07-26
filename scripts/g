@@ -2,7 +2,81 @@
 
 set -eu
 
-function g
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - Open Chrome with URL or search keywords.
+
+    SYNOPSIS
+        $(basename "$0") -h
+        $(basename "$0") [TARGET]
+
+    DESCRIPTION
+        $(basename "$0") opens Chrome with URL or search keywords.
+        TARGET is URL or search keywords.
+
+    OPTIONS
+        -h
+            Show usage and exit.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+
+    EXAMPLE
+        Specify the search keywords to display Google search results in new Chrome window.
+
+            $ $(basename "$0") Linux Kernel
+
+        Specify the URL to open new Chrome window.
+
+            $ $(basename "$0") https://example.com
+
+        You can specify URL or search keywords by pipe.
+
+            $ echo 'Linux Kernel' | $(basename "$0")
+            $ echo 'https://example.com' | $(basename "$0")
+EOS`
+
+#
+# Entry point.
+#
+#     1. parse command line arguments.
+#     2. define global variables.
+#     3. Performs the processing according to the arguments.
+#
+# Arguments:
+#     The command line arguments.
+#
+function main
+{
+    while getopts 'h' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    open_chrome "${1:-}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+#
+# Open Chrome with URL or search keywords.
+#
+# Arguments:
+#     URL or search keywords.
+#
+function open_chrome
 {
     if [[ -z "$@" && -p /dev/stdin ]]; then
         local target="$(cat -)"
@@ -27,5 +101,5 @@ function g
     open -n -a "Google Chrome" ${chrome_options} "${url}"
 }
 
-g "$@"
+main "$@"
 
