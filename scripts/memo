@@ -2,6 +2,10 @@
 
 set -eu
 
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
 readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
     NAME
         $(basename "$0") - open memo file.
@@ -25,6 +29,10 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
 
         -x
             Display the trace message.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
 function trace
@@ -38,6 +46,7 @@ function main
 {
     setup_settings "$@"
     ${EXECUTION_FUNCTION}
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
 function show_usage
@@ -103,7 +112,7 @@ function parse_command_line_options
                 ;;
             *)
                 show_usage
-                exit 1
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
@@ -117,7 +126,7 @@ function parse_command_line_options
 
     if [[ $# -ge 1 ]]; then
         echo "illegal option(s) -- $@" >&2
-        exit 2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
 }
 
