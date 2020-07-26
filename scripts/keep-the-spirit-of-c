@@ -13,7 +13,7 @@ function main
             show_usage
             exit ${EXIT_STATUS_SUCCESS}
             ;;
-        -89 | -c89)
+        '' | -89 | -c89)
             show_c89_version
             exit ${EXIT_STATUS_SUCCESS}
             ;;
