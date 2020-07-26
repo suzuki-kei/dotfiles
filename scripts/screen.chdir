@@ -63,7 +63,7 @@ function main
 
     shift $((OPTIND - 1))
 
-    if [[ $# -gt 0 ]]; then
+    if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
