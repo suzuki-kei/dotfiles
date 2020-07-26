@@ -13,7 +13,7 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         $(basename "$0") - Change the current directory of screen.
 
     SYNOPSIS
-        $(basename "$0") [-h]
+        $(basename "$0") -h
         $(basename "$0") [-v] [TARGET]
 
     DESCRIPTION

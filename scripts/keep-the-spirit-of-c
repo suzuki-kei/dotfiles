@@ -36,7 +36,8 @@ NAME
     $(basename "$0") - Show "Keep the spirit of C".
 
 SYNOPSIS
-    $(basename "$0") [-h] [-89|-c89] [-11|-c11]
+    $(basename "$0") -h
+    $(basename "$0") [-89|-c89] [-11|-c11]
 
 OPTIONS
     -89, -c89

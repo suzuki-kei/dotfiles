@@ -11,7 +11,9 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         $(basename "$0") - open memo file.
 
     SYNOPSIS
-        $(basename "$0") [-d MEMO_DIR] [-h] [-l] [-x] MEMO_TITLE
+        $(basename "$0") -h
+        $(basename "$0") [-d MEMO_DIR] [-x] -l
+        $(basename "$0") [-d MEMO_DIR] [-x] MEMO_TITLE
 
     PARAMETERS
         MEMO_TITLE

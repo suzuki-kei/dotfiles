@@ -11,7 +11,8 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         $(basename "$0") - Normalize the URL of Amazon product pages.
 
     SYNOPSIS
-        $(basename "$0") [OPTION...] [URL]
+        $(basename "$0") -h
+        $(basename "$0") [URL]
 
     DESCRIPTION
         $(basename "$0") normalizes the URL of Amazon product pages.
