@@ -21,8 +21,11 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         TARGET is new current directory (default is pwd).
 
     OPTIONS
-        -h Show usage and exit.
-        -v Show message verbosely.
+        -h
+            Show usage and exit.
+
+        -v
+            Show message verbosely.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.

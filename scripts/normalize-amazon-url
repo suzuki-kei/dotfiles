@@ -17,7 +17,8 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         $(basename "$0") normalizes the URL of Amazon product pages.
 
     OPTIONS
-        -h Show usage and exit.
+        -h
+            Show usage and exit.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
