@@ -2,6 +2,31 @@
 
 set -eu
 
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - open memo file.
+
+    SYNOPSIS
+        $(basename "$0") [-d MEMO_DIR] [-h] [-l] [-x] MEMO_TITLE
+
+    PARAMETERS
+        MEMO_TITLE
+            Specify the memo title. If ommit, 'default' is used.
+
+    OPTIONS
+        -d MEMO_DIR
+            Specify the base directory to store memo files.
+
+        -l
+            List the existing memo titles.
+
+        -h
+            Display the help message.
+
+        -x
+            Display the trace message.
+EOS`
+
 function trace
 {
     if ${TRACE}; then
@@ -17,30 +42,7 @@ function main
 
 function show_usage
 {
-    cat <<EOS
-NAME
-    memo -- open memo file.
-
-SYNOPSIS
-    memo [-d MEMO_DIR] [-h] [-l] [-x] MEMO_TITLE
-
-PARAMETERS
-    MEMO_TITLE
-        Specify the memo title. If ommit, 'default' is used.
-
-OPTIONS
-    -d MEMO_DIR
-        Specify the base directory to store memo files.
-
-    -l
-        List the existing memo titles.
-
-    -h
-        Display the help message.
-
-    -x
-        Display the trace message.
-EOS
+    echo "${USAGE}"
 }
 
 function setup_settings
