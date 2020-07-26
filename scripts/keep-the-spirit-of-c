@@ -12,14 +12,17 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
 
     SYNOPSIS
         $(basename "$0") -h
-        $(basename "$0") [-89|-c89] [-11|-c11]
+        $(basename "$0") [-a] [-89|-c89] [-11|-c11]
 
     OPTIONS
+        -a
+            Show all versions of "Keep the spirit of C".
+
         -89, -c89
-            Show "Keep the spirit of C" of C89 edition.
+            Show the C89 version of "Keep the spirit of C".
 
         -11, -c11
-            Show "Keep the spirit of C" of C11 edition.
+            Show the C11 version of "Keep the spirit of C".
 
         -h
             Show usage and exit.
@@ -60,6 +63,11 @@ function main
             -h)
                 echo "${USAGE}"
                 exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            -a)
+                local show_c89_version=true
+                local show_c11_version=true
+                shift 1
                 ;;
             -89 | -c89)
                 local show_c89_version=true
