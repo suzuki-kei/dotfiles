@@ -88,7 +88,7 @@ function open_chrome
         "")
             local url="https://google.com"
             ;;
-        http*)
+        http://* | https://*)
             local url="${target}"
             ;;
         *)
