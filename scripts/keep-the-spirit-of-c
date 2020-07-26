@@ -6,84 +6,90 @@ readonly EXIT_STATUS_SUCCESS=0
 
 readonly EXIT_STATUS_INVALID_ARGUMENT=255
 
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - Show "Keep the spirit of C".
+
+    SYNOPSIS
+        $(basename "$0") -h
+        $(basename "$0") [-89|-c89] [-11|-c11]
+
+    OPTIONS
+        -89, -c89
+            Show "Keep the spirit of C" of C89 edition.
+
+        -11, -c11
+            Show "Keep the spirit of C" of C11 edition.
+
+        -h
+            Show usage and exit.
+
+        EXIT STATUS
+            ${EXIT_STATUS_SUCCESS} if successfly.
+            ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+readonly C89_VERSION=`cat <<EOS | sed -E 's/^ {4}//'
+    Keep the spirit of C (C89)
+        * Trust the programmer.
+        * Don't prevent the programmer from doing what needs to be done.
+        * Keep the language small and simple.
+        * Provide only one way to do an operation.
+        * Make it fast, even if it is not guaranteed to be portable.
+EOS`
+
+readonly C11_VERSION=`cat <<EOS | sed -E 's/^ {4}//'
+    Keep the spirit of C (C11)
+        (a) Trust the programmer.
+        (b) Don't prevent the programmer from doing what needs to be done.
+        (c) Keep the language small and simple.
+        (d) Provide only one way to do an operation.
+        (e) Make it fast, even if it is not guaranteed to be portable.
+        (f) Make support for safety and security demonstrable.
+EOS`
+
 function main
 {
-    case "${1:-}" in
-        -h)
-            show_usage
-            exit ${EXIT_STATUS_SUCCESS}
-            ;;
-        '' | -89 | -c89)
-            show_c89_version
-            exit ${EXIT_STATUS_SUCCESS}
-            ;;
-        -11 | -c11)
-            show_c11_version
-            exit ${EXIT_STATUS_SUCCESS}
-            ;;
-        *)
-            echo "illegal option(s) -- $@" >&2
-            show_usage
-            exit ${EXIT_STATUS_INVALID_ARGUMENT}
-            ;;
-    esac
-}
+    if [[ -z "$@" ]]; then
+        local show_c89_version=true
+    fi
 
-function show_usage
-{
-cat <<EOS
-NAME
-    $(basename "$0") - Show "Keep the spirit of C".
+    for OPTION in "$@"
+    do
+        case "${OPTION}" in
+            -h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            -89 | -c89)
+                local show_c89_version=true
+                shift 1
+                ;;
+            -11 | -c11)
+                local show_c11_version=true
+                shift 1
+                ;;
+            *)
+                echo "illegal option(s) -- $@" >&2
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
 
-SYNOPSIS
-    $(basename "$0") -h
-    $(basename "$0") [-89|-c89] [-11|-c11]
+    local delimiter=''
 
-OPTIONS
-    -89, -c89
-        Show "Keep the spirit of C" of C89 edition.
+    if ${show_c89_version:-false}; then
+        echo -e "${delimiter}${C89_VERSION}"
+        delimiter="\n"
+    fi
 
-    -11, -c11
-        Show "Keep the spirit of C" of C11 edition.
+    if ${show_c11_version:-false}; then
+        echo -e "${delimiter}${C11_VERSION}"
+        delimiter="\n"
+    fi
 
-    -h
-        Show usage and exit.
-
-    EXIT STATUS
-        ${EXIT_STATUS_SUCCESS} if successfly.
-        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
-EOS
-}
-
-function show_c89_version
-{
-cat <<EOS
-
-    Keep the spirit of C (C89)
-
-    * Trust the programmer.
-    * Don't prevent the programmer from doing what needs to be done.
-    * Keep the language small and simple.
-    * Provide only one way to do an operation.
-    * Make it fast, even if it is not guaranteed to be portable.
-
-EOS
-}
-
-function show_c11_version
-{
-cat <<EOS
-
-    Keep the spirit of C (C11)
-
-    (a) Trust the programmer.
-    (b) Don't prevent the programmer from doing what needs to be done.
-    (c) Keep the language small and simple.
-    (d) Provide only one way to do an operation.
-    (e) Make it fast, even if it is not guaranteed to be portable.
-    (f) Make support for safety and security demonstrable.
-
-EOS
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
 main "$@"
