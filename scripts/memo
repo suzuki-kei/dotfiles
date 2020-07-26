@@ -36,7 +36,7 @@ function trace
 
 function main
 {
-    setup_settings $@
+    setup_settings "$@"
     ${EXECUTION_FUNCTION}
 }
 
@@ -47,7 +47,7 @@ function show_usage
 
 function setup_settings
 {
-    parse_command_line_options $@
+    parse_command_line_options "$@"
 
     # 処理のトレースログを出力する場合は true.
     TRACE=${TRACE:-false}
@@ -152,5 +152,5 @@ function open_memo
     "${EDITOR:-vi}" "${current_file_path}"
 }
 
-main $@
+main "$@"
 
