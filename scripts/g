@@ -79,25 +79,25 @@ function main
 function open_chrome
 {
     if [[ -z "$@" && -p /dev/stdin ]]; then
-        local target="$(cat -)"
+        local -r target="$(cat -)"
     else
-        local target="$@"
+        local -r target="$@"
     fi
 
     case "${target}" in
         "")
-            local url="https://google.com"
+            local -r url="https://google.com"
             ;;
         http://* | https://*)
-            local url="${target}"
+            local -r url="${target}"
             ;;
         *)
-            local keyword=$(echo -n ${target} | jq -sMRr '@uri')
-            local url="https://www.google.com/search?q=${keyword}"
+            local -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
+            local -r url="https://www.google.com/search?q=${keyword}"
             ;;
     esac
 
-    local chrome_options="--args --incognito"
+    local -r chrome_options="--args --incognito"
     open -n -a "Google Chrome" ${chrome_options} "${url}"
 }
 
