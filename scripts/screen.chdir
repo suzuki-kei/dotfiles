@@ -98,8 +98,8 @@ function main
 function screen_chdir
 {
     if [[ "$TERM" == "screen" ]]; then
-        local target="${1:-$(pwd)}"
-        local sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
+        local -r target="${1:-$(pwd)}"
+        local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
         screen -S "${sockname}" -X chdir "${target}"
         ${VERBOSE:-false} && echo "change to ${target}"
     else
