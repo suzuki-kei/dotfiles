@@ -28,6 +28,17 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+
+    EXAMPLE
+        Change screen's current directory to bash's current directory.
+        Maybe this form is most used.
+
+            $ $(basename "$0")
+
+        You can specify new current directory path.
+        Maybe this form is rarely used.
+
+            $ $(basename "$0") /tmp
 EOS`
 
 #
