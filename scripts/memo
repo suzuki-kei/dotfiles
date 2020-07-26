@@ -132,7 +132,7 @@ function parse_command_line_options
 
 function prepare_memo_dir
 {
-    if [[ ! -f "${MEMO_DIR}" ]]; then
+    if [[ ! -d "${MEMO_DIR}" ]]; then
         trace "[create] ${MEMO_DIR}"
         mkdir -p "${MEMO_DIR}"
     fi
