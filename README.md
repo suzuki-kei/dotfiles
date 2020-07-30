@@ -26,6 +26,7 @@
     # Programming Languages
     brew install gauche
     brew install python
+    brew install elm
 
 ### リポジトリを clone し, bashrc を上書きする
 
