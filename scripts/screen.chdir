@@ -100,7 +100,7 @@ function main
 #
 function screen_chdir
 {
-    if $(screen -ls > /dev/null); then
+    if $(screen -ls | grep -F '(Attached)' > /dev/null); then
         local -r target="${1:-$(pwd)}"
         local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
         screen -S "${sockname}" -X chdir "${target}"
