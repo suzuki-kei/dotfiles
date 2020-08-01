@@ -100,13 +100,13 @@ function main
 #
 function screen_chdir
 {
-    if [[ "$TERM" == "screen" ]]; then
+    if $(screen -ls > /dev/null); then
         local -r target="${1:-$(pwd)}"
         local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
         screen -S "${sockname}" -X chdir "${target}"
         ${VERBOSE:-false} && echo "change to ${target}"
     else
-        echo "Not in screen: \$TERM=$TERM" >&2
+        echo "Not in screen." >&2
         exit ${EXIT_STATUS_NOT_IN_SCREEN}
     fi
 }
