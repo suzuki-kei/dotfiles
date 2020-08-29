@@ -31,6 +31,25 @@ alias la='ll -a'
 
 export PATH="$(cd $(dirname $BASH_SOURCE); pwd)/scripts:$PATH"
 
+# クリップボードとコマンド履歴を消去する.
+function clear_history
+{
+    history -cw
+
+    if $(which pbcopy > /dev/null); then
+        echo -n | pbcopy
+    fi
+
+    if $(screen -ls | grep -F '(Attached)' > /dev/null); then
+        local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
+        screen -S "${sockname}" -X scrollback 0
+        screen -S "${sockname}" -X source ~/.screenrc
+        screen -S "${sockname}" -X register . ''
+    fi
+
+    \clear
+}
+
 # date の出力形式を変更する.
 function date_with_defaults
 {

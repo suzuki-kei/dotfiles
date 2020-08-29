@@ -4,6 +4,7 @@
 #  Bash Settings (general)
 # ------------------------------------------------------------------------------
 
+export TZ='Asia/Tokyo'
 export PAGER=less
 export EDITOR=vi
 
