@@ -158,6 +158,7 @@ function open_memo
 
     if [ ! -f "${current_file_path}" -a -f "${previous_file_path}" ]; then
         cp -pi "${previous_file_path}" "${current_file_path}"
+        chmod 444 "${previous_file_path}"
     fi
 
     "${EDITOR:-vi}" "${current_file_path}"
