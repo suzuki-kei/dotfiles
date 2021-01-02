@@ -27,6 +27,7 @@
     brew install gauche
     brew install python
     brew install elm
+    brew install rbenv
 
 ### リポジトリを clone し, bashrc を上書きする
 
