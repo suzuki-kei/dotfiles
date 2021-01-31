@@ -27,9 +27,9 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         -h
             Show usage and exit.
 
-        EXIT STATUS
-            ${EXIT_STATUS_SUCCESS} if successfly.
-            ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
 readonly C89_VERSION=`cat <<EOS | sed -E 's/^ {4}//'

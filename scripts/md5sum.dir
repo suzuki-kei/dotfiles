@@ -25,9 +25,9 @@ readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
         -v
             Show message verbosely.
 
-        EXIT STATUS
-            ${EXIT_STATUS_SUCCESS} if successfly.
-            ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
 #
