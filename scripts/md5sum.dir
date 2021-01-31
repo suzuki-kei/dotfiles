@@ -69,7 +69,8 @@ function main
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
 
-    readonly ${VERBOSE:=false}
+    : ${VERBOSE:=false}
+    readonly VERBOSE
 
     generate_hash_value "${1:-.}"
     exit ${EXIT_STATUS_SUCCESS}

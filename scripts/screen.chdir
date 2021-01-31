@@ -83,7 +83,8 @@ function main
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
 
-    readonly ${VERBOSE:=false}
+    : ${VERBOSE:=false}
+    readonly VERBOSE
 
     screen_chdir "${1:-$(pwd)}"
     exit ${EXIT_STATUS_SUCCESS}
