@@ -1,0 +1,100 @@
+#!/bin/bash
+
+set -eu
+
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - Select N elements randomly.
+
+    SYNOPSIS
+        $(basename "$0") -h
+        $(basename "$0") [-n N]
+        $(basename "$0") [-n N] [VALUE...]
+
+    DESCRIPTION
+        $(basename "$0") - Show hash code of directory tree.
+        PATH is the root directory to scan (default is pwd).
+
+    OPTIONS
+        -h
+            Show usage and exit.
+
+        -n N
+            Number of elements to select.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+
+    EXAMPLE
+        $ sample one two three four five
+        three
+
+        $ sample -n 2 one two three four five
+        three
+        five
+
+        $ sample '1 one' '2 two' '3 three' '4 four' '5 five'
+        4 four
+
+        $ seq 10 | sample
+        6
+
+        $ seq 10 | sample -n 3
+        8
+        7
+        1
+EOS`
+
+#
+# Entry point.
+#
+#     1. parse command line arguments.
+#     2. define global variables.
+#     3. Performs the processing according to the arguments.
+#
+# Arguments:
+#     The command line arguments.
+#
+# Globals:
+#     Define N.
+#
+function main
+{
+    while getopts 'hn:d:' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            n)
+                N=${OPTARG}
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    : ${N:=1}
+    readonly N
+
+    if [[ -z "$@" && -p /dev/stdin ]]; then
+        cat - | sort -R | head -${N}
+    else
+        echo "$(IFS=$'\n'; echo "$*")" | sort -R | head -${N}
+    fi
+
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+main "$@"
+
