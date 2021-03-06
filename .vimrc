@@ -21,7 +21,7 @@ set nowrap
 set ambiwidth=double
 
 " diff モード時のオプション.
-set diffopt=context:77777
+set diffopt=vertical,closeoff,context:77777
 
 " .viminfo ファイルの設定.
 set viminfo=
