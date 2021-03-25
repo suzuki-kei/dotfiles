@@ -1,0 +1,7 @@
+[user]
+	name = SUZUKI Kei
+	email = todokimasen@gmail.com
+[core]
+	quotepath = false
+[init]
+	defaultBranch = main
