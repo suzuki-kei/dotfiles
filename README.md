@@ -22,6 +22,7 @@
     brew install pwgen
     brew install figlet
     brew install nkf
+    brew install bat        # https://github.com/sharkdp/bat
 
     # Programming Languages
     brew install gauche
