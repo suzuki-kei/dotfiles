@@ -27,7 +27,6 @@
     # Programming Languages
     brew install gauche
     brew install python
-    brew install elm
     brew install rbenv
     brew install ghc
 
