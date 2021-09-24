@@ -5,30 +5,32 @@
 ### Homebrew で必要なパッケージをインストールする
 
     # Bash
-    brew install bash-completion
+    brew install bash-completion    # https://salsa.debian.org/debian/bash-completion
+
+    # GNU
+    brew install coreutils          # https://www.gnu.org/software/coreutils
+    brew install diffutils          # https://www.gnu.org/s/diffutils/
+    brew install findutils          # https://www.gnu.org/software/findutils/
+    brew install gawk               # https://www.gnu.org/software/gawk/
+    brew install gnu-sed            # https://www.gnu.org/software/sed/
+    brew install grep               # https://www.gnu.org/software/grep/
 
     # General Commands
-    brew install coreutils
-    brew install diffutils
-    brew install findutils
-    brew install gawk
-    brew install gnu-sed
-    brew install grep
-    brew install rlwrap
-    brew install jq
-    brew install git
-    brew install tig
-    brew install watch
-    brew install pwgen
-    brew install figlet
-    brew install nkf
-    brew install bat        # https://github.com/sharkdp/bat
+    brew install bat                # https://github.com/sharkdp/bat
+    brew install figlet             # http://www.figlet.org/
+    brew install git                # https://git-scm.com
+    brew install jq                 # https://github.com/stedolan/jq
+    brew install nkf                # https://osdn.net/projects/nkf/
+    brew install pwgen              # https://pwgen.sourceforge.io/
+    brew install rlwrap             # https://github.com/hanslub42/rlwrap
+    brew install tig                # https://github.com/jonas/tig
+    brew install watch              # https://gitlab.com/procps-ng/procps
 
     # Programming Languages
-    brew install gauche
-    brew install python
-    brew install rbenv
-    brew install ghc
+    brew install gauche             # https://practical-scheme.net/gauche/
+    brew install ghc                # https://haskell.org/ghc/
+    brew install python             # https://www.python.org/
+    brew install rbenv              # https://github.com/rbenv/rbenv#readme
 
 ### リポジトリを clone し, bashrc を上書きする
 
