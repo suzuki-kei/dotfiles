@@ -38,6 +38,10 @@
     brew install python             # https://www.python.org/
     brew install rbenv              # https://github.com/rbenv/rbenv#readme
 
+### pip でインストールする
+
+    pip install virtualenv
+
 ### リポジトリを clone し, bashrc を上書きする
 
     git clone git@github.com:suzuki-kei/dotfiles.git
