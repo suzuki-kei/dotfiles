@@ -2,7 +2,13 @@
 
 ## INSTALL (Mac)
 
-### Homebrew で必要なパッケージをインストールする
+### Homebrew をインストールする
+
+以下のページを参照:
+
+    https://brew.sh/
+
+### Homebrew でインストールする
 
     # Bash
     brew install bash-completion    # https://salsa.debian.org/debian/bash-completion
