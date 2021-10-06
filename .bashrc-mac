@@ -111,6 +111,13 @@ if which gosh > /dev/null; then
     fi
 fi
 
+# brew install python@3.10
+if [[ -d "/usr/local/opt/python@3.10/bin" ]]; then
+    export PATH="/usr/local/opt/python@3.10/bin:$PATH"
+    export LDFLAGS="-L/usr/local/opt/python@3.10/lib"
+    export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig"
+fi
+
 # brew install rbenv
 if [[ -d "$HOME/.rbenv/shims" ]]; then
     export PATH="$HOME/.rbenv/shims:$PATH"

@@ -35,7 +35,7 @@
     # Programming Languages
     brew install gauche             # https://practical-scheme.net/gauche/
     brew install ghc                # https://haskell.org/ghc/
-    brew install python             # https://www.python.org/
+    brew install python@3.10        # https://www.python.org/
     brew install rbenv              # https://github.com/rbenv/rbenv#readme
 
 ### pip でインストールする
