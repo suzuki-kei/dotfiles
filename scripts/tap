@@ -1,0 +1,57 @@
+#!/bin/bash
+
+set -eu
+
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - edit the value in mid-flow on command pipeline.
+
+    DESCRIPTION
+        The $(basename "$0") works as follows:
+
+            1. Creates temporary file.
+            2. Concatenates content of STDIN to temporary file, if STDIN is
+               pipe.
+            3. Concatenates content of files to temporary file, if files is
+               specified by command line argument,
+            4. Open temporary file by vi.
+            5. Output content of temporary file to STDOUT.
+
+    SYNOPSIS
+        <command-1> | $(basename "$0") | <command-2> | ...
+        $(basename "$0") [FILE]... | <command-1> | <command-2> | ...
+        <command-1> | $(basename "$0") [FILE]... | <command-2> | ...
+
+    PARAMETERS
+        FILE
+            A file to input.
+
+    EXAMPLES
+        cat access.log | $(basename "$0") | wc -l
+
+    EXIT STATUS
+        Always returns ${EXIT_STATUS_SUCCESS}.
+EOS`
+
+if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+    echo "${USAGE}"
+    exit ${EXIT_STATUS_SUCCESS}
+fi
+
+TEMP_FILE=$(mktemp -t $(basename $0).XXXXXXXXXXXXXXXX)
+trap "rm '${TEMP_FILE}'" ERR EXIT
+
+if [[ -p /dev/stdin ]]; then
+    cat >> "${TEMP_FILE}"
+fi
+
+if [[ $# -gt 0 ]]; then
+    cat "$@" >> "${TEMP_FILE}"
+fi
+
+vi -n "${TEMP_FILE}" < /dev/tty > /dev/tty
+cat "${TEMP_FILE}"
+exit ${EXIT_STATUS_SUCCESS}
+
