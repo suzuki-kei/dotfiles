@@ -4,6 +4,7 @@ defencoding UTF-8
 defscrollback 10240
 startup_message off
 hardstatus alwayslastline "%H | %w %= | %Y-%m-%d %0c"
+altscreen on
 
 bind r eval 'command -c resize'
 bind -c resize ^]  command
