@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -eu
+
+BASE_NAME="$(basename "$0")"
+DOCKERFILE_PATH="$(cd "$(dirname "$0")/../dockerfiles/${BASE_NAME}" && pwd)/Dockerfile"
+
+export DOCKER_SCAN_SUGGEST=false
+docker build -t "${BASE_NAME}" - < "${DOCKERFILE_PATH}"
+docker run -it --rm "${BASE_NAME}"
+
