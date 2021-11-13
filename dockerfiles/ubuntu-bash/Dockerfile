@@ -8,6 +8,7 @@ RUN yes | unminimize
 
 RUN apt-get update
 RUN apt-get install -y bash-completion
+RUN apt-get install -y bc
 RUN apt-get install -y curl
 RUN apt-get install -y figlet
 RUN apt-get install -y gauche
