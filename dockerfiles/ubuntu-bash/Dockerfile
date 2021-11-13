@@ -16,6 +16,7 @@ RUN apt-get install -y git
 RUN apt-get install -y iputils-ping
 RUN apt-get install -y jq
 RUN apt-get install -y less
+RUN apt-get install -y make
 RUN apt-get install -y man
 RUN apt-get install -y mlocate
 RUN apt-get install -y moreutils
