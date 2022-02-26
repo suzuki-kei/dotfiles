@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -eu
+
+readonly DEFAULT_WORKSPACE_DIR=~/"workspace/github.com"
+
+readonly EXIT_STATUS_SUCCESS=0
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - clone git repository from github.com into your workspace directory.
+
+    DESCRIPTION
+        clone git repository from github.com into your workspace directory.
+
+    SYNOPSIS
+        $(basename "$0") URL
+
+    PARAMETERS
+        URL
+            The git repository url to clone.
+
+    EXIT STATUS
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+        Otherwise, follow git command.
+EOS`
+
+function main
+{
+    while getopts 'd:h' OPTION
+    do
+        case "${OPTION}" in
+            d)
+                WORKSPACE_DIR="${OPTARG}"
+                ;;
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+
+    git_clone "${WORKSPACE_DIR:-${DEFAULT_WORKSPACE_DIR}}" "$1"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function git_clone
+{
+    local -r workspace_dir="$1"
+    local -r repository_url="$2"
+
+    if [[ ${repository_url} =~ ^https://github.com/(.+)/(.+).git$ ]]; then
+        git clone "${BASH_REMATCH[0]}" "${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+    else
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+}
+
+main "$@"
+
