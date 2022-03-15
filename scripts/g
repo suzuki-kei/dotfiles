@@ -92,8 +92,12 @@ function open_chrome
             local -r url="${target}"
             ;;
         *)
-            local -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
-            local -r url="https://www.google.com/search?q=${keyword}"
+            if [[ -f "${target}" ]]; then
+                local -r url="$(cd "$(dirname "${target}")" && echo "$(pwd)/$(basename "${target}")")"
+            else
+                local -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
+                local -r url="https://www.google.com/search?q=${keyword}"
+            fi
             ;;
     esac
 
