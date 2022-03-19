@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# ------------------------------------------------------------------------------
+#  Bash Settings (general)
+# ------------------------------------------------------------------------------
+
+export TZ='Asia/Tokyo'
+export PAGER=less
+export EDITOR=vi
+export PS1='$ '
+
+# ------------------------------------------------------------------------------
+#  Bash Settings (history command)
+# ------------------------------------------------------------------------------
+
+export HISTSIZE=7777777
+export HISTFILESIZE=7777777
+export HISTTIMEFORMAT="%Y-%m-%d %T "
+export HISTCONTROL=ignoredups
+
+# ------------------------------------------------------------------------------
+#  Aliases (ls command)
+# ------------------------------------------------------------------------------
+
+alias ls='\ls --time-style=long-iso'
+alias ll='ls -lhp'
+alias la='ll -a'
+
+# ------------------------------------------------------------------------------
+#  Custom Commands
+# ------------------------------------------------------------------------------
+
+export PATH="$(cd $(dirname $BASH_SOURCE); pwd)/scripts:$PATH"
+
+# クリップボードとコマンド履歴を消去する.
+function clear.history
+{
+    history -cw
+
+    if $(which pbcopy > /dev/null); then
+        echo -n | pbcopy
+    fi
+
+    if $(screen -ls | grep -F '(Attached)' > /dev/null); then
+        local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
+        screen -S "${sockname}" -X scrollback 0
+        screen -S "${sockname}" -X source ~/.screenrc
+        screen -S "${sockname}" -X register . ''
+    fi
+
+    \clear
+}
+
+# date の出力形式を変更する.
+function date_with_defaults
+{
+    if [ $# == 0 ]; then
+        date "+%Y-%m-%d %H:%M:%S %Z"
+    else
+        date "$@"
+    fi
+}
+alias date=date_with_defaults
+
+# screen の重複実行を防止する.
+function screen_with_double_execution_prevention
+{
+    if [[ $# == 0 && "${TERM}" == "screen" ]]; then
+        echo "screen is already running."
+    else
+        \screen "$@"
+    fi
+}
+alias screen=screen_with_double_execution_prevention
+
