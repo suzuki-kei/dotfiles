@@ -22,6 +22,7 @@
     brew install grep               # https://www.gnu.org/software/grep/
 
     # General Commands
+    brew install moreutils          # https://joeyh.name/code/moreutils/
     brew install bat                # https://github.com/sharkdp/bat
     brew install figlet             # http://www.figlet.org/
     brew install git                # https://git-scm.com
