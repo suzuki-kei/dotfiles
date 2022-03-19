@@ -33,7 +33,7 @@ alias la='ll -a'
 export PATH="$(cd $(dirname $BASH_SOURCE); pwd)/scripts:$PATH"
 
 # クリップボードとコマンド履歴を消去する.
-function clear_history
+function clear.history
 {
     history -cw
 
