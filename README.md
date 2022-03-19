@@ -2,10 +2,11 @@
 
 ## セットアップ
 
-### リポジトリを clone し, .bashrc を上書きする
-
-    git clone git@github.com:suzuki-kei/dotfiles.git
-    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
+    sed -ie '$a source "$(pwd)/dotfiles/.bashrc"' ~/.bashrc
+    install -T {"$(pwd)"/dotfiles,~}/.gitconfig
+    install -T {"$(pwd)"/dotfiles,~}/.screenrc
+    install -T {"$(pwd)"/dotfiles,~}/.vimrc
+    install -T {"$(pwd)"/dotfiles,~}/.docker/config.json
 
 ### Homebrew をインストールする (Mac only)
 
