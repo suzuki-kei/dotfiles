@@ -30,7 +30,7 @@ alias la='ll -a'
 #  Custom Commands
 # ------------------------------------------------------------------------------
 
-export PATH="$(cd $(dirname $BASH_SOURCE) && pwd)/scripts:$PATH"
+export PATH="$(cd $(dirname "${BASH_SOURCE}")/.. && pwd)/scripts:$PATH"
 
 # クリップボードとコマンド履歴を消去する.
 function clear.history
