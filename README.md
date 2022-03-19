@@ -1,14 +1,19 @@
 # dotfiles
 
-## INSTALL (Mac)
+## セットアップ
 
-### Homebrew をインストールする
+### リポジトリを clone し, .bashrc を上書きする
+
+    git clone git@github.com:suzuki-kei/dotfiles.git
+    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
+
+### Homebrew をインストールする (Mac only)
 
 以下のページを参照:
 
     https://brew.sh/
 
-### Homebrew でインストールする
+### Homebrew でインストールする (Mac only)
 
     # Bash
     brew install bash-completion    # https://salsa.debian.org/debian/bash-completion
@@ -46,21 +51,5 @@
 
 ### pip でインストールする
 
-    pip install virtualenv
-
-### リポジトリを clone し, bashrc を上書きする
-
-    git clone git@github.com:suzuki-kei/dotfiles.git
-    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
-
-## INSTALL (Linux)
-
-### XXX で必要なパッケージをインストールする
-
-    TODO ディストリビューションごとに記載する.
-
-### リポジトリを clone し, bashrc を上書きする
-
-    git clone git@github.com:suzuki-kei/dotfiles.git
-    sed -ie '$a source $(pwd)/dotfiles/.bashrc' ~/.bashrc
+    pip install virtualenv          # https://virtualenv.pypa.io/
 
