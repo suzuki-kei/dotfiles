@@ -39,6 +39,7 @@
     brew install php                # https://www.php.net/
     brew install python@3.10        # https://www.python.org/
     brew install rbenv              # https://github.com/rbenv/rbenv#readme
+    brew install go                 # https://go.dev/
 
     # Others
     brew install semgrep            # https://semgrep.dev
