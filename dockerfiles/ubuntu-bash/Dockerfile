@@ -7,28 +7,28 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN yes | unminimize
 
 RUN apt-get update
-RUN apt-get install -y bash-completion
-RUN apt-get install -y bc
-RUN apt-get install -y curl
-RUN apt-get install -y figlet
-RUN apt-get install -y gauche
-RUN apt-get install -y git
-RUN apt-get install -y iputils-ping
-RUN apt-get install -y jq
-RUN apt-get install -y less
-RUN apt-get install -y make
-RUN apt-get install -y man
-RUN apt-get install -y mlocate
-RUN apt-get install -y moreutils
-RUN apt-get install -y net-tools
-RUN apt-get install -y nkf
-RUN apt-get install -y php
-RUN apt-get install -y pwgen
-RUN apt-get install -y python3
-RUN apt-get install -y rlwrap
-RUN apt-get install -y ruby
-RUN apt-get install -y sysstat
-RUN apt-get install -y tig
-RUN apt-get install -y vim
-RUN apt-get install -y wget
+RUN apt-get install -y bash-completion  # bash-completion
+RUN apt-get install -y bc               # bc
+RUN apt-get install -y curl             # curl
+RUN apt-get install -y figlet           # figlet
+RUN apt-get install -y gauche           # gauche
+RUN apt-get install -y git              # git
+RUN apt-get install -y iputils-ping     # ping
+RUN apt-get install -y jq               # jq
+RUN apt-get install -y less             # less
+RUN apt-get install -y make             # make
+RUN apt-get install -y man              # man
+RUN apt-get install -y mlocate          # locate
+RUN apt-get install -y moreutils        # https://joeyh.name/code/moreutils/
+RUN apt-get install -y net-tools        # netstat
+RUN apt-get install -y nkf              # nkf
+RUN apt-get install -y php              # php
+RUN apt-get install -y pwgen            # pwgen
+RUN apt-get install -y python3          # python3
+RUN apt-get install -y rlwrap           # rlwrap
+RUN apt-get install -y ruby             # ruby
+RUN apt-get install -y sysstat          # sysstat
+RUN apt-get install -y tig              # tig
+RUN apt-get install -y vim              # vim
+RUN apt-get install -y wget             # wget
 
