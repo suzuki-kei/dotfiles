@@ -33,9 +33,14 @@ RUN apt-get install -y rlwrap           # rlwrap
 RUN apt-get install -y ruby             # ruby
 RUN apt-get install -y sysstat          # sysstat
 RUN apt-get install -y tig              # tig
+RUN apt-get install -y tldr             # tldr
 RUN apt-get install -y vim              # vim
 RUN apt-get install -y wget             # wget
 
 # apt-file
 RUN apt-file update
+
+# tldr
+RUN mkdir -p ~/.local/share
+RUN tldr --update
 
