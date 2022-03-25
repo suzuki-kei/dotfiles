@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN yes | unminimize
 
 RUN apt-get update
+RUN apt-get install -y apt-file         # apt-file
 RUN apt-get install -y bash-completion  # bash-completion
 RUN apt-get install -y bc               # bc
 RUN apt-get install -y curl             # curl
@@ -34,4 +35,7 @@ RUN apt-get install -y sysstat          # sysstat
 RUN apt-get install -y tig              # tig
 RUN apt-get install -y vim              # vim
 RUN apt-get install -y wget             # wget
+
+# apt-file
+RUN apt-file update
 
