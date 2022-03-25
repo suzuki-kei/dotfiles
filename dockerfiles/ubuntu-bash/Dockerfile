@@ -24,6 +24,7 @@ RUN apt-get install -y mlocate          # locate
 RUN apt-get install -y moreutils        # https://joeyh.name/code/moreutils/
 RUN apt-get install -y net-tools        # netstat
 RUN apt-get install -y nkf              # nkf
+RUN apt-get install -y num-utils        # https://suso.suso.org/programs/num-utils/index.phtml
 RUN apt-get install -y php              # php
 RUN apt-get install -y pwgen            # pwgen
 RUN apt-get install -y python3          # python3
