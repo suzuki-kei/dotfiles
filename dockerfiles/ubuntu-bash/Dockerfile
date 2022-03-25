@@ -10,6 +10,7 @@ RUN apt-get update
 RUN apt-get install -y bash-completion  # bash-completion
 RUN apt-get install -y bc               # bc
 RUN apt-get install -y curl             # curl
+RUN apt-get install -y dnsutils         # nslookup
 RUN apt-get install -y figlet           # figlet
 RUN apt-get install -y gauche           # gauche
 RUN apt-get install -y git              # git
