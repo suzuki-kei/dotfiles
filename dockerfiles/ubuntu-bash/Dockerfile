@@ -16,6 +16,7 @@ RUN apt-get install -y gauche           # gauche
 RUN apt-get install -y git              # git
 RUN apt-get install -y iputils-ping     # ping
 RUN apt-get install -y jq               # jq
+RUN apt-get install -y knot-dnsutils    # dig
 RUN apt-get install -y less             # less
 RUN apt-get install -y make             # make
 RUN apt-get install -y man              # man
