@@ -25,6 +25,7 @@
     brew install bat                # https://github.com/sharkdp/bat
     brew install figlet             # http://www.figlet.org/
     brew install git                # https://git-scm.com
+    brew install jc                 # https://github.com/kellyjonbrazil/jc
     brew install jq                 # https://github.com/stedolan/jq
     brew install moreutils          # https://joeyh.name/code/moreutils/
     brew install nkf                # https://osdn.net/projects/nkf/

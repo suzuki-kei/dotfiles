@@ -16,6 +16,7 @@ RUN apt-get install -y figlet           # figlet
 RUN apt-get install -y gauche           # gauche
 RUN apt-get install -y git              # git
 RUN apt-get install -y iputils-ping     # ping
+RUN apt-get install -y jc               # jc
 RUN apt-get install -y jq               # jq
 RUN apt-get install -y knot-dnsutils    # dig
 RUN apt-get install -y less             # less
