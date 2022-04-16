@@ -33,6 +33,7 @@
     brew install rlwrap             # https://github.com/hanslub42/rlwrap
     brew install tig                # https://github.com/jonas/tig
     brew install watch              # https://gitlab.com/procps-ng/procps
+    brew install yq                 # https://github.com/mikefarah/yq
 
     # Programming Languages
     brew install gauche             # https://practical-scheme.net/gauche/
