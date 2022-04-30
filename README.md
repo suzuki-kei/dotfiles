@@ -26,6 +26,18 @@
 
 ## メンテナンス
 
+### Homebrew
+
+    # 最新情報を取得する.
+    brew update
+
+    # バージョンアップする.
+    brew upgrade
+
+    # 不要ファイルを削除する.
+    brew autoremove
+    brew cleanup --prune=all
+
 ### pip をバージョンアップする
 
     pip3 install --upgrade pip
