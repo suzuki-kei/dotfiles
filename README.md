@@ -14,7 +14,7 @@
 
 ### pip でインストールする
 
-    pip install virtualenv          # https://virtualenv.pypa.io/
+    pip3 install virtualenv # https://virtualenv.pypa.io/
 
 ### dotfiles をセットアップする
 
