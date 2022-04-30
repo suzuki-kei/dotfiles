@@ -24,3 +24,9 @@
     install -T {"$(pwd)"/dotfiles,~}/.vimrc
     install -T {"$(pwd)"/dotfiles,~}/.docker/config.json
 
+## メンテナンス
+
+### pip をバージョンアップする
+
+    pip3 install --upgrade pip
+
