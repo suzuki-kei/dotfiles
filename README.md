@@ -46,3 +46,8 @@
 
     pip3 install --upgrade pip
 
+### Launchpad の並び順をリセットする (Mac only)
+
+    defaults write com.apple.dock ResetLaunchPad -bool true
+    killall Dock
+
