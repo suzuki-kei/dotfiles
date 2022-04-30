@@ -26,7 +26,11 @@
 
 ## メンテナンス
 
-### Homebrew
+### パスワードを生成する
+
+    pwgen -1cnysv 16 1
+
+### Homebrew (Mac only)
 
     # 最新情報を取得する.
     brew update
