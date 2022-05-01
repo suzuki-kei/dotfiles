@@ -22,8 +22,9 @@ export HISTCONTROL=ignoredups
 #  Aliases (ls command)
 # ------------------------------------------------------------------------------
 
-alias ls='\ls --time-style=long-iso'
-alias ll='ls -lhp'
+alias ls='\ls --color=never --time-style=long-iso'
+alias l='ls -1F'
+alias ll='ls -lhF'
 alias la='ll -a'
 
 # ------------------------------------------------------------------------------
