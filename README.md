@@ -42,6 +42,11 @@
     brew autoremove
     brew cleanup --prune=all
 
+### Docker
+
+    # 未使用のイメージを削除する.
+    docker image prune
+
 ### pip をバージョンアップする
 
     pip3 install --upgrade pip
