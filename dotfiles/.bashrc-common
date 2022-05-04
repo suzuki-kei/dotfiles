@@ -83,3 +83,16 @@ function screen_with_double_execution_prevention
 }
 alias screen=screen_with_double_execution_prevention
 
+#
+# screen のウィンドウを使い捨てにして Chrome を起動するためのショートカット.
+#
+# scripts/g を実行後に exit する.
+#     1. Chrome を起動するために g を実行する.
+#     2. exit で screen のウィンドウを破棄する.
+#
+function g.exit
+{
+    g "$@"
+    exit
+}
+
