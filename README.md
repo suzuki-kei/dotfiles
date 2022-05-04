@@ -16,6 +16,10 @@
 
     pip3 install virtualenv # https://virtualenv.pypa.io/
 
+### go でインストールする
+
+    go install golang.org/x/tools/cmd/godoc@latest
+
 ### dotfiles をセットアップする
 
     sed -ie '$a source "$(pwd)/dotfiles/.bashrc"' ~/.bashrc
