@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN yes | unminimize
 
 RUN apt-get update
+RUN apt-get install -y apache2          # Apache HTTP Server
 RUN apt-get install -y apt-file         # apt-file
 RUN apt-get install -y bash-completion  # bash-completion
 RUN apt-get install -y bc               # bc
