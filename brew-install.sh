@@ -37,6 +37,7 @@ declare -ar FORMULAS=(
     rbenv               # https://github.com/rbenv/rbenv#readme
 
     # Others
+    minikube            # https://minikube.sigs.k8s.io/
     semgrep             # https://semgrep.dev
 )
 
