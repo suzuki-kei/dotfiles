@@ -8,15 +8,15 @@
 
     https://brew.sh/
 
-### Homebrew でインストールする (Mac only)
+### Homebrew でパッケージをインストールする (Mac only)
 
     bash brew-install.sh
 
-### pip でインストールする
+### pip でパッケージをインストールする
 
     pip3 install virtualenv # https://virtualenv.pypa.io/
 
-### go でインストールする
+### go でパッケージをインストールする
 
     go install golang.org/x/tools/cmd/godoc@latest
 
@@ -28,11 +28,13 @@
     install -T {"$(pwd)"/dotfiles,~}/.vimrc
     install -T {"$(pwd)"/dotfiles,~}/.docker/config.json
 
-## メンテナンス
+## 各種手順
 
 ### パスワードを生成する
 
     pwgen -1cnysv 16 1
+
+## メンテナンス
 
 ### Homebrew (Mac only)
 
