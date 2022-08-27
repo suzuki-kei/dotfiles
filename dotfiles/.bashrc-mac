@@ -42,13 +42,6 @@ if [[ -d "/usr/local/opt/grep/libexec/gnubin" ]]; then
     export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
 fi
 
-# brew install gauche
-if which gosh > /dev/null; then
-    if which rlwrap > /dev/null; then
-        alias gosh='rlwrap gosh'
-    fi
-fi
-
 # brew install python@3.10
 if [[ -d "/usr/local/opt/python@3.10/bin" ]]; then
     export PATH="/usr/local/opt/python@3.10/bin:$PATH"
