@@ -2,10 +2,74 @@
 
 set -eu
 
-BASE_NAME="$(basename "$0")"
-DOCKERFILE_PATH="$(cd "$(dirname "$0")/../dockerfiles/${BASE_NAME}" && pwd)/Dockerfile"
+declare -r BASE_NAME="$(basename "$0")"
+declare -r DOCKERFILE_PATH="$(cd "$(dirname "$0")/../dockerfiles/${BASE_NAME}" && pwd)/Dockerfile"
 
-export DOCKER_SCAN_SUGGEST=false
-docker build -t "${BASE_NAME}" - < "${DOCKERFILE_PATH}"
-docker run -it --rm "${BASE_NAME}"
+readonly EXIT_STATUS_SUCCESS=0
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+    NAME
+        $(basename "$0") - build and run the ubuntu-bash docker container.
+
+    DESCRIPTION
+        build and run the ubuntu-bash docker container.
+
+    SYNOPSIS
+        $(basename "$0") -h
+        $(basename "$0") [-B]
+
+    OPTIONS
+        -B
+            Build only (not run a container), if -B option specified.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+function main
+{
+    while getopts 'Bh' OPTION
+    do
+        case "${OPTION}" in
+            B)
+                BUILD_ONLY=true
+                ;;
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+
+    execute ${BUILD_ONLY:-false}
+
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function execute
+{
+    declare -r build_only="$1"
+
+    export DOCKER_SCAN_SUGGEST=false
+    docker build -t "${BASE_NAME}" - < "${DOCKERFILE_PATH}"
+
+    if ! ${build_only}; then
+        docker run -it --rm "${BASE_NAME}"
+    fi
+}
+
+main "$@"
 

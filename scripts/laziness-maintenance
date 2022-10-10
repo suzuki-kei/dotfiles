@@ -31,3 +31,10 @@ echo "==== pip3"
     fi
 ) 2>&1 | sed -r 's/^/    /'
 
+echo "==== ubuntu-bash"
+(
+    if which ubuntu-bash > /dev/null; then
+        ubuntu-bash -B
+    fi
+)
+
