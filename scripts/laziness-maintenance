@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# 各種ソフトウェアのバージョンアップやクリーンアップを実行する.
+# このコマンドは柔軟さよりも簡便さを優先しているため, 細かい制御は提供しない.
+#
+
+set -eu
+
+echo "==== brew"
+(
+    if which brew > /dev/null; then
+        brew update
+        brew upgrade
+        brew autoremove
+        brew cleanup --prune=all
+    fi
+) 2>&1 | sed -r 's/^/    /'
+
+echo "==== docker"
+(
+    if which docker > /dev/null; then
+        docker ps -q --filter 'status=exited' | xargs -r docker rm
+        docker image prune -f
+    fi
+) 2>&1 | sed -r 's/^/    /'
+
+echo "==== pip3"
+(
+    if which pip3 > /dev/null; then
+        pip3 install --upgrade pip
+    fi
+) 2>&1 | sed -r 's/^/    /'
+
