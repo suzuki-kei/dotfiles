@@ -37,6 +37,7 @@ declare -ar FORMULAS=(
     php                 # https://www.php.net/
     python@3.10         # https://www.python.org/
     rbenv               # https://github.com/rbenv/rbenv#readme
+    rust                # https://www.rust-lang.org/
 
     # Others
     minikube            # https://minikube.sigs.k8s.io/
