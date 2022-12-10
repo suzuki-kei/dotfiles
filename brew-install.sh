@@ -22,6 +22,7 @@ declare -ar FORMULAS=(
     jq                  # https://github.com/stedolan/jq
     moreutils           # https://joeyh.name/code/moreutils/
     nkf                 # https://osdn.net/projects/nkf/
+    num-utils           # https://suso.suso.org/xulu/Num-utils
     pwgen               # https://pwgen.sourceforge.io/
     rlwrap              # https://github.com/hanslub42/rlwrap
     tig                 # https://github.com/jonas/tig
