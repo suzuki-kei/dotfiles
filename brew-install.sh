@@ -26,6 +26,7 @@ declare -ar FORMULAS=(
     pwgen               # https://pwgen.sourceforge.io/
     rlwrap              # https://github.com/hanslub42/rlwrap
     tig                 # https://github.com/jonas/tig
+    util-linux          # https://github.com/util-linux/util-linux
     vim                 # https://www.vim.org/
     watch               # https://gitlab.com/procps-ng/procps
     yq                  # https://github.com/mikefarah/yq

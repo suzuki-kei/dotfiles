@@ -54,3 +54,9 @@ if [[ -d "$HOME/.rbenv/shims" ]]; then
     export PATH="$HOME/.rbenv/shims:$PATH"
 fi
 
+# brew install util-linux
+if [[ -d '/usr/local/opt/util-linux' ]]; then
+  export PATH="/usr/local/opt/util-linux/bin:$PATH"
+  export PATH="/usr/local/opt/util-linux/sbin:$PATH"
+fi
+
