@@ -98,3 +98,16 @@ function g.exit
     exit
 }
 
+#
+# ディレクトリを作成後, その中に移動する.
+#
+function mkcd
+{
+    if [[ "$1" = '' ]]; then
+        echo 'Invalid options: DIRECTORY must be specified.'
+        return 1
+    fi
+
+    mkdir -p "$1" && cd "$1"
+}
+
