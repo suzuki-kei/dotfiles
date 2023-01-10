@@ -34,6 +34,7 @@ declare -ar FORMULAS=(
     # Programming Languages
     gauche              # https://practical-scheme.net/gauche/
     ghc                 # https://haskell.org/ghc/
+    gnu-prolog          # http://www.gprolog.org/
     go                  # https://go.dev/
     php                 # https://www.php.net/
     python@3.10         # https://www.python.org/
