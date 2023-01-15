@@ -37,7 +37,7 @@ declare -ar FORMULAS=(
     gnu-prolog          # http://www.gprolog.org/
     go                  # https://go.dev/
     php                 # https://www.php.net/
-    python@3.10         # https://www.python.org/
+    python@3.11         # https://www.python.org/
     rbenv               # https://github.com/rbenv/rbenv#readme
     rust                # https://www.rust-lang.org/
 
