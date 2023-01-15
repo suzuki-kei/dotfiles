@@ -6,38 +6,38 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN yes | unminimize
 
-RUN apt-get update
-RUN apt-get install -y apache2          # Apache HTTP Server
-RUN apt-get install -y apt-file         # apt-file
-RUN apt-get install -y bash-completion  # bash-completion
-RUN apt-get install -y bc               # bc
-RUN apt-get install -y curl             # curl
-RUN apt-get install -y dnsutils         # nslookup
-RUN apt-get install -y figlet           # figlet
-RUN apt-get install -y gauche           # gauche
-RUN apt-get install -y git              # git
-RUN apt-get install -y iputils-ping     # ping
-RUN apt-get install -y jc               # jc
-RUN apt-get install -y jq               # jq
-RUN apt-get install -y knot-dnsutils    # dig
-RUN apt-get install -y less             # less
-RUN apt-get install -y make             # make
-RUN apt-get install -y man              # man
-RUN apt-get install -y mlocate          # locate
-RUN apt-get install -y moreutils        # https://joeyh.name/code/moreutils/
-RUN apt-get install -y net-tools        # netstat
-RUN apt-get install -y nkf              # nkf
-RUN apt-get install -y num-utils        # https://suso.suso.org/programs/num-utils/index.phtml
-RUN apt-get install -y php              # php
-RUN apt-get install -y pwgen            # pwgen
-RUN apt-get install -y python3          # python3
-RUN apt-get install -y rlwrap           # rlwrap
-RUN apt-get install -y ruby             # ruby
-RUN apt-get install -y sysstat          # sysstat
-RUN apt-get install -y tig              # tig
-RUN apt-get install -y tldr             # tldr
-RUN apt-get install -y vim              # vim
-RUN apt-get install -y wget             # wget
+RUN apt update
+RUN apt install -y apache2          # Apache HTTP Server
+RUN apt install -y apt-file         # apt-file
+RUN apt install -y bash-completion  # bash-completion
+RUN apt install -y bc               # bc
+RUN apt install -y curl             # curl
+RUN apt install -y dnsutils         # nslookup
+RUN apt install -y figlet           # figlet
+RUN apt install -y gauche           # gauche
+RUN apt install -y git              # git
+RUN apt install -y iputils-ping     # ping
+RUN apt install -y jc               # jc
+RUN apt install -y jq               # jq
+RUN apt install -y knot-dnsutils    # dig
+RUN apt install -y less             # less
+RUN apt install -y make             # make
+RUN apt install -y man              # man
+RUN apt install -y mlocate          # locate
+RUN apt install -y moreutils        # https://joeyh.name/code/moreutils/
+RUN apt install -y net-tools        # netstat
+RUN apt install -y nkf              # nkf
+RUN apt install -y num-utils        # https://suso.suso.org/programs/num-utils/index.phtml
+RUN apt install -y php              # php
+RUN apt install -y pwgen            # pwgen
+RUN apt install -y python3          # python3
+RUN apt install -y rlwrap           # rlwrap
+RUN apt install -y ruby             # ruby
+RUN apt install -y sysstat          # sysstat
+RUN apt install -y tig              # tig
+RUN apt install -y tldr             # tldr
+RUN apt install -y vim              # vim
+RUN apt install -y wget             # wget
 
 # apt-file
 RUN apt-file update
