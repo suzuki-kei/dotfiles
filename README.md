@@ -8,25 +8,9 @@
 
     https://brew.sh/
 
-### Homebrew でパッケージをインストールする (Mac only)
+### セットアップスクリプトを実行する
 
-    bash setup/brew-install.sh
-
-### pip でパッケージをインストールする
-
-    pip3 install virtualenv # https://virtualenv.pypa.io/
-
-### go でパッケージをインストールする
-
-    go install golang.org/x/tools/cmd/godoc@latest
-
-### dotfiles をセットアップする
-
-    sed -ie '$a source "$(pwd)/dotfiles/.bashrc"' ~/.bashrc
-    install -T {"$(pwd)"/dotfiles,~}/.gitconfig
-    install -T {"$(pwd)"/dotfiles,~}/.screenrc
-    install -T {"$(pwd)"/dotfiles,~}/.vimrc
-    install -T {"$(pwd)"/dotfiles,~}/.docker/config.json
+    bash setup/setup.sh
 
 ## 各種手順
 
