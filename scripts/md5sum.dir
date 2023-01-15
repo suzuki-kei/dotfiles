@@ -2,11 +2,15 @@
 
 set -eu
 
+declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
+source "${SCRIPTS_DIR}/_internal.sh"
+
 readonly EXIT_STATUS_SUCCESS=0
 
 readonly EXIT_STATUS_INVALID_ARGUMENT=255
 
-readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+readonly USAGE=`cat <<EOS | _strip_heredoc
     NAME
         $(basename "$0") - Show hash code of directory tree.
 

@@ -2,9 +2,13 @@
 
 set -eu
 
+declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
+source "${SCRIPTS_DIR}/_internal.sh"
+
 readonly EXIT_STATUS_SUCCESS=0
 
-readonly USAGE=`cat <<EOS | sed -E 's/^ {4}//'
+readonly USAGE=`cat <<EOS | _strip_heredoc
     NAME
         $(basename "$0") - edit the value in mid-flow on command pipeline.
 
