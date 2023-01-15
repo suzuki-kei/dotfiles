@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -eu
+
+docker ps -q --filter 'status=exited' | xargs -r docker rm
+
