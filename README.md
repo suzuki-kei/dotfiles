@@ -10,7 +10,7 @@
 
 ### Homebrew でパッケージをインストールする (Mac only)
 
-    bash brew-install.sh
+    bash setup/brew-install.sh
 
 ### pip でパッケージをインストールする
 
