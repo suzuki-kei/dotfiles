@@ -44,7 +44,6 @@ declare -ar FORMULAS=(
     rust                # https://www.rust-lang.org/
 
     # Others
-    minikube            # https://minikube.sigs.k8s.io/
     semgrep             # https://semgrep.dev
 )
 
