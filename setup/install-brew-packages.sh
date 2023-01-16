@@ -4,6 +4,7 @@ set -eu
 
 declare -ar FORMULAS=(
     # Bash
+    bash                # https://www.gnu.org/software/bash/
     bash-completion     # https://salsa.debian.org/debian/bash-completion
 
     # GNU
