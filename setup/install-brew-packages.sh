@@ -18,6 +18,7 @@ declare -ar FORMULAS=(
     # General Commands
     bat                 # https://github.com/sharkdp/bat
     figlet              # http://www.figlet.org/
+    fortune             # https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html
     git                 # https://git-scm.com
     jc                  # https://github.com/kellyjonbrazil/jc
     jq                  # https://github.com/stedolan/jq
