@@ -46,6 +46,7 @@ declare -ar FORMULAS=(
     rust                # https://www.rust-lang.org/
 
     # Others
+    r                   # https://www.r-project.org/
     semgrep             # https://semgrep.dev
 )
 
