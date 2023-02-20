@@ -35,6 +35,7 @@ declare -ar FORMULAS=(
     yq                  # https://github.com/mikefarah/yq
 
     # Programming Languages
+    erlang              # https://www.erlang.org/
     gauche              # https://practical-scheme.net/gauche/
     gforth              # https://www.gnu.org/software/gforth
     ghc                 # https://haskell.org/ghc/
