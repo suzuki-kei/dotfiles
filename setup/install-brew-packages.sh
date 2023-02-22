@@ -14,6 +14,7 @@ declare -ar FORMULAS=(
     gawk                # https://www.gnu.org/software/gawk/
     gnu-sed             # https://www.gnu.org/software/sed/
     grep                # https://www.gnu.org/software/grep/
+    tree                # http://mama.indstate.edu/users/ice/tree/
 
     # General Commands
     bat                 # https://github.com/sharkdp/bat
