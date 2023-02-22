@@ -52,7 +52,6 @@ declare -ar FORMULAS=(
     semgrep             # https://semgrep.dev
 )
 
-
 if $(which brew > /dev/null); then
     brew install "${FORMULAS[@]}"
 fi
