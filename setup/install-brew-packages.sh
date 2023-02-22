@@ -23,6 +23,7 @@ declare -ar FORMULAS=(
     figlet              # http://www.figlet.org/
     fortune             # https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html
     git                 # https://git-scm.com
+    htop                # https://htop.dev/
     jc                  # https://github.com/kellyjonbrazil/jc
     jq                  # https://github.com/stedolan/jq
     moreutils           # https://joeyh.name/code/moreutils/
