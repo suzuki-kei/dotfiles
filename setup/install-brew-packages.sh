@@ -15,6 +15,7 @@ declare -ar FORMULAS=(
     gnu-sed             # https://www.gnu.org/software/sed/
     grep                # https://www.gnu.org/software/grep/
     tree                # http://mama.indstate.edu/users/ice/tree/
+    wget                # https://www.gnu.org/software/wget/
 
     # General Commands
     bat                 # https://github.com/sharkdp/bat
