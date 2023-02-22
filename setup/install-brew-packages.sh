@@ -29,6 +29,7 @@ declare -ar FORMULAS=(
     moreutils           # https://joeyh.name/code/moreutils/
     nkf                 # https://osdn.net/projects/nkf/
     num-utils           # https://suso.suso.org/xulu/Num-utils
+    pstree              # https://github.com/FredHucht/pstree
     pwgen               # https://pwgen.sourceforge.io/
     rlwrap              # https://github.com/hanslub42/rlwrap
     screen              # https://www.gnu.org/software/screen
