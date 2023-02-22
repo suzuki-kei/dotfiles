@@ -28,6 +28,7 @@ declare -ar FORMULAS=(
     num-utils           # https://suso.suso.org/xulu/Num-utils
     pwgen               # https://pwgen.sourceforge.io/
     rlwrap              # https://github.com/hanslub42/rlwrap
+    screen              # https://www.gnu.org/software/screen
     tig                 # https://github.com/jonas/tig
     util-linux          # https://github.com/util-linux/util-linux
     vim                 # https://www.vim.org/
