@@ -6,14 +6,12 @@
 
 set -eu
 
+declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
+declare -r SETUP_DIR="${ROOT_DIR}/setup"
+
 echo "==== brew"
 (
-    if which brew > /dev/null; then
-        brew update
-        brew upgrade
-        brew autoremove
-        brew cleanup --prune=all
-    fi
+    bash "${SETUP_DIR}/setup-brew-packages.sh"
 ) 2>&1 | sed -r 's/^/    /'
 
 echo "==== docker"
@@ -26,9 +24,7 @@ echo "==== docker"
 
 echo "==== pip3"
 (
-    if which pip3 > /dev/null; then
-        pip3 install --upgrade pip
-    fi
+    bash "${SETUP_DIR}/setup-python-packages.sh"
 ) 2>&1 | sed -r 's/^/    /'
 
 echo "==== ubuntu-bash"
