@@ -7,8 +7,8 @@ if [[ "$(grep -F "source '${BASHRC_FILE}'" ~/.bashrc)" != "source '${BASHRC_FILE
     sed -ie "\$a source '${DOTFILES_DIR}/.bashrc'" ~/.bashrc
 fi
 
-#install -T {"${DOTFILES_DIR}",~}/.gitconfig
-#install -T {"${DOTFILES_DIR}",~}/.screenrc
-#install -T {"${DOTFILES_DIR}",~}/.vimrc
-#install -T {"${DOTFILES_DIR}",~}/.docker/config.json
+install -DTm 644 {"${DOTFILES_DIR}",~}/.gitconfig
+install -DTm 644 {"${DOTFILES_DIR}",~}/.screenrc
+install -DTm 644 {"${DOTFILES_DIR}",~}/.vimrc
+install -DTm 644 {"${DOTFILES_DIR}",~}/.docker/config.json
 
