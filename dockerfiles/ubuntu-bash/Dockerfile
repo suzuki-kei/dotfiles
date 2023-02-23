@@ -36,6 +36,7 @@ RUN apt install -y ruby             # ruby
 RUN apt install -y sysstat          # sysstat
 RUN apt install -y tig              # tig
 RUN apt install -y tldr             # tldr
+RUN apt install -y tree             # tree
 RUN apt install -y vim              # vim
 RUN apt install -y wget             # wget
 
