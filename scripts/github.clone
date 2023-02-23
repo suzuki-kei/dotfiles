@@ -67,6 +67,8 @@ function git_clone
 
     if [[ ${repository_url} =~ ^https://github.com/(.+)/(.+).git$ ]]; then
         git clone "${BASH_REMATCH[0]}" "${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+    elif [[ ${repository_url} =~ ^git@github.com:(.+)/(.+).git$ ]]; then
+        git clone "${BASH_REMATCH[0]}" "${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
     else
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
