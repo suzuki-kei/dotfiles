@@ -2,7 +2,9 @@
 
 set -eu
 
+declare -r SETUP_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 if $(which pip3 > /dev/null); then
-    pip3 install virtualenv # https://virtualenv.pypa.io/
+    pip3 install -r "${SETUP_DIR}/requirements.txt"
 fi
 
