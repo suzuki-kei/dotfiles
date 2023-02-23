@@ -1,0 +1,60 @@
+
+# adapt for Linux
+brew "coreutils"        # https://www.gnu.org/software/coreutils
+brew "curl"             # https://curl.se
+brew "diffutils"        # https://www.gnu.org/s/diffutils/
+brew "findutils"        # https://www.gnu.org/software/findutils/
+brew "gawk"             # https://www.gnu.org/software/gawk/
+brew "gnu-sed"          # https://www.gnu.org/software/sed/
+brew "grep"             # https://www.gnu.org/software/grep/
+brew "nkf"              # https://osdn.net/projects/nkf/
+brew "pstree"           # https://github.com/FredHucht/pstree
+brew "tree"             # http://mama.indstate.edu/users/ice/tree/
+brew "util-linux"       # https://github.com/util-linux/util-linux
+brew "watch"            # https://gitlab.com/procps-ng/procps
+brew "wget"             # https://www.gnu.org/software/wget/
+
+# bash
+brew "bash"             # https://www.gnu.org/software/bash/
+brew "bash-completion"  # https://salsa.debian.org/debian/bash-completion
+
+# git
+brew "git"              # https://git-scm.com
+brew "tig"              # https://github.com/jonas/tig
+
+# general command
+brew "bat"              # https://github.com/sharkdp/bat
+brew "htop"             # https://htop.dev/
+brew "moreutils"        # https://joeyh.name/code/moreutils/
+brew "num-utils"        # https://suso.suso.org/xulu/Num-utils
+brew "pwgen"            # https://pwgen.sourceforge.io/
+brew "rlwrap"           # https://github.com/hanslub42/rlwrap
+brew "screen"           # https://www.gnu.org/software/screen
+brew "semgrep"          # https://semgrep.dev
+brew "vim"              # https://www.vim.org/
+
+# data processing
+brew "jc"               # https://github.com/kellyjonbrazil/jc
+brew "jq"               # https://github.com/stedolan/jq
+brew "yq"               # https://github.com/mikefarah/yq
+
+# entertainment
+brew "cowsay"           # https://github.com/tnalpgge/rank-amateur-cowsay
+brew "figlet"           # http://www.figlet.org/
+brew "fortune"          # https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html
+brew "sl"               # https://github.com/mtoyoda/sl
+
+# programming
+brew "erlang"           # https://www.erlang.org/
+brew "gauche"           # https://practical-scheme.net/gauche/
+brew "gforth"           # https://www.gnu.org/software/gforth
+brew "ghc"              # https://haskell.org/ghc/
+brew "gnu-prolog"       # http://www.gprolog.org/
+brew "go"               # https://go.dev/
+brew "node"             # https://nodejs.org/
+brew "php"              # https://www.php.net/
+brew "python@3.11"      # https://www.python.org/
+brew "r"                # https://www.r-project.org/
+brew "rbenv"            # https://github.com/rbenv/rbenv#readme
+brew "rust"             # https://www.rust-lang.org/
+
