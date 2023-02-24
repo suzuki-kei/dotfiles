@@ -45,6 +45,7 @@ brew "fortune"          # https://www.ibiblio.org/pub/linux/games/amusements/for
 brew "sl"               # https://github.com/mtoyoda/sl
 
 # programming
+brew "cabal-install"    # https://www.haskell.org/cabal/
 brew "erlang"           # https://www.erlang.org/
 brew "gauche"           # https://practical-scheme.net/gauche/
 brew "gforth"           # https://www.gnu.org/software/gforth
