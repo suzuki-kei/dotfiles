@@ -9,6 +9,7 @@ brew "gnu-sed"          # https://www.gnu.org/software/sed/
 brew "grep"             # https://www.gnu.org/software/grep/
 brew "nkf"              # https://osdn.net/projects/nkf/
 brew "pstree"           # https://github.com/FredHucht/pstree
+brew "telnet"           # https://opensource.apple.com/
 brew "tree"             # http://mama.indstate.edu/users/ice/tree/
 brew "util-linux"       # https://github.com/util-linux/util-linux
 brew "watch"            # https://gitlab.com/procps-ng/procps
