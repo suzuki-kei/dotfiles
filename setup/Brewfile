@@ -40,10 +40,13 @@ brew "jq"               # https://github.com/stedolan/jq
 brew "yq"               # https://github.com/mikefarah/yq
 
 # entertainment
+brew "cmatrix"          # https://github.com/abishekvashok/cmatrix/
 brew "cowsay"           # https://github.com/tnalpgge/rank-amateur-cowsay
 brew "figlet"           # http://www.figlet.org/
 brew "fortune"          # https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html
+brew "nyancat"          # https://github.com/klange/nyancat
 brew "sl"               # https://github.com/mtoyoda/sl
+brew "toilet"           # http://caca.zoy.org/wiki/toilet
 
 # programming
 brew "cabal-install"    # https://www.haskell.org/cabal/
