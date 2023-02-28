@@ -62,4 +62,5 @@ brew "python@3.11"      # https://www.python.org/
 brew "r"                # https://www.r-project.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
+brew "swi-prolog"       # https://www.swi-prolog.org/
 
