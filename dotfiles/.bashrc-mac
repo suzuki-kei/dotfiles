@@ -7,64 +7,50 @@
 # see https://github.com/Homebrew/brew/blob/master/docs/Analytics.md
 export HOMEBREW_NO_ANALYTICS=1
 
-# brew install bash-completion
-if [[ -f "/usr/local/etc/profile.d/bash_completion.sh" ]]; then
-    source "/usr/local/etc/profile.d/bash_completion.sh"
-fi
+if which brew > /dev/null; then
+    declare -r BREW_PREFIX="$(brew --prefix)"
 
-# brew install coreutils
-if [[ -d "/usr/local/opt/coreutils/libexec/gnubin" ]]; then
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-fi
+    # brew install bash-completion
+    source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
 
-# brew install findutils
-if [[ -d "/usr/local/opt/findutils/libexec/gnubin" ]]; then
-    export PATH="/usr/local/opt/findutils/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/findutils/libexec/gnuman"
-fi
+    # brew install coreutils
+    export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/coreutils/libexec/gnuman:$MANPATH"
 
-# brew install gnu-sed
-if [[ -d "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
-    export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman"
-fi
+    # brew install findutils
+    export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/findutils/libexec/gnuman"
 
-# brew install gawk
-if [[ -d "/usr/local/opt/gawk/libexec/gnubin/" ]]; then
-    export PATH="/usr/local/opt/gawk/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/gawk/libexec/gnuman"
-fi
+    # brew install gnu-sed
+    export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnuman"
 
-# brew install grep
-if [[ -d "/usr/local/opt/grep/libexec/gnubin" ]]; then
-    export PATH="/usr/local/opt/grep/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
-fi
+    # brew install gawk
+    export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/gawk/libexec/gnuman"
 
-# brew install python@3.10
-if [[ -d "/usr/local/opt/python@3.10/bin" ]]; then
-    export PATH="/usr/local/opt/python@3.10/bin:$PATH"
-    export LDFLAGS="-L/usr/local/opt/python@3.10/lib"
-    export PKG_CONFIG_PATH="/usr/local/opt/python@3.10/lib/pkgconfig"
-fi
+    # brew install grep
+    export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/grep/libexec/gnuman:$MANPATH"
 
-# brew install ruby
-if [[ -d '/usr/local/opt/ruby/bin' ]]; then
-    export PATH="/usr/local/opt/ruby/bin:$PATH"
-    export LDFLAGS="-L/usr/local/opt/ruby/lib"
-    export CPPFLAGS="-I/usr/local/opt/ruby/include"
-    export PKG_CONFIG_PATH="/usr/local/opt/ruby/lib/pkgconfig"
+    # brew install python@3.11
+    export PATH="${BREW_PREFIX}/opt/python3/bin:$PATH"
+    export LDFLAGS="-L${BREW_PREFIX}/opt/python3/lib"
+    export PKG_CONFIG_PATH="${BREW_PREFIX}/opt/python3/lib/pkgconfig"
+
+    # brew install ruby
+    export PATH="${BREW_PREFIX}/opt/ruby/bin:$PATH"
+    export LDFLAGS="-L${BREW_PREFIX}/opt/ruby/lib"
+    export CPPFLAGS="-I${BREW_PREFIX}/opt/ruby/include"
+    export PKG_CONFIG_PATH="${BREW_PREFIX}/opt/ruby/lib/pkgconfig"
+
+    # brew install util-linux
+    export PATH="${BREW_PREFIX}/opt/util-linux/bin:$PATH"
+    export PATH="${BREW_PREFIX}/opt/util-linux/sbin:$PATH"
 fi
 
 # brew install rbenv
 if [[ -d "$HOME/.rbenv/shims" ]]; then
     export PATH="$HOME/.rbenv/shims:$PATH"
-fi
-
-# brew install util-linux
-if [[ -d '/usr/local/opt/util-linux' ]]; then
-  export PATH="/usr/local/opt/util-linux/bin:$PATH"
-  export PATH="/usr/local/opt/util-linux/sbin:$PATH"
 fi
 
