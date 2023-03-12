@@ -29,9 +29,7 @@ echo "==== pip3"
 
 echo "==== cabal"
 (
-    if which cabal > /dev/null; then
-        cabal update
-    fi
+    bash "${SETUP_DIR}/setup-cabal-packages.sh"
 ) 2>&1 | sed -r 's/^/    /'
 
 echo "==== ubuntu-bash"
