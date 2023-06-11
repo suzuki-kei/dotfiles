@@ -31,6 +31,7 @@ RUN apt install -y num-utils        # https://suso.suso.org/programs/num-utils/i
 RUN apt install -y php              # php
 RUN apt install -y pwgen            # pwgen
 RUN apt install -y python3          # python3
+RUN apt install -y python3-pip      # python3-pip
 RUN apt install -y rlwrap           # rlwrap
 RUN apt install -y ruby             # ruby
 RUN apt install -y sysstat          # sysstat
