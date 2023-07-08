@@ -1,11 +1,11 @@
-vbell off
-escape ^Z^Z
-defencoding UTF-8
-defscrollback 10240
-startup_message off
-hardstatus alwayslastline "%H | %w %= | %Y-%m-%d %0c"
 altscreen on
 cjkwidth off
+defencoding UTF-8
+defscrollback 10240
+escape ^Z^Z
+hardstatus alwayslastline "%H | %w %= | %Y-%m-%d %0c"
+startup_message off
+vbell off
 
 bind r eval 'command -c resize'
 bind -c resize ^]  command
