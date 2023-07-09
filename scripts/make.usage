@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# Makefile からルールと使い方を抽出する.
+#
+
+set -eu
+
+function main
+{
+    make.usage.main "$@"
+}
+
+function make.usage.main
+{
+    make.usage.cat_makefile "$@" \
+        | sed -nr 's/^([a-zA-Z0-9][a-zA-Z0-9_.-]*): *#? *(.*)$/\1\t\2/p' \
+        | column -s '	' -t
+}
+
+function make.usage.cat_makefile
+{
+    if [[ -p /dev/stdin ]]; then
+        cat
+    elif [[ $# != 0 ]]; then
+        cat "$@"
+    else
+        cat Makefile
+    fi
+}
+
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+else
+    # 単体テスト用に source で読み込まれた場合は main を呼び出さない.
+    :
+fi
+
