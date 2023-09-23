@@ -23,7 +23,7 @@ RUN apt install -y knot-dnsutils    # dig
 RUN apt install -y less             # less
 RUN apt install -y make             # make
 RUN apt install -y man              # man
-RUN apt install -y mlocate          # locate
+RUN apt install -y plocate          # locate
 RUN apt install -y moreutils        # https://joeyh.name/code/moreutils/
 RUN apt install -y net-tools        # netstat
 RUN apt install -y nkf              # nkf
