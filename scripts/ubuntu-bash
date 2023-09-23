@@ -20,12 +20,22 @@ readonly USAGE=`cat <<EOS | _strip_heredoc
         build and run the ubuntu-bash docker container.
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [-B]
+        $(basename "$0") OPTIONS
+        $(basename "$0") SUBCOMMAND
 
     OPTIONS
-        -B
-            Build only (not run a container), if -B option specified.
+        -h, --help
+            Print help message.
+
+    SUBCOMMANDS
+        help
+            Print help message.
+
+        build
+            Build docker image.
+
+        run
+            Run docker image.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -34,45 +44,43 @@ EOS`
 
 function main
 {
-    while getopts 'Bh' OPTION
+    for argument in "$@"
     do
-        case "${OPTION}" in
-            B)
-                BUILD_ONLY=true
+        case "${argument}" in
+            help | -h | --help)
+                subcommand=help
                 ;;
-            h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+            build)
+                subcommand=build
+                ;;
+            run)
+                subcommand=run
                 ;;
             *)
-                echo "${USAGE}"
+                echo "illegal option(s) -- $@" >&2
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
-    shift $((OPTIND - 1))
-
-    if [[ $# -gt 1 ]]; then
-        echo "illegal option(s) -- $@" >&2
-        exit ${EXIT_STATUS_INVALID_ARGUMENT}
-    fi
-
-    execute ${BUILD_ONLY:-false}
-
+    subcommand_${subcommand:-run}
     exit ${EXIT_STATUS_SUCCESS}
 }
 
-function execute
+function subcommand_help
 {
-    declare -r build_only="$1"
+    echo "${USAGE}"
+}
 
+function subcommand_build
+{
     export DOCKER_SCAN_SUGGEST=false
     docker build -t "${BASE_NAME}" - < "${DOCKERFILE_PATH}"
+}
 
-    if ! ${build_only}; then
-        docker run -it --rm "${BASE_NAME}"
-    fi
+function subcommand_run
+{
+    docker run -it --rm "${BASE_NAME}"
 }
 
 main "$@"

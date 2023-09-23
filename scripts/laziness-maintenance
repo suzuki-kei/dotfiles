@@ -35,7 +35,7 @@ echo "==== cabal"
 echo "==== ubuntu-bash"
 (
     if which ubuntu-bash > /dev/null; then
-        ubuntu-bash -B
+        ubuntu-bash build
     fi
 )
 
