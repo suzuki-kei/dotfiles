@@ -62,7 +62,7 @@ brew "gnu-prolog"       # http://www.gprolog.org/
 brew "go"               # https://go.dev/
 brew "node"             # https://nodejs.org/
 brew "php"              # https://www.php.net/
-brew "python@3.11"      # https://www.python.org/
+brew "python@3.12"      # https://www.python.org/
 brew "r"                # https://www.r-project.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
