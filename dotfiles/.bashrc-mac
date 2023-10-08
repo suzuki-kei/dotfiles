@@ -19,15 +19,15 @@ if which brew > /dev/null; then
 
     # brew install findutils
     export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
-    export MANPATH="${BREW_PREFIX}/opt/findutils/libexec/gnuman"
+    export MANPATH="${BREW_PREFIX}/opt/findutils/libexec/gnuman:$MANPATH"
 
     # brew install gnu-sed
     export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
-    export MANPATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnuman"
+    export MANPATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnuman:$MANPATH"
 
     # brew install gawk
     export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:$PATH"
-    export MANPATH="${BREW_PREFIX}/opt/gawk/libexec/gnuman"
+    export MANPATH="${BREW_PREFIX}/opt/gawk/libexec/gnuman:$MANPATH"
 
     # brew install grep
     export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
@@ -35,14 +35,9 @@ if which brew > /dev/null; then
 
     # brew install python@3.12
     export PATH="${BREW_PREFIX}/opt/python3/bin:$PATH"
-    export LDFLAGS="-L${BREW_PREFIX}/opt/python3/lib"
-    export PKG_CONFIG_PATH="${BREW_PREFIX}/opt/python3/lib/pkgconfig"
 
     # brew install ruby
     export PATH="${BREW_PREFIX}/opt/ruby/bin:$PATH"
-    export LDFLAGS="-L${BREW_PREFIX}/opt/ruby/lib"
-    export CPPFLAGS="-I${BREW_PREFIX}/opt/ruby/include"
-    export PKG_CONFIG_PATH="${BREW_PREFIX}/opt/ruby/lib/pkgconfig"
 
     # brew install util-linux
     export PATH="${BREW_PREFIX}/opt/util-linux/bin:$PATH"
