@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+# C 言語のソースファイルから関数プロトタイプを生成する.
+#
+
+set -eu
+
+grep -oP '^\w+ +\w+\([\w,* ]*\)$' "$@" | grep -vF 'int main(void)' | sed 's/$/;/'
+
