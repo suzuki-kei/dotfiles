@@ -24,6 +24,10 @@ readonly USAGE=`cat <<EOS | _strip_heredoc
         -h
             Show usage and exit.
 
+    ENVIRONMENT VARIABLES
+        G_CHROME_OPTIONS
+            Specify the arguments to open Chrome. (default: "--incognito")
+
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
 
@@ -105,7 +109,7 @@ function open_chrome
             ;;
     esac
 
-    local -r chrome_options="--args --incognito"
+    local -r chrome_options="--args ${G_CHROME_OPTIONS---incognito}"
     open -n -a "Google Chrome" ${chrome_options} "${url}"
 }
 
