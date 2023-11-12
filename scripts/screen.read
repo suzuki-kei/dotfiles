@@ -86,7 +86,7 @@ function main
 #
 function screen_read
 {
-    if [[ "${STY}" == '' ]]; then
+    if [[ "${STY:-}" == '' ]]; then
         echo 'Not in screen.' >&2
         exit ${EXIT_STATUS_NOT_IN_SCREEN}
     fi

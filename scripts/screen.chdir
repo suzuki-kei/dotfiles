@@ -105,15 +105,14 @@ function main
 #
 function screen_chdir
 {
-    if $(screen -ls | grep -F '(Attached)' > /dev/null); then
-        local -r target="${1:-$(pwd)}"
-        local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
-        screen -S "${sockname}" -X chdir "${target}"
-        ${VERBOSE:-false} && echo "change to ${target}"
-    else
+    if [[ "${STY:-}" == '' ]]; then
         echo "Not in screen." >&2
         exit ${EXIT_STATUS_NOT_IN_SCREEN}
     fi
+
+    local -r target="${1:-$(pwd)}"
+    screen -S "${STY}" -X chdir "${target}"
+    ${VERBOSE:-false} && echo "change to ${target}"
 }
 
 main "$@"
