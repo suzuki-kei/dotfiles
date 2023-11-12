@@ -1,0 +1,107 @@
+#!/bin/bash
+
+set -eu
+
+declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
+source "${SCRIPTS_DIR}/_internal.sh"
+
+readonly EXIT_STATUS_SUCCESS=0
+
+readonly EXIT_STATUS_NOT_IN_SCREEN=1
+
+readonly EXIT_STATUS_INVALID_ARGUMENT=255
+
+readonly USAGE=`cat <<EOS | _strip_heredoc
+    NAME
+        $(basename "$0") - Copy text to screen's paste buffer.
+
+    SYNOPSIS
+        $(basename "$0") -h
+        $(basename "$0") [FILE]
+
+    DESCRIPTION
+        Copy text to screen's paste buffer.
+        Read text from file if FILE is specified.
+        Read text from stdin if FILE is not specified.
+
+    OPTIONS
+        -h
+            Show usage and exit.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+#
+# Entry point.
+#
+#     1. parse command line arguments.
+#     2. define global variables.
+#     3. Performs the processing according to the arguments.
+#
+# Arguments:
+#     The command line arguments.
+#
+# Globals:
+#     Define VERBOSE.
+#
+function main
+{
+    while getopts 'hv' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_SUCCESS}
+                ;;
+            *)
+                echo "${USAGE}"
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+
+    screen_read "${1:-}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+#
+# Copy text to screen's paste buffer.
+#
+# Read text from file if FILE is specified.
+# Read text from stdin if FILE is not specified.
+#
+# Arguments:
+#     $1: A file path to read. read from stdin if not specified.
+#
+function screen_read
+{
+    if [[ "${STY}" == '' ]]; then
+        echo 'Not in screen.' >&2
+        exit ${EXIT_STATUS_NOT_IN_SCREEN}
+    fi
+
+    declare -r exchange_file_path='/tmp/screen-exchange'
+
+    if [[ -p /dev/stdin ]]; then
+        cat > "${exchange_file_path}"
+    else
+        cat "$1" > "${exchange_file_path}"
+    fi
+
+    screen -S "${STY}" -X readbuf "${exchange_file_path}"
+    rm "${exchange_file_path}"
+}
+
+main "$@"
+
