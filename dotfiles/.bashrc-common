@@ -67,7 +67,7 @@ function clear.history
 function date_with_defaults
 {
     if [ $# == 0 ]; then
-        date "+%Y-%m-%d %H:%M:%S %Z"
+        date '+%F %T %Z'
     else
         date "$@"
     fi
