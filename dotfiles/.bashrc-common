@@ -7,7 +7,12 @@
 export TZ='Asia/Tokyo'
 export PAGER=less
 export EDITOR=vi
-export PS1='$ '
+
+if [[ "$(whoami)" == 'root' ]]; then
+    export PS1='# '
+else
+    export PS1='$ '
+fi
 
 shopt -s extglob
 
