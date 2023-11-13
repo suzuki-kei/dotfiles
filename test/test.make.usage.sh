@@ -17,6 +17,8 @@ function make.usage.test
     make.usage.run_test rule_name_contains_special_char
     make.usage.run_test rule_name_end_with_special_char
 
+    make.usage.run_test rule_depends_on_other_rule
+
     make.usage.run_test comment_start_with_comment_char
     make.usage.run_test comment_contains_comment_char
     make.usage.run_test comment_end_with_comment_char
@@ -157,6 +159,23 @@ function make.usage.test.rule_name_end_with_special_char
 				a.  comment
 				a_  comment
 				a-  comment
+			EOS
+        )"
+}
+
+function make.usage.test.rule_depends_on_other_rule
+{
+    # ルールが他のルールに依存する場合
+    test \
+		"$(
+            make.usage.main <<-EOS
+				name: other # comment
+				name: other1 other2 # comment
+			EOS
+        )" = "$(
+            cat <<-EOS
+				name  comment
+				name  comment
 			EOS
         )"
 }
