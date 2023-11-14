@@ -4,7 +4,7 @@
 # このコマンドは柔軟さよりも簡便さを優先しているため, 細かい制御は提供しない.
 #
 
-set -eu
+set -eu -o pipefail
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
 declare -r SETUP_DIR="${ROOT_DIR}/setup"
