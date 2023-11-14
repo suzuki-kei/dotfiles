@@ -1,30 +1,108 @@
 #!/bin/bash
-#
-# Makefile からルールと使い方を抽出する.
-#
 
-set -eu
+set -eu -o pipefail
+
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal.sh"
+
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+
+declare -r USAGE=`cat <<EOS | _strip_heredoc
+    NAME
+        ${NAME} - extract usage from Makefile comments
+
+    SYNOPSIS
+        ${NAME} [OPTION...] [FILE...]
+
+    DESCRIPTION
+        Extract usage from Makefile comments.
+
+        Reads the input from pipe, if any.
+        Reads the input from FILE, if any.
+
+    OPTIONS
+        -h
+            Displays usage of this command.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+
+    EXAMPLE
+        Here is how to give input from pipe.
+
+            cat Makefile | ${NAME}
+
+        Here is how to give input from file.
+
+            ${NAME} Makefile
+
+        It's useful to define a rule named "help" in your Makefile like this.
+
+            help: # Display description of each rule.
+                ${NAME} \\$(MAKEFILE_LIST)
+
+            build: # Build a artifact.
+                ...
+
+            clean: # Remove all intermediate files.
+                ...
+EOS`
 
 function main
 {
-    make.usage.main "$@"
+    parse_options "$@"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    extract_usage_from_makefile "$@"
+    exit ${EXIT_STATUS_SUCCESS}
 }
 
-function make.usage.main
+function print_help
 {
-    make.usage.cat_makefile "$@" \
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    while getopts 'h' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                OPTION_HELP=true
+                ;;
+            *)
+                print_help
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    readonly OPTION_HELP=${OPTION_HELP:-false}
+}
+
+function extract_usage_from_makefile
+{
+    read_makefile "$@" \
         | sed -nr 's/^([a-zA-Z0-9][a-zA-Z0-9_.-]*):[^#]*#? *(.*)$/\1\t\2/p' \
         | column -s '	' -t
 }
 
-function make.usage.cat_makefile
+function read_makefile
 {
     if [[ -p /dev/stdin ]]; then
         cat
-    elif [[ $# != 0 ]]; then
+    fi
+
+    if [[ $# != 0 ]]; then
         cat "$@"
-    else
-        cat Makefile
     fi
 }
 
