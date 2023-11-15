@@ -7,7 +7,7 @@ declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
 source "${BASE_DIR}/_internal"
 
 declare -r DOCKER_IMAGE_NAME="$(basename "$0"):latest"
-declare -r DOCKERFILE_PATH="${BASE_DIR}/../dockerfiles/${NAME}/Dockerfile"
+declare -r DOCKERFILE_DIR="${BASE_DIR}/../dockerfiles/${NAME}"
 
 declare -r EXIT_STATUS_SUCCESS=0
 declare -r EXIT_STATUS_INVALID_ARGUMENT=1
@@ -97,8 +97,25 @@ function parse_options
 
 function subcommand_build
 {
+    declare -r work_dir="${DOCKERFILE_DIR}/files"
+    declare -r dotfiles_target_dir="${work_dir}/dotfiles"
+    declare -r dotfiles_source_dir="${BASE_DIR}/../dotfiles"
+
+    mkdir -p "${dotfiles_target_dir}"
+
+    cp -p \
+        "${dotfiles_source_dir}/.bash_profile" \
+        "${dotfiles_source_dir}/.bashrc" \
+        "${dotfiles_source_dir}/.bashrc-common" \
+        "${dotfiles_source_dir}/.bashrc-linux" \
+        "${dotfiles_source_dir}/.bashrc-mac" \
+        "${dotfiles_source_dir}/.vimrc" \
+        "${dotfiles_target_dir}"
+
     export DOCKER_SCAN_SUGGEST=false
-    docker build -t "${DOCKER_IMAGE_NAME}" - < "${DOCKERFILE_PATH}"
+    docker build -t "${DOCKER_IMAGE_NAME}" "${DOCKERFILE_DIR}"
+
+    rm -rf "${work_dir}"
 }
 
 function subcommand_help

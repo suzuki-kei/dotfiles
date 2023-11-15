@@ -1,8 +1,15 @@
 FROM ubuntu:23.10
 
-ENTRYPOINT bash
-
 ENV DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /root
+
+COPY files/dotfiles/.bash_profile /root/
+COPY files/dotfiles/.bashrc /root/
+COPY files/dotfiles/.bashrc-common /root/
+COPY files/dotfiles/.bashrc-linux /root/
+COPY files/dotfiles/.bashrc-mac /root/
+COPY files/dotfiles/.vimrc /root/
 
 RUN yes | unminimize
 
