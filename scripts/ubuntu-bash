@@ -19,9 +19,6 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
     SYNOPSIS
         ${NAME} [OPTION...] [SUBCOMMAND]
 
-        ${NAME} OPTIONS
-        ${NAME} SUBCOMMAND
-
     DESCRIPTION
         Operates the ${DOCKER_IMAGE_NAME} docker image.
 
