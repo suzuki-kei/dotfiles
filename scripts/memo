@@ -1,134 +1,95 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
-
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - open memo file.
+        ${NAME} - opens a memo file
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [-d MEMO_DIR] [-x] -l
-        $(basename "$0") [-d MEMO_DIR] [-x] MEMO_TITLE
+        ${NAME} [OPTION...] [MEMO_TITLE]
 
-    PARAMETERS
-        MEMO_TITLE
-            Specify the memo title. If ommit, 'default' is used.
+    DESCRIPTION
+        Opens a memo file.
+
+        A memo file is stored to MEMO_DIR separated by MEMO_TITLE and date.
+        If MEMO_TITLE is ommit, 'default' is used.
 
     OPTIONS
         -d MEMO_DIR
-            Specify the base directory to store memo files.
+            Specify the base directory to store memo files. (default is \\$HOME)
+
+        -h
+            Print the help message.
 
         -l
             List the existing memo titles.
-
-        -h
-            Display the help message.
-
-        -x
-            Display the trace message.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
-function trace
-{
-    if ${TRACE}; then
-        echo "$@"
-    fi
-}
-
 function main
 {
-    setup_settings "$@"
-    ${EXECUTION_FUNCTION}
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    if ${OPTION_LIST_TITLES}; then
+        list_titles
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    open_memo
     exit ${EXIT_STATUS_SUCCESS}
 }
 
-function show_usage
+function print_usage
 {
     echo "${USAGE}"
 }
 
-function setup_settings
-{
-    parse_command_line_options "$@"
-
-    # 処理のトレースログを出力する場合は true.
-    TRACE=${TRACE:-false}
-    trace "[var] TRACE=${TRACE}"
-
-    # メモを保存するディレクトリ.
-    MEMO_DIR="${MEMO_DIR:-${HOME}/.memo}"
-    trace "[var] MEMO_DIR=${MEMO_DIR}"
-
-    # メモのタイトル.
-    MEMO_TITLE="${MEMO_TITLE:-default}"
-    trace "[var] MEMO_TITLE=${MEMO_TITLE}"
-
-    # 使い方を表示して終了する場合は true.
-    SHOW_USAGE=${SHOW_USAGE:-false}
-    trace "[var] SHOW_USAGE=${SHOW_USAGE}"
-
-    # メモのタイトル一覧を表示して終了する場合は true.
-    LIST_TITLES=${LIST_TITLES:-false}
-    trace "[var] LIST_TITLES=${LIST_TITLES}"
-
-    # 実行する関数.
-    EXECUTION_FUNCTION=open_memo
-    if ${LIST_TITLES}; then
-        EXECUTION_FUNCTION=list_titles
-    fi
-    if ${SHOW_USAGE}; then
-        EXECUTION_FUNCTION=show_usage
-    fi
-    trace "[var] EXECUTION_FUNCTION=${EXECUTION_FUNCTION}"
-
-    # メモの編集に使用するエディタ.
-    EDITOR=${EDITOR:-vi}
-    trace "[var] EDITOR=${EDITOR}"
-}
-
-function parse_command_line_options
+function parse_options
 {
     while getopts 'd:hlx' OPTION
     do
         case "${OPTION}" in
             d)
-                MEMO_DIR="${OPTARG}"
+                OPTION_MEMO_DIR="${OPTARG}"
                 ;;
             l)
-                LIST_TITLES=true
+                OPTION_LIST_TITLES=true
                 ;;
             h)
-                SHOW_USAGE=true
-                ;;
-            x)
-                TRACE=true
+                OPTION_HELP=true
                 ;;
             *)
-                show_usage
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
-
-    if [[ $# -ge 1 ]]; then
-        MEMO_TITLE="$1"
-        shift 1
-    fi
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_MEMO_DIR="${OPTION_MEMO_DIR:-${HOME}/.memo}"
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_LIST_TITLES=${OPTION_LIST_TITLES:-false}
+    declare -gr OPTION_TRACE=${OPTION_TRACE:-false}
+    declare -gr OPTION_MEMO_TITLE="${1:-default}"
+    declare -gr OPTION_EDITOR="${EDITOR:-vi}"
 
     if [[ $# -ge 1 ]]; then
         echo "illegal option(s) -- $@" >&2
@@ -138,35 +99,34 @@ function parse_command_line_options
 
 function prepare_memo_dir
 {
-    if [[ ! -d "${MEMO_DIR}" ]]; then
-        trace "[create] ${MEMO_DIR}"
-        mkdir -p "${MEMO_DIR}"
+    if [[ ! -d "${OPTION_MEMO_DIR}" ]]; then
+        mkdir -p "${OPTION_MEMO_DIR}"
     fi
 }
 
 function list_titles
 {
     prepare_memo_dir
-    ls -1 "${MEMO_DIR}" | sed -E 's/^memo\.|\.[0-9]{4}-[0-9]{2}-[0-9]{2}.txt$//g' | sort | uniq
+
+    ls -1 "${OPTION_MEMO_DIR}" | sed -E 's/^memo\.|\.[0-9]{4}-[0-9]{2}-[0-9]{2}.txt$//g' | sort | uniq
 }
 
 function open_memo
 {
     prepare_memo_dir
 
-    local -r current_file_path="${MEMO_DIR}/memo.${MEMO_TITLE}.$(date '+%Y-%m-%d').txt"
-    trace "[var] current_file_path=${current_file_path}"
-
-    local -r previous_file_path="$(find "${MEMO_DIR}" -type f -name "memo.${MEMO_TITLE}.*.txt" | sort | tail -1)"
-    trace "[var] previous_file_path=${previous_file_path}"
+    declare -r current_file_path="${OPTION_MEMO_DIR}/memo.${OPTION_MEMO_TITLE}.$(date '+%Y-%m-%d').txt"
+    declare -r previous_file_path="$(find "${OPTION_MEMO_DIR}" -type f -name "memo.${OPTION_MEMO_TITLE}.*.txt" | sort | tail -1)"
 
     if [ ! -f "${current_file_path}" -a -f "${previous_file_path}" ]; then
         cp -pi "${previous_file_path}" "${current_file_path}"
         chmod 444 "${previous_file_path}"
     fi
 
-    "${EDITOR:-vi}" "${current_file_path}"
+    "${OPTION_EDITOR}" "${current_file_path}"
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

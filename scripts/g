@@ -1,28 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - Open Chrome with URL or search keywords.
+        ${NAME} - opens google chrome.
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [TARGET]
+        ${NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
-        $(basename "$0") opens Chrome with URL or search keywords.
-        TARGET is URL or search keywords.
+        Opens Google Chrome with TARGET.
+
+        Opens URL if TARGET is URL.
+        Opens file if TARGET is file path.
+        Otherwise search TARGET as keyword.
 
     OPTIONS
         -h
-            Show usage and exit.
+            Print the help message.
 
     ENVIRONMENT VARIABLES
         G_CHROME_OPTIONS
@@ -30,88 +33,97 @@ readonly USAGE=`cat <<EOS | _strip_heredoc
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 
     EXAMPLE
         Specify the search keywords to display Google search results in new Chrome window.
 
-            $ $(basename "$0") Linux Kernel
+            ${NAME} Linux Kernel
 
         Specify the URL to open new Chrome window.
 
-            $ $(basename "$0") https://example.com
+            ${NAME} 'https://example.com'
 
         You can specify URL or search keywords by pipe.
 
-            $ echo 'Linux Kernel' | $(basename "$0")
-            $ echo 'https://example.com' | $(basename "$0")
+            echo 'Linux Kernel' | ${NAME}
+            echo 'https://example.com' | ${NAME}
 EOS`
 
-#
-# Entry point.
-#
-#     1. parse command line arguments.
-#     2. define global variables.
-#     3. Performs the processing according to the arguments.
-#
-# Arguments:
-#     The command line arguments.
-#
 function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    open_chrome "$@"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
 {
     while getopts 'h' OPTION
     do
         case "${OPTION}" in
             h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
             *)
-                echo "${USAGE}"
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
-
-    open_chrome "$@"
-    exit ${EXIT_STATUS_SUCCESS}
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
 }
 
-#
-# Open Chrome with URL or search keywords.
-#
-# Arguments:
-#     URL or search keywords.
-#
 function open_chrome
 {
+    eval "$(make_open_command "$@")"
+}
+
+function make_open_command
+{
     if [[ -z "$@" && -p /dev/stdin ]]; then
-        local -r target="$(cat -)"
+        declare -r target="$(cat -)"
     else
-        local -r target="$@"
+        declare -r target="$@"
     fi
 
     case "${target}" in
         "")
-            local -r url="https://google.com"
+            declare -r url="https://google.com"
             ;;
         http://* | https://*)
-            local -r url="${target}"
+            declare -r url="${target}"
             ;;
         *)
             if [[ -f "${target}" ]]; then
-                local -r url="$(cd "$(dirname "${target}")" && echo "$(pwd)/$(basename "${target}")")"
+                declare -r url="$(cd "$(dirname "${target}")" && echo "$(pwd)/$(basename "${target}")")"
             else
-                local -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
-                local -r url="https://www.google.com/search?q=${keyword}"
+                declare -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
+                declare -r url="https://www.google.com/search?q=${keyword}"
             fi
             ;;
     esac
 
-    local -r chrome_options="--args ${G_CHROME_OPTIONS---incognito}"
-    open -n -a "Google Chrome" ${chrome_options} "${url}"
+    declare -r chrome_options="--args ${G_CHROME_OPTIONS---incognito}"
+    echo "open -n -a 'Google Chrome' ${chrome_options} '${url}'"
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # 各種ソフトウェアのバージョンアップやクリーンアップを実行する.
 # このコマンドは柔軟さよりも簡便さを優先しているため, 細かい制御は提供しない.
@@ -37,5 +37,5 @@ echo "==== ubuntu-bash"
     if which ubuntu-bash > /dev/null; then
         ubuntu-bash build
     fi
-)
+) 2>&1 | sed -r 's/^/    /'
 

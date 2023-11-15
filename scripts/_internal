@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # 内部的に使用する関数を定義します.
 #
@@ -16,7 +16,7 @@
 #     処理に成功した場合は 0 を返します.
 #     処理に失敗した場合の戻り値は未定義です.
 #
-function _strip_heredoc
+function strip_heredoc
 {
     local text="$(cat)"
     local char
@@ -24,7 +24,7 @@ function _strip_heredoc
 
     for char in ' ' '\t'
     do
-        leading_chars="$(echo "$text" | grep -oP "^($char+)" | sort | head -1)"
+        leading_chars="$(echo "$text" | grep -oP "^($char+)" | sort | head -1 || true)"
         text="$(echo "$text" | sed -r "s/^$leading_chars//")"
     done
 

@@ -1,33 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+declare -r EXIT_STATUS_NOT_IN_SCREEN=2
 
-readonly EXIT_STATUS_NOT_IN_SCREEN=1
-
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
-
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - Copy text to screen's paste buffer.
+        ${NAME} - copy text to attached screen's paste buffer
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [FILE]
+        ${NAME} [OPTION...] [FILE]
 
     DESCRIPTION
-        Copy text to screen's paste buffer.
+        Copy text to attached screen's paste buffer.
+
         Read text from file if FILE is specified.
         Read text from stdin if FILE is not specified.
 
     OPTIONS
         -h
-            Show usage and exit.
+            Print the help message.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -35,56 +33,52 @@ readonly USAGE=`cat <<EOS | _strip_heredoc
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
-#
-# Entry point.
-#
-#     1. parse command line arguments.
-#     2. define global variables.
-#     3. Performs the processing according to the arguments.
-#
-# Arguments:
-#     The command line arguments.
-#
-# Globals:
-#     Define VERBOSE.
-#
 function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    screen_readbuf "${1:-}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
 {
     while getopts 'hv' OPTION
     do
         case "${OPTION}" in
             h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
             *)
-                echo "${USAGE}"
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
-
-    screen_read "${1:-}"
-    exit ${EXIT_STATUS_SUCCESS}
 }
 
-#
-# Copy text to screen's paste buffer.
-#
-# Read text from file if FILE is specified.
-# Read text from stdin if FILE is not specified.
-#
-# Arguments:
-#     $1: A file path to read. read from stdin if not specified.
-#
-function screen_read
+function screen_readbuf
 {
     if [[ "${STY:-}" == '' ]]; then
         echo 'Not in screen.' >&2
@@ -103,5 +97,7 @@ function screen_read
     rm "${exchange_file_path}"
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

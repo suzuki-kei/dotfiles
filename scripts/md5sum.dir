@@ -2,82 +2,83 @@
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal.sh"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
-
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - Show hash code of directory tree.
+        ${NAME} - print md5 of directory
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [-v] [PATH]
+        ${NAME} [OPTION...] [PATH]
 
     DESCRIPTION
-        $(basename "$0") - Show hash code of directory tree.
+        Print md5 of directory.
+
         PATH is the root directory to scan (default is pwd).
 
     OPTIONS
         -h
-            Show usage and exit.
+            Print the help message.
 
         -v
-            Show message verbosely.
+            Print message verbosely.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
-#
-# Entry point.
-#
-#     1. parse command line arguments.
-#     2. define global variables.
-#     3. Performs the processing according to the arguments.
-#
-# Arguments:
-#     The command line arguments.
-#
-# Globals:
-#     Define VERBOSE.
-#
 function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    generate_hash_value "${1:-.}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
 {
     while getopts 'hv' OPTION
     do
         case "${OPTION}" in
             h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
             v)
-                VERBOSE=true
+                OPTION_VERBOSE=true
                 ;;
             *)
-                echo "${USAGE}"
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
-
-    : ${VERBOSE:=false}
-    readonly VERBOSE
-
-    generate_hash_value "${1:-.}"
-    exit ${EXIT_STATUS_SUCCESS}
 }
 
 #
@@ -87,19 +88,19 @@ function main
 #     3727f5641d851ac05d2c90cfcbc2588b example
 #
 # Globals:
-#     VERBOSE: if true print message verbosely. default false.
+#     OPTION_VERBOSE: if true print message verbosely. default false.
 #
 # Arguments:
 #     $1: Target directory path. default is pwd.
 #
 function generate_hash_value
 {
-    local path="${1:-.}"
-    local hash=$(md5sum <(generate_hash_source "${path}") | cut -d' ' -f1)
+    declare path="${1:-.}"
+    declare hash=$(md5sum <(generate_hash_source "${path}") | cut -d' ' -f1)
 
     echo "${hash} ${path}"
 
-    if ${VERBOSE:-false}; then
+    if ${OPTION_VERBOSE}; then
         generate_hash_source "${path}"
     fi
 }
@@ -122,21 +123,23 @@ function generate_hash_value
 function generate_hash_source
 {
     (
-        local root_dir="${1:-.}"
+        declare -r root_dir="${1:-.}"
         cd "${root_dir}"
 
         while read -r -d $'\0' path
         do
             if [[ -d "${path}" ]]; then
-                local hash=$(cat <(echo "${path}") | md5sum | cut -d' ' -f1)
+                declare hash=$(cat <(echo "${path}") | md5sum | cut -d' ' -f1)
             else
-                local hash=$(cat "${path}" | md5sum | cut -d' ' -f1)
+                declare hash=$(cat "${path}" | md5sum | cut -d' ' -f1)
             fi
-            local permission=$(stat -c '%A' "${path}")
+            declare permission=$(stat -c '%A' "${path}")
             echo "${hash} ${permission} ${path}"
         done < <(find . -print0 | sort -dz)
     )
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

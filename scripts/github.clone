@@ -1,79 +1,107 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly DEFAULT_WORKSPACE_DIR=~/"workspace/github.com"
+declare -r DEFAULT_WORKSPACE_DIR=${GITHUB_CLONE_WORKSPACE_DIR:-~/workspace/github.com}
 
-readonly EXIT_STATUS_SUCCESS=0
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - clone git repository from github.com into your workspace directory.
-
-    DESCRIPTION
-        clone git repository from github.com into your workspace directory.
+        ${NAME} - clone git repository from GitHub
 
     SYNOPSIS
-        $(basename "$0") URL
+        ${NAME} URL
 
-    PARAMETERS
+    DESCRIPTION
+        Clone git repository from GitHub.
+
         URL
             The git repository url to clone.
 
+    ENVIRONMENT VARIABLES
+        GITHUB_CLONE_WORKSPACE_DIR
+            The workspace directory if -d option is omitted. (default "~/workspace/github.com")
+
     EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
-        Otherwise, follow git command.
 EOS`
 
 function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    git_clone "${OPTION_WORKSPACE_DIR}" "$1"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
 {
     while getopts 'd:h' OPTION
     do
         case "${OPTION}" in
             d)
-                WORKSPACE_DIR="${OPTARG}"
+                OPTION_WORKSPACE_DIR="${OPTARG}"
                 ;;
             h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
             *)
-                echo "${USAGE}"
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_WORKSPACE_DIR="${OPTION_WORKSPACE_DIR:-${DEFAULT_WORKSPACE_DIR}}"
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
-
-    git_clone "${WORKSPACE_DIR:-${DEFAULT_WORKSPACE_DIR}}" "$1"
-    exit ${EXIT_STATUS_SUCCESS}
 }
 
 function git_clone
 {
-    local -r workspace_dir="$1"
-    local -r repository_url="$2"
+    eval "$(make_git_clone_command "$1" "$2")"
+}
 
-    if [[ ${repository_url} =~ ^https://github.com/(.+)/(.+).git$ ]]; then
-        git clone "${BASH_REMATCH[0]}" "${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
-    elif [[ ${repository_url} =~ ^git@github.com:(.+)/(.+).git$ ]]; then
-        git clone "${BASH_REMATCH[0]}" "${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+function make_git_clone_command
+{
+    declare -r workspace_dir="$1"
+    declare -r repository_url="$2"
+
+    if [[ ${repository_url} =~ ^git@github.com:(.+)/(.+).git$ ]]; then
+        echo "git clone '${BASH_REMATCH[0]}' '${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}'"
+    elif [[ ${repository_url} =~ ^https://github.com/(.+)/(.+).git$ ]]; then
+        echo "git clone '${BASH_REMATCH[0]}' '${workspace_dir}/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}'"
     else
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

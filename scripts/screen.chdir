@@ -1,108 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+declare -r EXIT_STATUS_NOT_IN_SCREEN=2
 
-readonly EXIT_STATUS_NOT_IN_SCREEN=1
-
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
-
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - Change the current directory of screen.
+        ${NAME} - changes the current directory of screen.
 
     SYNOPSIS
-        $(basename "$0") -h
-        $(basename "$0") [-v] [TARGET]
+        ${NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
-        $(basename "$0") changes the current directory of attached screen.
+        Changes the current directory of attached screen session.
         TARGET is new current directory (default is pwd).
 
     OPTIONS
         -h
-            Show usage and exit.
+            Print the help message.
 
         -v
-            Show message verbosely.
+            Print message verbosely.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
-        ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+        ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
 
     EXAMPLE
         Change screen's current directory to bash's current directory.
         Maybe this form is most used.
 
-            $ $(basename "$0")
+            ${NAME}
 
         You can specify new current directory path.
         Maybe this form is rarely used.
 
-            $ $(basename "$0") /tmp
+            ${NAME} /tmp
 EOS`
 
-#
-# Entry point.
-#
-#     1. parse command line arguments.
-#     2. define global variables.
-#     3. Performs the processing according to the arguments.
-#
-# Arguments:
-#     The command line arguments.
-#
-# Globals:
-#     Define VERBOSE.
-#
 function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    screen_chdir "${1:-$(pwd)}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
 {
     while getopts 'hv' OPTION
     do
         case "${OPTION}" in
             h)
-                echo "${USAGE}"
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
             v)
-                VERBOSE=true
+                OPTION_VERBOSE=true
                 ;;
             *)
-                echo "${USAGE}"
+                print_help
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
                 ;;
         esac
     done
 
     shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     fi
-
-    : ${VERBOSE:=false}
-    readonly VERBOSE
-
-    screen_chdir "${1:-$(pwd)}"
-    exit ${EXIT_STATUS_SUCCESS}
 }
 
-#
-# Change the current directory of screen.
-#
-# Globals:
-#     VERBOSE: if true print message verbosely. default false.
-#
-# Arguments:
-#     $1: New current directory path. default is pwd.
-#
 function screen_chdir
 {
     if [[ "${STY:-}" == '' ]]; then
@@ -110,10 +100,15 @@ function screen_chdir
         exit ${EXIT_STATUS_NOT_IN_SCREEN}
     fi
 
-    local -r target="${1:-$(pwd)}"
+    declare -r target="$1"
     screen -S "${STY}" -X chdir "${target}"
-    ${VERBOSE:-false} && echo "change to ${target}"
+
+    if ${OPTION_VERBOSE:-false}; then
+        echo "change to ${target}"
+    fi
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 

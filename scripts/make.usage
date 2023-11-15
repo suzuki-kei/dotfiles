@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
 declare -r NAME="$(basename "${BASH_SOURCE}")"
 declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
-source "${BASE_DIR}/_internal.sh"
+source "${BASE_DIR}/_internal"
 
 declare -r EXIT_STATUS_SUCCESS=0
 declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-declare -r USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
         ${NAME} - extract usage from Makefile comments
 
@@ -24,7 +24,7 @@ declare -r USAGE=`cat <<EOS | _strip_heredoc
 
     OPTIONS
         -h
-            Displays usage of this command.
+            Print the help message.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -41,7 +41,7 @@ declare -r USAGE=`cat <<EOS | _strip_heredoc
 
         It's useful to define a rule named "help" in your Makefile like this.
 
-            help: # Display description of each rule.
+            help: # Print description of each rule.
                 ${NAME} \\$(MAKEFILE_LIST)
 
             build: # Build a artifact.
@@ -54,6 +54,7 @@ EOS`
 function main
 {
     parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
 
     if ${OPTION_HELP}; then
         print_help
@@ -85,7 +86,8 @@ function parse_options
     done
 
     shift $((OPTIND - 1))
-    readonly OPTION_HELP=${OPTION_HELP:-false}
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
 }
 
 function extract_usage_from_makefile
@@ -108,8 +110,5 @@ function read_makefile
 
 if [[ "$0" == "${BASH_SOURCE}" ]]; then
     main "$@"
-else
-    # 単体テスト用に source で読み込まれた場合は main を呼び出さない.
-    :
 fi
 

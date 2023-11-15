@@ -7,5 +7,5 @@ help: # 各ルールの説明を表示する.
 
 .PHONY: test
 test: # 単体テストを実行する.
-	@bash test/test.*.sh
+	@find ./test -type f -name 'test.*.sh' | xargs -r -n 1 bash
 

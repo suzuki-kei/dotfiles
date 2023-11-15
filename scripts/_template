@@ -11,43 +11,26 @@ declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
 declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - selects elements at random.
+        ${NAME} - print hello message
 
     SYNOPSIS
-        ${NAME} [OPTION...] [VALUE...]
+        ${NAME} [OPTION...] [NAME]
 
     DESCRIPTION
-        Selects elements at random.
+        Print hello message.
+
+        NAME is ...
 
     OPTIONS
         -h
             Print the help message.
 
-        -n N
-            Number of elements to select. (default is 1)
+        -v
+            Print message verbosely.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
-
-    EXAMPLE
-        $ sample one two three four five
-        three
-
-        $ sample -n 2 one two three four five
-        three
-        five
-
-        $ sample '1 one' '2 two' '3 three' '4 four' '5 five'
-        4 four
-
-        $ seq 10 | sample
-        6
-
-        $ seq 10 | sample -n 3
-        8
-        7
-        1
 EOS`
 
 function main
@@ -60,7 +43,17 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    select_elements_at_random "$@"
+    if ${OPTION_VERBOSE}; then
+        echo "\$# = $#"
+        for ((i = 1; i <= $#; i++)); do
+            echo "\$${i} = ${!i}"
+        done
+
+        echo "\$OPTION_HELP=${OPTION_HELP}"
+        echo "\$OPTION_VERBOSE=${OPTION_VERBOSE}"
+    fi
+
+    print_hello "$@"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -71,15 +64,14 @@ function print_help
 
 function parse_options
 {
-    while getopts 'hn:d:' OPTION
+    while getopts 'hv' OPTION
     do
         case "${OPTION}" in
             h)
-                print_help
-                exit ${EXIT_STATUS_SUCCESS}
+                OPTION_HELP=true
                 ;;
-            n)
-                OPTION_N=${OPTARG}
+            v)
+                OPTION_VERBOSE=true
                 ;;
             *)
                 print_help
@@ -91,16 +83,17 @@ function parse_options
     shift $((OPTIND - 1))
     declare -agr OPTION_ARGS=("$@")
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
-    declare -gr OPTION_N=${OPTION_N:-1}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
+
+#    if [[ $# -gt 1 ]]; then
+#        echo "illegal option(s) -- $@" >&2
+#        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+#    fi
 }
 
-function select_elements_at_random
+function print_hello
 {
-    if [[ -z "$@" && -p /dev/stdin ]]; then
-        cat - | sort -R | head -${OPTION_N}
-    else
-        echo "$(IFS=$'\n'; echo "$*")" | sort -R | head -${OPTION_N}
-    fi
+    echo 'hello'
 }
 
 if [[ "$0" == "${BASH_SOURCE}" ]]; then

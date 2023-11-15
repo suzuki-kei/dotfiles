@@ -1,61 +1,96 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-readonly EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_SUCCESS=0
 
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - edit the value in mid-flow on command pipeline.
-
-    DESCRIPTION
-        The $(basename "$0") works as follows:
-
-            1. Creates temporary file.
-            2. Concatenates content of STDIN to temporary file, if STDIN is
-               pipe.
-            3. Concatenates content of files to temporary file, if files is
-               specified by command line argument,
-            4. Open temporary file by vi.
-            5. Output content of temporary file to STDOUT.
+        ${NAME} - edit the value in mid-flow on command pipeline
 
     SYNOPSIS
-        <command-1> | $(basename "$0") | <command-2> | ...
-        $(basename "$0") [FILE]... | <command-1> | <command-2> | ...
-        <command-1> | $(basename "$0") [FILE]... | <command-2> | ...
+        <command-1> | ${NAME} | <command-2> | ...
+        ${NAME} [FILE]... | <command-1> | <command-2> | ...
+        <command-1> | ${NAME} [FILE]... | <command-2> | ...
 
-    PARAMETERS
-        FILE
-            A file to input.
+    DESCRIPTION
+        Edit the value in mid-flow on command pipeline.
 
-    EXAMPLES
-        cat access.log | $(basename "$0") | wc -l
+        ${NAME} works as follows:
+            1. Creates a temporary file.
+            2. If /dev/stdin is pipe, concatenates content to the temporary file.
+            3. If FILE is specified, concatenates content to the temporary file.
+            4. Opens the temporary file by \\$EDITOR. (default is vi)
+            5. Outputs content of the temporary file to STDOUT.
+
+    EXAMPLE
+        seq 10 | ${NAME} | wc -l
 
     EXIT STATUS
-        Always returns ${EXIT_STATUS_SUCCESS}.
+        ${EXIT_STATUS_SUCCESS} if successfly.
 EOS`
 
-if [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
-    echo "${USAGE}"
+function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    tap "$@"
     exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    while getopts 'h' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                OPTION_HELP=true
+                ;;
+            *)
+                print_help
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+}
+
+function tap
+{
+    declare -r TEMP_FILE=$(mktemp -t ${NAME}.XXXXXXXXXXXXXXXX)
+    trap "rm -f '${TEMP_FILE}'" ERR EXIT
+
+    if [[ -p /dev/stdin ]]; then
+        cat >> "${TEMP_FILE}"
+    fi
+
+    if [[ $# -gt 0 ]]; then
+        cat "$@" >> "${TEMP_FILE}"
+    fi
+
+    vi -n "${TEMP_FILE}" < /dev/tty > /dev/tty
+    cat "${TEMP_FILE}"
+}
+
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
 fi
-
-TEMP_FILE=$(mktemp -t $(basename $0).XXXXXXXXXXXXXXXX)
-trap "rm '${TEMP_FILE}'" ERR EXIT
-
-if [[ -p /dev/stdin ]]; then
-    cat >> "${TEMP_FILE}"
-fi
-
-if [[ $# -gt 0 ]]; then
-    cat "$@" >> "${TEMP_FILE}"
-fi
-
-vi -n "${TEMP_FILE}" < /dev/tty > /dev/tty
-cat "${TEMP_FILE}"
-exit ${EXIT_STATUS_SUCCESS}
 

@@ -1,41 +1,45 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-declare -r SCRIPTS_DIR="${ROOT_DIR}/scripts"
-source "${SCRIPTS_DIR}/_internal.sh"
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
 
-declare -r BASE_NAME="$(basename "$0")"
-declare -r DOCKERFILE_PATH="$(cd "$(dirname "$0")/../dockerfiles/${BASE_NAME}" && pwd)/Dockerfile"
+declare -r DOCKER_IMAGE_NAME="$(basename "$0")"
+declare -r DOCKERFILE_PATH="${BASE_DIR}/../dockerfiles/${NAME}/Dockerfile"
 
-readonly EXIT_STATUS_SUCCESS=0
-readonly EXIT_STATUS_INVALID_ARGUMENT=255
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
 
-readonly USAGE=`cat <<EOS | _strip_heredoc
+declare -r USAGE=`cat <<EOS | strip_heredoc
     NAME
-        $(basename "$0") - build and run the ubuntu-bash docker container.
-
-    DESCRIPTION
-        build and run the ubuntu-bash docker container.
+        ${NAME} - operates ${NAME} docker image
 
     SYNOPSIS
-        $(basename "$0") OPTIONS
-        $(basename "$0") SUBCOMMAND
+        ${NAME} [OPTION...] [SUBCOMMAND]
+
+        ${NAME} OPTIONS
+        ${NAME} SUBCOMMAND
+
+    DESCRIPTION
+        Operates the ${DOCKER_IMAGE_NAME} docker image.
+
+        see SUBCOMMANDS section for details.
 
     OPTIONS
         -h, --help
-            Print help message.
+            Print the help message.
 
     SUBCOMMANDS
         help
-            Print help message.
+            Print the help message.
 
         build
             Build docker image.
 
         run
-            Run docker image.
+            Run docker container.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -44,17 +48,36 @@ EOS`
 
 function main
 {
-    for argument in "$@"
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    subcommand_${OPTION_SUBCOMMAND}
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    for option in "$@"
     do
-        case "${argument}" in
+        case "${option}" in
             help | -h | --help)
-                subcommand=help
+                OPTION_SUBCOMMAND=help
                 ;;
             build)
-                subcommand=build
+                OPTION_SUBCOMMAND=build
                 ;;
             run)
-                subcommand=run
+                OPTION_SUBCOMMAND=run
                 ;;
             *)
                 echo "illegal option(s) -- $@" >&2
@@ -63,25 +86,29 @@ function main
         esac
     done
 
-    subcommand_${subcommand:-run}
-    exit ${EXIT_STATUS_SUCCESS}
+    shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_SUBCOMMAND=${OPTION_SUBCOMMAND:-run}
 }
 
 function subcommand_help
 {
-    echo "${USAGE}"
+    print_help
 }
 
 function subcommand_build
 {
     export DOCKER_SCAN_SUGGEST=false
-    docker build -t "${BASE_NAME}" - < "${DOCKERFILE_PATH}"
+    docker build -t "${DOCKER_IMAGE_NAME}" - < "${DOCKERFILE_PATH}"
 }
 
 function subcommand_run
 {
-    docker run -it --rm "${BASE_NAME}"
+    docker run -it --rm "${DOCKER_IMAGE_NAME}"
 }
 
-main "$@"
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
 
