@@ -115,7 +115,7 @@ function subcommand_rmi
 
 function subcommand_run
 {
-    docker run -it --rm "${DOCKER_IMAGE_NAME}"
+    docker run -it --rm --volume "$(pwd):/root/workspace:ro" "${DOCKER_IMAGE_NAME}" || true
 }
 
 if [[ "$0" == "${BASH_SOURCE}" ]]; then
