@@ -6,7 +6,7 @@ declare -r NAME="$(basename "${BASH_SOURCE}")"
 declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
 source "${BASE_DIR}/_internal"
 
-declare -r DOCKER_IMAGE_NAME="$(basename "$0")"
+declare -r DOCKER_IMAGE_NAME="$(basename "$0"):latest"
 declare -r DOCKERFILE_PATH="${BASE_DIR}/../dockerfiles/${NAME}/Dockerfile"
 
 declare -r EXIT_STATUS_SUCCESS=0
@@ -34,6 +34,9 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
 
         help
             Print the help message.
+
+        rmi
+            Remove docker image.
 
         run
             Run docker container.
@@ -73,6 +76,9 @@ function parse_options
             help | -h | --help)
                 OPTION_SUBCOMMAND=help
                 ;;
+            rmi)
+                OPTION_SUBCOMMAND=rmi
+                ;;
             run)
                 OPTION_SUBCOMMAND=run
                 ;;
@@ -98,6 +104,13 @@ function subcommand_build
 function subcommand_help
 {
     print_help
+}
+
+function subcommand_rmi
+{
+    if docker images --format '{{.Repository}}:{{.Tag}}' | grep -E "^${DOCKER_IMAGE_NAME}\$"; then
+        docker rmi "${DOCKER_IMAGE_NAME}"
+    fi
 }
 
 function subcommand_run
