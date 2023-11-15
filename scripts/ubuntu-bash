@@ -32,11 +32,11 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
             Print the help message.
 
     SUBCOMMANDS
-        help
-            Print the help message.
-
         build
             Build docker image.
+
+        help
+            Print the help message.
 
         run
             Run docker container.
@@ -70,11 +70,11 @@ function parse_options
     for option in "$@"
     do
         case "${option}" in
-            help | -h | --help)
-                OPTION_SUBCOMMAND=help
-                ;;
             build)
                 OPTION_SUBCOMMAND=build
+                ;;
+            help | -h | --help)
+                OPTION_SUBCOMMAND=help
                 ;;
             run)
                 OPTION_SUBCOMMAND=run
@@ -92,15 +92,15 @@ function parse_options
     declare -gr OPTION_SUBCOMMAND=${OPTION_SUBCOMMAND:-run}
 }
 
-function subcommand_help
-{
-    print_help
-}
-
 function subcommand_build
 {
     export DOCKER_SCAN_SUGGEST=false
     docker build -t "${DOCKER_IMAGE_NAME}" - < "${DOCKERFILE_PATH}"
+}
+
+function subcommand_help
+{
+    print_help
 }
 
 function subcommand_run
