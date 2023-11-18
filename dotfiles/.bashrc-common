@@ -58,11 +58,10 @@ function clear.history
         echo -n | pbcopy
     fi
 
-    if $(screen -ls | grep -F '(Attached)' > /dev/null); then
-        local -r sockname=$(screen -ls | grep -F "(Attached)" | cut -f2)
-        screen -S "${sockname}" -X scrollback 0
-        screen -S "${sockname}" -X source ~/.screenrc
-        screen -S "${sockname}" -X register . ''
+    if [[ "${STY:-}" != '' ]]; then
+        screen -S "${STY}" -X scrollback 0
+        screen -S "${STY}" -X source ~/.screenrc
+        screen -S "${STY}" -X register . ''
     fi
 
     \clear
