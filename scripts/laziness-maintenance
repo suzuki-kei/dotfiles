@@ -27,6 +27,7 @@ echo "==== docker"
 echo "==== pip3"
 (
     bash "${SETUP_DIR}/setup-python-packages.sh"
+    pip cache purge
 ) 2>&1 | sed -r 's/^/    /'
 
 echo "==== cabal"
