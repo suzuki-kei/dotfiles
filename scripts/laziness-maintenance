@@ -12,6 +12,7 @@ declare -r SETUP_DIR="${ROOT_DIR}/setup"
 echo "==== brew"
 (
     bash "${SETUP_DIR}/setup-brew-packages.sh"
+    brew cleanup --prune=all
 ) 2>&1 | sed -r 's/^/    /'
 
 echo "==== docker"
