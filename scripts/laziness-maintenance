@@ -20,6 +20,7 @@ echo "==== docker"
     if which docker > /dev/null; then
         docker ps -q --filter 'status=exited' | xargs -r docker rm
         docker image prune -f
+        docker volume prune -f
     fi
 ) 2>&1 | sed -r 's/^/    /'
 
