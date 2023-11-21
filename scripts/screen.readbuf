@@ -43,7 +43,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    screen_readbuf "${1:-}"
+    screen_readbuf "$@"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -89,8 +89,11 @@ function screen_readbuf
 
     if [[ -p /dev/stdin ]]; then
         cat > "${exchange_file_path}"
+    elif [[ $# == 0 ]]; then
+        echo 'File not specified.' >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
     else
-        cat "$1" > "${exchange_file_path}"
+        cat "$@" > "${exchange_file_path}"
     fi
 
     screen -S "${STY}" -X readbuf "${exchange_file_path}"
