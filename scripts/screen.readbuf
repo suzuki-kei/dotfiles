@@ -15,13 +15,13 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
         ${NAME} - copy text to attached screen's paste buffer
 
     SYNOPSIS
-        ${NAME} [OPTION...] [FILE]
+        ${NAME} [OPTION...] [FILE...]
 
     DESCRIPTION
         Copy text to attached screen's paste buffer.
 
-        Read text from file if FILE is specified.
-        Read text from stdin if FILE is not specified.
+        Read text from stdin if stdin is pipe.
+        Read text from file if stdin is not pipe.
 
     OPTIONS
         -h
