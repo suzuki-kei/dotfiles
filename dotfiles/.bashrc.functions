@@ -14,6 +14,18 @@ function clear.history
         screen -S "${STY}" -X register . ''
     fi
 
+    rm -rf ~/.DS_Store
+    rm -rf ~/.bash_history
+    rm -rf ~/.gforth-history
+    rm -rf ~/.ghc/ghci_history
+    rm -rf ~/.gosh_history
+    rm -rf ~/.irb_history
+    rm -rf ~/.lesshst
+    rm -rf ~/.node_repl_history
+    rm -rf ~/.python_history
+    rm -rf ~/.tig_history
+    rm -rf ~/.vim/.netrwhist
+
     clear
 }
 
