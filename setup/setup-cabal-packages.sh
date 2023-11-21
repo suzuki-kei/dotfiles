@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -eu
+set -eu -o pipefail
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
 declare -r SETUP_DIR="$(cd "$(dirname "$0")" && pwd)"

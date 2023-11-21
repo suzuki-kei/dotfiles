@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -u -o pipefail
+set -eu -o pipefail
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
 declare -r DOTFILES_DIR="${ROOT_DIR}/dotfiles"
