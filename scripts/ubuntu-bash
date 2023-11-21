@@ -106,9 +106,7 @@ function subcommand_build
     cp -p \
         "${dotfiles_source_dir}/.bash_profile" \
         "${dotfiles_source_dir}/.bashrc" \
-        "${dotfiles_source_dir}/.bashrc-common" \
-        "${dotfiles_source_dir}/.bashrc-linux" \
-        "${dotfiles_source_dir}/.bashrc-mac" \
+        "${dotfiles_source_dir}/.bashrc.functions" \
         "${dotfiles_source_dir}/.vimrc" \
         "${dotfiles_target_dir}"
 

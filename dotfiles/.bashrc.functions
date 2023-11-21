@@ -1,0 +1,78 @@
+
+# クリップボードとコマンド履歴を消去する.
+function clear.history
+{
+    history -cw
+
+    if $(which pbcopy > /dev/null); then
+        echo -n | pbcopy
+    fi
+
+    if [[ "${STY:-}" != '' ]]; then
+        screen -S "${STY}" -X scrollback 0
+        screen -S "${STY}" -X source ~/.screenrc
+        screen -S "${STY}" -X register . ''
+    fi
+
+    clear
+}
+
+# date のデフォルトフォーマットを変更する.
+function date_with_default_format
+{
+    declare -r default_format='+%F %T %Z'
+    declare format_specified=false
+    declare option
+
+    for option in "$@"
+    do
+        if [[ "${option}" == +* ]]; then
+            format_specified=true
+        fi
+    done
+
+    if ! ${format_specified}; then
+        set -- "$@" "${default_format}"
+    fi
+
+    date "$@"
+}
+alias date=date_with_default_format
+
+# screen 内で screen を起動することを防止する.
+# screen 内で screen コマンドを実行した場合は screen.chdir に置き換える.
+function screen_with_double_execution_prevention
+{
+    if [[ $# == 0 && "${TERM}" == 'screen' ]]; then
+        screen.chdir
+    else
+        \screen "$@"
+    fi
+}
+alias screen=screen_with_double_execution_prevention
+
+# g を実行後に exit する.
+# screen のウィンドウを使い捨てにして Chrome を起動するためのショートカット.
+function g.exit
+{
+    g "$@"
+    exit
+}
+
+# mkdir -p でディレクトリを作成し, cd でその中に移動する.
+function mkcd
+{
+    if [[ $# == 0 ]]; then
+        echo 'directory must be specified.' >&2
+        return 1
+    fi
+
+    # ディレクトリが複数指定されると cd する先を特定できないのでエラーとする.
+    if [[ $# > 1 ]]; then
+        echo 'specify only one directory.' >&2
+        return 2
+    fi
+
+    mkdir -p "$1" && cd "$1"
+}
+
