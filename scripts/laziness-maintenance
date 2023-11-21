@@ -7,15 +7,18 @@
 set -eu -o pipefail
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
-declare -r SETUP_DIR="${ROOT_DIR}/setup"
 
-echo "==== brew"
+echo '==== setup'
 (
-    bash "${SETUP_DIR}/setup-brew-packages.sh"
+    bash "${ROOT_DIR}/setup/setup.sh"
+) 2>&1 | sed -r 's/^/    /'
+
+echo '==== brew'
+(
     brew cleanup --prune=all
 ) 2>&1 | sed -r 's/^/    /'
 
-echo "==== docker"
+echo '==== docker'
 (
     if which docker > /dev/null; then
         docker ps -q --filter 'status=exited' | xargs -r docker rm
@@ -24,18 +27,12 @@ echo "==== docker"
     fi
 ) 2>&1 | sed -r 's/^/    /'
 
-echo "==== pip3"
+echo '==== pip3'
 (
-    bash "${SETUP_DIR}/setup-python-packages.sh"
     pip cache purge
 ) 2>&1 | sed -r 's/^/    /'
 
-echo "==== cabal"
-(
-    bash "${SETUP_DIR}/setup-cabal-packages.sh"
-) 2>&1 | sed -r 's/^/    /'
-
-echo "==== ubuntu-bash"
+echo '==== ubuntu-bash'
 (
     if which ubuntu-bash > /dev/null; then
         ubuntu-bash build
