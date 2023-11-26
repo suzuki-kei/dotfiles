@@ -41,9 +41,9 @@ set whichwrap=b,s,h,l,<,>
 set diffopt=vertical,closeoff,context:77777
 
 " highlight a word under the cursor when searched by '*' or '#'
-nmap * *<S-n>
-nmap # #<S-n>
+nnoremap * *<S-n>
+nnoremap # #<S-n>
 
 " execute 'nohlsearch' before 'redraw!' when Ctrl+l
-nmap <C-l> <Cmd>nohlsearch<CR><Cmd>redraw!<CR>
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>redraw!<CR>
 
