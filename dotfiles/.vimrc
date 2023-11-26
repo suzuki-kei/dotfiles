@@ -47,3 +47,6 @@ nnoremap # #<S-n>
 " execute some command before 'redraw!' when Ctrl+l
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
 
+" discard input and return to normal mode
+cnoremap <C-l> <C-u><C-h>
+
