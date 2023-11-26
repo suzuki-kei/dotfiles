@@ -40,13 +40,13 @@ set whichwrap=b,s,h,l,<,>
 " options for diff mode
 set diffopt=vertical,closeoff,context:77777
 
-" highlight a word under the cursor when searched by '*' or '#'
+" highlight a word under the cursor when searched by '*' or '#' in normal mode
 nnoremap * *<S-n>
 nnoremap # #<S-n>
 
-" execute some command before 'redraw!' when Ctrl+l
+" execute some command before 'redraw!' when Ctrl+l in normal mode
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
 
-" discard input and return to normal mode
+" discard input and return to normal mode in terminal mode
 cnoremap <C-l> <C-u><C-h>
 
