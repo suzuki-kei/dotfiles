@@ -44,6 +44,6 @@ set diffopt=vertical,closeoff,context:77777
 nnoremap * *<S-n>
 nnoremap # #<S-n>
 
-" execute 'nohlsearch' before 'redraw!' when Ctrl+l
-nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>redraw!<CR>
+" execute some command before 'redraw!' when Ctrl+l
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
 
