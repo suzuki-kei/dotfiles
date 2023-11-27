@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+set -eu -o pipefail
+
+declare -r NAME="$(basename "${BASH_SOURCE}")"
+declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+source "${BASE_DIR}/_internal"
+
+declare -r EXIT_STATUS_SUCCESS=0
+declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+
+declare -r USAGE=`cat <<EOS | strip_heredoc
+    NAME
+        ${NAME} - open git remote in browser
+
+    SYNOPSIS
+        ${NAME} [DIR]
+
+    DESCRIPTION
+        Open git remote in browser.
+
+        DIR
+            The directory path of cloned git repository from GitHub.
+
+    ENVIRONMENT VARIABLES
+        GITHUB_OPEN_COMMAND
+            The command used to open url. (default is "open")
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    open_git_remote_in_browser "$@"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    while getopts 'd:h' OPTION
+    do
+        case "${OPTION}" in
+            h)
+                OPTION_HELP=true
+                ;;
+            *)
+                print_help
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+}
+
+function open_git_remote_in_browser
+{
+    declare -r repository_dir="${1:-$(pwd)}"
+    eval "$(make_open_command "${repository_dir}")"
+}
+
+function make_open_command
+{
+    declare -r repository_dir="${1:-$(pwd)}"
+    declare -r git_remote_url="$(to_git_remote_url_from_repository_dir "${repository_dir}")"
+    declare -r github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
+    declare -r open_command="$(to_open_command_from_github_url "${github_url}")"
+    echo "${open_command}"
+}
+
+function to_git_remote_url_from_repository_dir
+{
+    declare -r repository_dir="$1"
+    git -C "${repository_dir}" remote get-url origin
+}
+
+function to_github_url_from_git_remote_url
+{
+    declare -r git_remote_url="$1"
+
+    if [[ ${git_remote_url} =~ ^git@github.com:(.+)/(.+).git$ ]]; then
+        echo "https://github.com/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+    elif [[ ${git_remote_url} =~ ^https://github.com/(.+)/(.+).git$ ]]; then
+        echo "https://github.com/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+    else
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+}
+
+function to_open_command_from_github_url
+{
+    declare -r github_url="$1"
+    echo "${GITHUB_OPEN_COMMAND:-open} '${github_url}'"
+}
+
+if [[ "$0" == "${BASH_SOURCE}" ]]; then
+    main "$@"
+fi
+
