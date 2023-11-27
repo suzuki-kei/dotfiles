@@ -42,8 +42,8 @@ set whichwrap=b,s,h,l,<,>
 set diffopt=vertical,closeoff,context:77777
 
 " highlight a word under the cursor when searched by '*' or '#' in normal mode
-nnoremap * *<S-n>
-nnoremap # #<S-n>
+nnoremap * msHmt's*'tzt's
+nnoremap # msHmt's#'tzt's
 
 " execute some command before 'redraw!' when Ctrl+l in normal mode
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
