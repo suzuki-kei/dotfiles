@@ -50,7 +50,7 @@ nnoremap # msHmt`s#`tzt`s
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
 
 " discard input and return to normal mode in terminal mode
-cnoremap <C-l> <C-u><C-h>
+cnoremap <C-l> <C-c>
 
 " return to normal mode in insert/visual mode
 inoremap <C-l> <Esc>
