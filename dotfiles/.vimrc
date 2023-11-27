@@ -7,6 +7,7 @@ set noerrorbells
 set nomodeline " prevent CVE-2007-2438
 set nonumber
 set noruler
+set noswapfile
 set nowrap
 set syntax=off
 set viminfo=
