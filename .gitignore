@@ -2,3 +2,6 @@
 # vim
 *.swp
 
+# temporary files
+/dockerfiles/ubuntu-bash/files/
+
