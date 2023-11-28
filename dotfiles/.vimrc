@@ -46,8 +46,8 @@ set diffopt=vertical,closeoff,context:77777
 nnoremap * msHmt`s*`tzt`s
 nnoremap # msHmt`s#`tzt`s
 
-" execute some command before 'redraw!' when Ctrl+l in normal mode
-nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>redraw!<CR>
+" execute some command before Ctrl+l in normal mode
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><C-l>
 
 " discard input and return to normal mode in terminal mode
 cnoremap <C-l> <C-c>
