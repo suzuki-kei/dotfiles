@@ -87,7 +87,7 @@ function parse_options
     fi
 
     declare option
-    declare -a OPTION_ARGS
+    declare -a OPTION_ARGS=()
 
     # parse remaining arguments
     for option in "$@"
