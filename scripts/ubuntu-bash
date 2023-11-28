@@ -22,6 +22,7 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
     DESCRIPTION
         Operates the ${DOCKER_IMAGE_NAME} docker image.
 
+        if SUBCOMMAND is omit, the default is 'run'.
         see SUBCOMMANDS section for details.
 
     OPTIONS
@@ -38,8 +39,13 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
         rmi
             Remove docker image.
 
-        run
+        run [DIR] [--ro|--rw]
             Run docker container.
+            Mount the DIR on container if any one option is specified.
+            DIR is source directory to mount. (default is .)
+            To mount as readonly, specify --ro or omit.
+            To mount as writable, specify --rw.
+            If no option is specified, run docker container without mounting.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -56,7 +62,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    subcommand_${OPTION_SUBCOMMAND}
+    subcommand_${OPTION_SUBCOMMAND} "$@"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -67,32 +73,51 @@ function print_help
 
 function parse_options
 {
+    # detect subcommand
+    if [[ $# != 0 ]]; then
+        case "$1" in
+            build | help | rmi | run)
+                OPTION_SUBCOMMAND="$1"
+                shift
+                ;;
+            *)
+                OPTION_SUBCOMMAND='run'
+                ;;
+        esac
+    fi
+
+    declare option
+    declare -a OPTION_ARGS
+
+    # parse remaining arguments
     for option in "$@"
     do
         case "${option}" in
-            build)
-                OPTION_SUBCOMMAND=build
+            -h | --help)
+                OPTION_HELP=true
                 ;;
-            help | -h | --help)
-                OPTION_SUBCOMMAND=help
+            --ro | --rw)
+                OPTION_MOUNT_VOLUME="${option#--}"
                 ;;
-            rmi)
-                OPTION_SUBCOMMAND=rmi
-                ;;
-            run)
-                OPTION_SUBCOMMAND=run
-                ;;
-            *)
+            -*)
                 echo "illegal option(s) -- $@" >&2
                 exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+            *)
+                OPTION_ARGS+=("${option}")
                 ;;
         esac
     done
 
-    shift $((OPTIND - 1))
-    declare -agr OPTION_ARGS=("$@")
+    declare -agr OPTION_ARGS=("${OPTION_ARGS[@]}")
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
     declare -gr OPTION_SUBCOMMAND=${OPTION_SUBCOMMAND:-run}
+    declare -gr OPTION_MOUNT_VOLUME=${OPTION_MOUNT_VOLUME:-}
+
+    if [[ "${OPTION_SUBCOMMAND}" != 'run' ]] && [[ ${#OPTION_ARGS[@]} != 0 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
 }
 
 function subcommand_build
@@ -130,7 +155,18 @@ function subcommand_rmi
 
 function subcommand_run
 {
-    docker run -it --rm --volume "$(pwd):/root/workspace:ro" "${DOCKER_IMAGE_NAME}" || true
+    if [[ $# == 0 ]] && [[ "${OPTION_MOUNT_VOLUME}" == '' ]]; then
+        declare -r volume_option=''
+        declare -r workdir_option=''
+    else
+        declare -r source="$(cd "${1:-.}" && pwd)"
+        declare -r target='/root/workspace'
+        declare -r mount_option="${OPTION_MOUNT_VOLUME:-ro}"
+        declare -r volume_option="--volume ${source}:${target}:${mount_option}"
+        declare -r workdir_option="--workdir ${target}"
+    fi
+
+    docker run -it --rm ${volume_option} ${workdir_option} "${DOCKER_IMAGE_NAME}" || true
 }
 
 if [[ "$0" == "${BASH_SOURCE}" ]]; then
