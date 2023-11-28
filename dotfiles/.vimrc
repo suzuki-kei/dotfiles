@@ -10,9 +10,9 @@ set nonumber
 set noruler
 set noswapfile
 set nowrap
-set syntax=off
 set viminfo=
 set viminfofile=NONE
+syntax off
 
 " options for encoding
 set encoding=utf-8
