@@ -57,7 +57,7 @@ fi
 
 # Go
 if $(which go > /dev/null); then
-    export GOPATH=$(go env GOPATH)
+    export GOPATH=~/.go
     export PATH="$GOPATH/bin:$PATH"
 fi
 
