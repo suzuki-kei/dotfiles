@@ -3,6 +3,7 @@ language C
 
 " turn off various options
 let g:netrw_dirhistmax=0
+let loaded_matchparen=1
 set nobackup
 set noerrorbells
 set nomodeline " prevent CVE-2007-2438
