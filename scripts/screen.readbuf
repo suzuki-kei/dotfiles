@@ -20,8 +20,8 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
     DESCRIPTION
         Copy text to attached screen's paste buffer.
 
-        Read text from stdin if stdin is pipe.
-        Read text from file if stdin is not pipe.
+        Read text from /dev/stdin if /dev/stdin is pipe or file.
+        Read text from FILE if /dev/stdin is neither pipe nor file.
 
     OPTIONS
         -h
@@ -87,7 +87,7 @@ function screen_readbuf
 
     declare -r exchange_file_path='/tmp/screen-exchange'
 
-    if [[ -p /dev/stdin ]]; then
+    if [[ -p /dev/stdin ]] || [[ -f /dev/stdin ]]; then
         cat > "${exchange_file_path}"
     elif [[ $# == 0 ]]; then
         echo 'File not specified.' >&2
