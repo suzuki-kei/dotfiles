@@ -3,7 +3,6 @@ language C
 
 " turn off various options
 let g:netrw_dirhistmax=0
-let loaded_matchparen=1
 set nobackup
 set noerrorbells
 set nomodeline " prevent CVE-2007-2438
@@ -22,6 +21,7 @@ set fileformats=unix,dos,mac
 set termencoding=utf-8
 
 " options for drawing
+highlight MatchParen cterm=underline ctermbg=NONE
 set ambiwidth=double
 set tabstop=4
 
