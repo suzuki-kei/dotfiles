@@ -54,3 +54,7 @@ nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><C-l>
 inoremap <C-l> <Esc>
 vnoremap <C-l> <Esc>
 
+" search for selected text in visual mode.
+" see help "v_y", "/", "c_<C-R>", "/\V", "c_CTRL-R_=", "builtin-functions", "@", "<CR>"
+vnoremap * "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>
+
