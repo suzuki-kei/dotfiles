@@ -29,7 +29,7 @@ echo '==== docker'
 
 echo '==== pip3'
 (
-    pip cache purge
+    pip3 cache purge
 ) 2>&1 | sed -r 's/^/    /'
 
 echo '==== ubuntu-bash'
