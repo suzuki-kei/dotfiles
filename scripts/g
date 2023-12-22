@@ -73,7 +73,7 @@ function parse_options
     do
         case "${option}" in
             h)
-                option_HELP=true
+                OPTION_HELP=true
                 ;;
             *)
                 print_help
