@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+set -eu -o posix -o pipefail
 
 declare -r NAME="$(basename "${BASH_SOURCE}")"
 declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
@@ -77,16 +77,35 @@ function parse_options
 
 function open_git_remote_in_browser
 {
-    declare -r repository_dir="${1:-$(pwd)}"
-    eval "$(make_open_command "${repository_dir}")"
+    declare repository_dir
+    repository_dir="${1:-$(pwd)}"
+    declare -r repository_dir="${repository_dir}"
+
+    declare open_command
+    open_command="$(make_open_command "${repository_dir}")"
+    declare -r open_command="${open_command}"
+
+    eval "${open_command}"
 }
 
 function make_open_command
 {
-    declare -r repository_dir="${1:-$(pwd)}"
-    declare -r git_remote_url="$(to_git_remote_url_from_repository_dir "${repository_dir}")"
-    declare -r github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
-    declare -r open_command="$(to_open_command_from_github_url "${github_url}")"
+    declare repository_dir
+    repository_dir="${1:-$(pwd)}"
+    declare -r repository_dir="${repository_dir}"
+
+    declare git_remote_url
+    git_remote_url="$(to_git_remote_url_from_repository_dir "${repository_dir}")"
+    declare -r git_remote_url="${git_remote_url}"
+
+    declare github_url
+    github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
+    declare -r github_url="${github_url}"
+
+    declare open_command
+    open_command="$(to_open_command_from_github_url "${github_url}")"
+    declare -r open_command="${open_command}"
+
     echo "${open_command}"
 }
 
