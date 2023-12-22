@@ -88,19 +88,15 @@ function make_open_command
 {
     declare repository_dir
     repository_dir="${1:-$(pwd)}"
-    declare -r repository_dir="${repository_dir}"
 
     declare git_remote_url
     git_remote_url="$(to_git_remote_url_from_repository_dir "${repository_dir}")"
-    declare -r git_remote_url="${git_remote_url}"
 
     declare github_url
     github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
-    declare -r github_url="${github_url}"
 
     declare open_command
     open_command="$(to_open_command_from_github_url "${github_url}")"
-    declare -r open_command="${open_command}"
 
     echo "${open_command}"
 }
