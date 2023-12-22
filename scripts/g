@@ -95,7 +95,7 @@ function open_chrome
 function make_open_command
 {
     if [[ -z "$@" && -p /dev/stdin ]]; then
-        declare -r target="$(cat -)"
+        declare -r target="$(cat)"
     else
         declare -r target="$@"
     fi
