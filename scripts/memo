@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
+source "$(dirname -- "$0")/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - opens a memo file
+        ${SCRIPT_NAME} - opens a memo file
 
     SYNOPSIS
-        ${NAME} [OPTION...] [MEMO_TITLE]
+        ${SCRIPT_NAME} [OPTION...] [MEMO_TITLE]
 
     DESCRIPTION
         Opens a memo file.

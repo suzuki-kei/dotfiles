@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
+source "$(dirname -- "$0")/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - extract usage from Makefile comments
+        ${SCRIPT_NAME} - extract usage from Makefile comments
 
     SYNOPSIS
-        ${NAME} [OPTION...] [FILE...]
+        ${SCRIPT_NAME} [OPTION...] [FILE...]
 
     DESCRIPTION
         Extract usage from Makefile comments.
@@ -33,16 +29,16 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
     EXAMPLE
         Here is how to give input from pipe.
 
-            cat Makefile | ${NAME}
+            cat Makefile | ${SCRIPT_NAME}
 
         Here is how to give input from file.
 
-            ${NAME} Makefile
+            ${SCRIPT_NAME} Makefile
 
         It's useful to define a rule named "help" in your Makefile like this.
 
             help: # Print description of each rule.
-                ${NAME} \\$(MAKEFILE_LIST)
+                ${SCRIPT_NAME} \\$(MAKEFILE_LIST)
 
             build: # Build a artifact.
                 ...

@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
+source "$(dirname -- "$0")/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
@@ -12,10 +8,10 @@ declare -gr EXIT_STATUS_NOT_IN_SCREEN=2
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - changes the current directory of screen.
+        ${SCRIPT_NAME} - changes the current directory of screen.
 
     SYNOPSIS
-        ${NAME} [OPTION...] [TARGET]
+        ${SCRIPT_NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
         Changes the current directory of attached screen session.
@@ -37,12 +33,12 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
         Change screen's current directory to bash's current directory.
         Maybe this form is most used.
 
-            ${NAME}
+            ${SCRIPT_NAME}
 
         You can specify new current directory path.
         Maybe this form is rarely used.
 
-            ${NAME} /tmp
+            ${SCRIPT_NAME} /tmp
 EOS`
 
 function main

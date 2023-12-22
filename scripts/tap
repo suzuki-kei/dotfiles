@@ -1,26 +1,22 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
+source "$(dirname -- "$0")/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - edit the value in mid-flow on command pipeline
+        ${SCRIPT_NAME} - edit the value in mid-flow on command pipeline
 
     SYNOPSIS
-        <command-1> | ${NAME} | <command-2> | ...
-        ${NAME} [FILE]... | <command-1> | <command-2> | ...
-        <command-1> | ${NAME} [FILE]... | <command-2> | ...
+        <command-1> | ${SCRIPT_NAME} | <command-2> | ...
+        ${SCRIPT_NAME} [FILE]... | <command-1> | <command-2> | ...
+        <command-1> | ${SCRIPT_NAME} [FILE]... | <command-2> | ...
 
     DESCRIPTION
         Edit the value in mid-flow on command pipeline.
 
-        ${NAME} works as follows:
+        ${SCRIPT_NAME} works as follows:
             1. Creates a temporary file.
             2. If /dev/stdin is pipe, concatenates content to the temporary file.
             3. If FILE is specified, concatenates content to the temporary file.
@@ -28,7 +24,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
             5. Outputs content of the temporary file to STDOUT.
 
     EXAMPLE
-        seq 10 | ${NAME} | wc -l
+        seq 10 | ${SCRIPT_NAME} | wc -l
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
@@ -75,7 +71,7 @@ function parse_options
 
 function tap
 {
-    declare -r TEMP_FILE=$(mktemp -t ${NAME}.XXXXXXXXXXXXXXXX)
+    declare -r TEMP_FILE=$(mktemp -t ${SCRIPT_NAME}.XXXXXXXXXXXXXXXX)
     trap "rm -f '${TEMP_FILE}'" ERR EXIT
 
     if [[ -p /dev/stdin ]]; then

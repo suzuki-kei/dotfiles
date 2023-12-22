@@ -4,7 +4,7 @@
 # このコマンドは柔軟さよりも簡便さを優先しているため, 細かい制御は提供しない.
 #
 
-set -eu -o pipefail
+source "$(dirname -- "$0")/_internal"
 
 declare -gr ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
 

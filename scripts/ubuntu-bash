@@ -1,23 +1,19 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
+source "$(dirname -- "$0")/_internal"
 
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
-
-declare -gr DOCKER_IMAGE_NAME="$(basename "$0"):latest"
-declare -gr DOCKERFILE_DIR="${BASE_DIR}/../dockerfiles/${NAME}"
+declare -gr DOCKER_IMAGE_NAME="${SCRIPT_NAME}:latest"
+declare -gr DOCKERFILE_DIR="${SCRIPT_DIR}/../dockerfiles/${SCRIPT_NAME}"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - operates ${NAME} docker image
+        ${SCRIPT_NAME} - operates ${SCRIPT_NAME} docker image
 
     SYNOPSIS
-        ${NAME} [OPTION...] [SUBCOMMAND]
+        ${SCRIPT_NAME} [OPTION...] [SUBCOMMAND]
 
     DESCRIPTION
         Operates the ${DOCKER_IMAGE_NAME} docker image.
@@ -124,7 +120,7 @@ function subcommand_build
 {
     declare -r work_dir="${DOCKERFILE_DIR}/files"
     declare -r dotfiles_target_dir="${work_dir}/dotfiles"
-    declare -r dotfiles_source_dir="${BASE_DIR}/../dotfiles"
+    declare -r dotfiles_source_dir="${SCRIPT_DIR}/../dotfiles"
 
     mkdir -p "${dotfiles_target_dir}"
 

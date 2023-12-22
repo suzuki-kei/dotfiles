@@ -1,7 +1,33 @@
-#!/usr/bin/env bash
 #
-# 内部的に使用する関数を定義します.
+# 共通する定数や関数を定義します.
 #
+# このファイルは source で読み込まれることを想定しています.
+#
+
+set -eu -o posix -o pipefail
+
+# コマンド置換したときに errexit の値を継承する.
+shopt -s inherit_errexit
+
+# このファイルを source で読み込んだファイルが置かれているディレクトリの絶対パス.
+declare SCRIPT_DIR
+SCRIPT_DIR="$(cd -- "$(dirname -- '$0')" && pwd)"
+declare -gr SCRIPT_DIR="${SCRIPT_DIR}"
+
+# このファイルを source で読み込んだファイルの名前.
+declare SCRIPT_NAME
+SCRIPT_NAME="$(basename -- "$0")"
+declare -gr SCRIPT_NAME
+
+# このファイルが置かれているディレクトリの絶対パス.
+declare SOURCE_DIR
+SOURCE_DIR="$(cd -- "$(dirname -- '${BASH_SOURCE[0]}')" && pwd)"
+declare -gr SOURCE_DIR="${SOURCE_DIR}"
+
+# このファイルの名前.
+declare SOURCE_NAME
+SOURCE_NAME="$(basename -- "${BASH_SOURCE[0]}")"
+declare -gr SOURCE_NAME="${SOURCE_NAME}"
 
 #
 # ヒアドキュメントの不要なインデントを削除します.

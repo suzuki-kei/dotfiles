@@ -1,20 +1,16 @@
 #!/usr/bin/env bash
 
-set -eu -o pipefail
-
-declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${BASE_DIR}/_internal"
+source "$(dirname -- "$0")/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${NAME} - opens google chrome.
+        ${SCRIPT_NAME} - opens google chrome.
 
     SYNOPSIS
-        ${NAME} [OPTION...] [TARGET]
+        ${SCRIPT_NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
         Opens Google Chrome with TARGET.
@@ -38,16 +34,16 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
     EXAMPLE
         Specify the search keywords to display Google search results in new Chrome window.
 
-            ${NAME} Linux Kernel
+            ${SCRIPT_NAME} Linux Kernel
 
         Specify the URL to open new Chrome window.
 
-            ${NAME} 'https://example.com'
+            ${SCRIPT_NAME} 'https://example.com'
 
         You can specify URL or search keywords by pipe.
 
-            echo 'Linux Kernel' | ${NAME}
-            echo 'https://example.com' | ${NAME}
+            echo 'Linux Kernel' | ${SCRIPT_NAME}
+            echo 'https://example.com' | ${SCRIPT_NAME}
 EOS`
 
 function main

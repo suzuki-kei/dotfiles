@@ -3,7 +3,7 @@
 # C 言語のソースファイルから関数プロトタイプを生成する.
 #
 
-set -eu -o pipefail
+source "$(dirname -- "$0")/_internal"
 
 grep -oP '^\w+ +\w+\([\w,* ]*\)$' "$@" | grep -vF 'int main(void)' | sed 's/$/;/'
 
