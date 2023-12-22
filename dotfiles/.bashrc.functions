@@ -4,7 +4,7 @@ function clear.history
 {
     history -cw
 
-    if $(which pbcopy > /dev/null); then
+    if which pbcopy > /dev/null; then
         echo -n | pbcopy
     fi
 
