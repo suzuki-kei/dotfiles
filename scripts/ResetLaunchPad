@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#
+# [Mac only] Launchpad の並び順をリセットする.
+#
+
+source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+
+if [[ "$(uname)" == 'Darwin' ]]; then
+    defaults write com.apple.dock ResetLaunchPad -bool true
+    killall Dock
+fi
+

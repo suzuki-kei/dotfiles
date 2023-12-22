@@ -22,11 +22,6 @@
 
     laziness-maintenance
 
-### Launchpad の並び順をリセットする (Mac only)
-
-    defaults write com.apple.dock ResetLaunchPad -bool true
-    killall Dock
-
 ### Chrome で常にシークレットモードにする (Mac only)
 
     # シークレットモードで起動する.
