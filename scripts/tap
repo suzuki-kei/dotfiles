@@ -73,7 +73,8 @@ function parse_options
 
 function tap
 {
-    declare -r TEMP_FILE=$(mktemp -t ${SCRIPT_NAME}.XXXXXXXXXXXXXXXX)
+    declare TEMP_FILE
+    TEMP_FILE="$(mktemp -t ${SCRIPT_NAME}.XXXXXXXXXXXXXXXX)"
     trap "rm -f '${TEMP_FILE}'" ERR EXIT
 
     if [[ -p /dev/stdin ]]; then

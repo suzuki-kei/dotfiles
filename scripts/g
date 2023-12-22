@@ -89,30 +89,38 @@ function parse_options
 
 function open_chrome
 {
-    eval "$(make_open_command "$@")"
+    declare command
+    command="$(make_open_command "$@")"
+
+    eval "${command}"
 }
 
 function make_open_command
 {
+    declare target
+
     if [[ -z "$@" && -p /dev/stdin ]]; then
-        declare -r target="$(cat)"
+        target="$(cat)"
     else
-        declare -r target="$@"
+        target="$@"
     fi
+
+    declare url
+    declare keyword
 
     case "${target}" in
         "")
-            declare -r url="https://google.com"
+            url="https://google.com"
             ;;
         http://* | https://*)
-            declare -r url="${target}"
+            url="${target}"
             ;;
         *)
             if [[ -f "${target}" ]]; then
-                declare -r url="$(cd "$(dirname "${target}")" && echo "$(pwd)/$(basename "${target}")")"
+                url="$(cd -- "$(dirname -- "${target}")" && echo "$(pwd)/$(basename -- "${target}")")"
             else
-                declare -r keyword=$(echo -n ${target} | jq -sMRr '@uri')
-                declare -r url="https://www.google.com/search?q=${keyword}"
+                keyword=$(echo -n ${target} | jq -sMRr '@uri')
+                url="https://www.google.com/search?q=${keyword}"
             fi
             ;;
     esac

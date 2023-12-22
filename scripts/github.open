@@ -77,11 +77,9 @@ function open_git_remote_in_browser
 {
     declare repository_dir
     repository_dir="${1:-$(pwd)}"
-    declare -r repository_dir="${repository_dir}"
 
-    declare open_command
-    open_command="$(make_open_command "${repository_dir}")"
-    declare -r open_command="${open_command}"
+    declare command
+    command="$(make_open_command "${repository_dir}")"
 
     eval "${open_command}"
 }

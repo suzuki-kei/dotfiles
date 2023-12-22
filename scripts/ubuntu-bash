@@ -151,15 +151,21 @@ function subcommand_rmi
 
 function subcommand_run
 {
+    declare source
+    declare target
+    declare mount_option
+    declare volume_option
+    declare workdir_option
+
     if [[ $# == 0 ]] && [[ "${OPTION_MOUNT_VOLUME}" == '' ]]; then
-        declare -r volume_option=''
-        declare -r workdir_option=''
+        volume_option=''
+        workdir_option=''
     else
-        declare -r source="$(cd "${1:-.}" && pwd)"
-        declare -r target='/root/workspace'
-        declare -r mount_option="${OPTION_MOUNT_VOLUME:-ro}"
-        declare -r volume_option="--volume ${source}:${target}:${mount_option}"
-        declare -r workdir_option="--workdir ${target}"
+        source="$(cd "${1:-.}" && pwd)"
+        target='/root/workspace'
+        mount_option="${OPTION_MOUNT_VOLUME:-ro}"
+        volume_option="--volume ${source}:${target}:${mount_option}"
+        workdir_option="--workdir ${target}"
     fi
 
     docker run -it --rm ${volume_option} ${workdir_option} "${DOCKER_IMAGE_NAME}" || true

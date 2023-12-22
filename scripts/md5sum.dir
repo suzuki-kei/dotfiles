@@ -93,8 +93,10 @@ function parse_options
 #
 function generate_hash_value
 {
-    declare path="${1:-.}"
-    declare hash=$(md5sum <(generate_hash_source "${path}") | cut -d' ' -f1)
+    declare -r path="${1:-.}"
+
+    declare hash
+    hash="$(md5sum <(generate_hash_source "${path}") | cut -d' ' -f1)"
 
     echo "${hash} ${path}"
 
@@ -124,12 +126,15 @@ function generate_hash_source
         declare -r root_dir="${1:-.}"
         cd "${root_dir}"
 
+        declare path
+        declare hash
+
         while read -r -d $'\0' path
         do
             if [[ -d "${path}" ]]; then
-                declare hash=$(cat <(echo "${path}") | md5sum | cut -d' ' -f1)
+                hash="$(cat <(echo "${path}") | md5sum | cut -d' ' -f1)"
             else
-                declare hash=$(cat "${path}" | md5sum | cut -d' ' -f1)
+                hash="$(cat "${path}" | md5sum | cut -d' ' -f1)"
             fi
             declare permission=$(stat -c '%A' "${path}")
             echo "${hash} ${permission} ${path}"

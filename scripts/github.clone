@@ -81,7 +81,10 @@ function parse_options
 
 function git_clone
 {
-    eval "$(make_git_clone_command "$1" "$2")"
+    declare command
+    command="$(make_git_clone_command "$1" "$2")"
+
+    eval "${command}"
 }
 
 function make_git_clone_command
