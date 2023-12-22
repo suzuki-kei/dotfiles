@@ -81,7 +81,7 @@ function open_git_remote_in_browser
     declare command
     command="$(make_open_command "${repository_dir}")"
 
-    eval "${open_command}"
+    eval "${command}"
 }
 
 function make_open_command
