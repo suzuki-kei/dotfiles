@@ -44,16 +44,12 @@ declare -gr SOURCE_NAME="${SOURCE_NAME}"
 #
 function strip_heredoc
 {
-    local text="$(cat)"
-    local char
-    local leading_chars
+    declare text
+    IFS= read -rd '' text < <(cat) || true
 
-    for char in ' ' '\t'
-    do
-        leading_chars="$(echo "$text" | grep -oP "^($char+)" | sort | head -1 || true)"
-        text="$(echo "$text" | sed -r "s/^$leading_chars//")"
-    done
+    declare prefix
+    prefix="$(echo -n "${text}" | sed -r -e '/^$/d' -e 's/^( *).*$/\1/' | sort | head -1)"
 
-    echo "$text"
+    echo -n "${text}" | sed "s/^${prefix}//"
 }
 
