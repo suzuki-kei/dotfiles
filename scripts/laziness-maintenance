@@ -6,7 +6,7 @@
 
 source "$(dirname -- "$0")/_internal"
 
-declare -gr ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
+declare -gr ROOT_DIR="$(cd -- "$(dirname -- "$0")"/.. && pwd)"
 
 echo '==== setup'
 (
