@@ -95,7 +95,7 @@ function parse_options
 function select_elements_at_random
 {
     if [[ -z "$@" && -p /dev/stdin ]]; then
-        cat - | sort -R | head -${OPTION_N}
+        cat | sort -R | head -${OPTION_N}
     else
         echo "$(IFS=$'\n'; echo "$*")" | sort -R | head -${OPTION_N}
     fi
