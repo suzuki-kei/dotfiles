@@ -2,8 +2,8 @@
 
 set -eu -o posix -o pipefail
 
-declare -gr NAME="$(basename "${BASH_SOURCE}")"
-declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+declare -gr NAME="$(basename "${BASH_SOURCE[0]}")"
+declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${BASE_DIR}/_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
@@ -135,7 +135,7 @@ function to_open_command_from_github_url
     echo "${GITHUB_OPEN_COMMAND:-open} '${github_url}'"
 }
 
-if [[ "$0" == "${BASH_SOURCE}" ]]; then
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
     main "$@"
 fi
 
