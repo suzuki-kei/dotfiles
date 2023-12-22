@@ -62,6 +62,6 @@ if which go > /dev/null; then
 fi
 
 # custom scripts and functions
-export PATH="$(cd $(dirname "${BASH_SOURCE}")/.. && pwd)/scripts:$PATH"
-source "$(dirname "${BASH_SOURCE}")/.bashrc.functions"
+export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/scripts:${PATH}"
+source "$(dirname -- "${BASH_SOURCE[0]}")/.bashrc.functions"
 
