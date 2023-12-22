@@ -1,41 +1,176 @@
 #!/usr/bin/env bash
-#
-# 各種ソフトウェアのバージョンアップやクリーンアップを実行する.
-# このコマンドは柔軟さよりも簡便さを優先しているため, 細かい制御は提供しない.
-#
 
 source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 
-declare -gr ROOT_DIR="$(cd -- "$(dirname -- "$0")"/.. && pwd)"
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
-echo '==== setup'
-(
-    bash "${ROOT_DIR}/setup/setup.sh"
-) 2>&1 | sed -r 's/^/    /'
+declare -gr USAGE=`cat <<EOS | strip_heredoc
+    NAME
+        ${SCRIPT_NAME} - laziness way to maintenance of various software
 
-echo '==== brew'
-(
-    brew cleanup --prune=all
-) 2>&1 | sed -r 's/^/    /'
+    SYNOPSIS
+        ${SCRIPT_NAME} [OPTION...] [TARGET...]
 
-echo '==== docker'
-(
-    if which docker > /dev/null; then
-        docker ps -q --filter 'status=exited' | xargs -r docker rm
-        docker image prune -f
-        docker volume prune -f
+    DESCRIPTION
+        Performs version updates and cleanup of various software.
+
+        TARGET is name of maintenance operation to perform.
+        Omit TARGET to perform all maintenance operations.
+        Specify TARGET to perform individual maintenance operation.
+
+        Available TARGET is follows:
+
+            * setup
+            * brew
+            * docker
+            * pip
+            * ubuntu-bash
+
+    OPTIONS
+        -h
+            Print the help message.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
     fi
-) 2>&1 | sed -r 's/^/    /'
 
-echo '==== pip3'
-(
-    pip3 cache purge
-) 2>&1 | sed -r 's/^/    /'
+    laziness_maintenance "$@"
+    exit ${EXIT_STATUS_SUCCESS}
+}
 
-echo '==== ubuntu-bash'
-(
-    if which ubuntu-bash > /dev/null; then
-        ubuntu-bash build
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    declare option
+
+    while getopts 'h' option
+    do
+        case "${option}" in
+            h)
+                OPTION_HELP=true
+                ;;
+            *)
+                print_help
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
+}
+
+function laziness_maintenance
+{
+    if [[ $# == 0 ]]; then
+        laziness_maintenance.setup
+        laziness_maintenance.brew
+        laziness_maintenance.docker
+        laziness_maintenance.pip
+        laziness_maintenance.ubuntu-bash
+    else
+        declare target
+
+        for target in "$@"
+        do
+            case "${target}" in
+                setup | brew | docker | pip | ubuntu-bash)
+                    laziness_maintenance.${target}
+                    ;;
+                *)
+                    echo "illegal TARGET -- ${target}" >&2
+                    exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                    ;;
+            esac
+        done
     fi
-) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.setup
+{
+    echo '==== setup'
+    (
+        declare root_dir
+        root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"/.. && pwd)"
+        declare -r script_path="${root_dir}/setup/setup.sh"
+
+        if [[ -f "${script_path}" ]]; then
+            bash "${script_path}"
+        else
+            echo "{script_path} is not exists."
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.brew
+{
+    echo '==== brew'
+    (
+        if which brew > /dev/null; then
+            brew cleanup --prune=all
+        else
+            echo 'brew is not installed.'
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.docker
+{
+    echo '==== docker'
+    (
+        if which docker > /dev/null; then
+            docker ps -q --filter 'status=exited' | xargs -r docker rm
+            docker image prune -f
+            docker volume prune -f
+        else
+            echo 'docker is not installed.'
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.pip
+{
+    echo '==== pip3'
+    (
+        if which pip3 > /dev/null; then
+            pip3 cache purge
+        else
+            echo 'pip3 is not installed.'
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.ubuntu-bash
+{
+    echo '==== ubuntu-bash'
+    (
+        if which ubuntu-bash > /dev/null; then
+            ubuntu-bash build
+        else
+            echo 'ubuntu-bash is not installed.'
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
 
