@@ -4,7 +4,7 @@
 # このファイルは source で読み込まれることを想定しています.
 #
 
-set -eu -o posix -o pipefail
+set -eu -o pipefail
 
 # コマンド置換したときに errexit の値を継承する.
 shopt -s inherit_errexit

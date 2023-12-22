@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "$0")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 
 declare -gr DEFAULT_WORKSPACE_DIR=${GITHUB_CLONE_WORKSPACE_DIR:-~/workspace/github.com}
 
