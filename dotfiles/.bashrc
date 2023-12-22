@@ -36,29 +36,29 @@ if which brew > /dev/null; then
 
     declare -r BREW_PREFIX="$(brew --prefix)"
 
-    export MANPATH="${BREW_PREFIX}/opt/*/libexec/gnuman:$MANPATH"
-    export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/python3/bin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/ruby/bin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/util-linux/bin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/util-linux/sbin:$PATH"
+    export MANPATH="${BREW_PREFIX}/opt/*/libexec/gnuman:${MANPATH}"
+    export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/python3/bin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/ruby/bin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/util-linux/bin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/util-linux/sbin:${PATH}"
 
     source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
 fi
 
 # Ruby (rbenv)
-if [[ -d "$HOME/.rbenv/shims" ]]; then
-    export PATH="$HOME/.rbenv/shims:$PATH"
+if [[ -d "${HOME}/.rbenv/shims" ]]; then
+    export PATH="${HOME}/.rbenv/shims:${PATH}"
 fi
 
 # Go
-if $(which go > /dev/null); then
+if which go > /dev/null; then
     export GOPATH=~/.go
-    export PATH="$GOPATH/bin:$PATH"
+    export PATH="${GOPATH}/bin:${PATH}"
 fi
 
 # custom scripts and functions
