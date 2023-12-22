@@ -2,14 +2,14 @@
 
 set -eu -o pipefail
 
-declare -r NAME="$(basename "${BASH_SOURCE}")"
-declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+declare -gr NAME="$(basename "${BASH_SOURCE}")"
+declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
 source "${BASE_DIR}/_internal"
 
-declare -r EXIT_STATUS_SUCCESS=0
-declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
-declare -r USAGE=`cat <<EOS | strip_heredoc
+declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
         ${NAME} - print hello message
 

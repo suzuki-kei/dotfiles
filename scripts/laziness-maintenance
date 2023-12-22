@@ -6,7 +6,7 @@
 
 set -eu -o pipefail
 
-declare -r ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
+declare -gr ROOT_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
 
 echo '==== setup'
 (

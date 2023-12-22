@@ -2,14 +2,14 @@
 
 set -eu -o pipefail
 
-declare -r NAME="$(basename "${BASH_SOURCE}")"
-declare -r BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+declare -gr NAME="$(basename "${BASH_SOURCE}")"
+declare -gr BASE_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
 source "${BASE_DIR}/_internal"
 
-declare -r EXIT_STATUS_SUCCESS=0
-declare -r EXIT_STATUS_INVALID_ARGUMENT=1
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
-declare -r USAGE=`cat <<EOS | strip_heredoc
+declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
         ${NAME} - print the "Keep the spirit of C"
 
@@ -37,7 +37,7 @@ declare -r USAGE=`cat <<EOS | strip_heredoc
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 
-declare -r C89_VERSION=`cat <<EOS | strip_heredoc
+declare -gr C89_VERSION=`cat <<EOS | strip_heredoc
     Keep the spirit of C (C89)
         * Trust the programmer.
         * Don't prevent the programmer from doing what needs to be done.
@@ -46,7 +46,7 @@ declare -r C89_VERSION=`cat <<EOS | strip_heredoc
         * Make it fast, even if it is not guaranteed to be portable.
 EOS`
 
-declare -r C11_VERSION=`cat <<EOS | strip_heredoc
+declare -gr C11_VERSION=`cat <<EOS | strip_heredoc
     Keep the spirit of C (C11)
         (a) Trust the programmer.
         (b) Don't prevent the programmer from doing what needs to be done.
