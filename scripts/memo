@@ -56,7 +56,7 @@ function main
     exit ${EXIT_STATUS_SUCCESS}
 }
 
-function print_usage
+function print_help
 {
     echo "${USAGE}"
 }
