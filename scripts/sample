@@ -67,9 +67,11 @@ function print_help
 
 function parse_options
 {
-    while getopts 'hn:d:' OPTION
+    declare option
+
+    while getopts 'hn:d:' option
     do
-        case "${OPTION}" in
+        case "${option}" in
             h)
                 print_help
                 exit ${EXIT_STATUS_SUCCESS}

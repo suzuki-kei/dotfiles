@@ -67,11 +67,13 @@ function print_help
 
 function parse_options
 {
-    while getopts 'h' OPTION
+    declare option
+
+    while getopts 'h' option
     do
-        case "${OPTION}" in
+        case "${option}" in
             h)
-                OPTION_HELP=true
+                option_HELP=true
                 ;;
             *)
                 print_help

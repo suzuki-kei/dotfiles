@@ -59,9 +59,11 @@ function print_help
 
 function parse_options
 {
-    while getopts 'd:hlx' OPTION
+    declare option
+
+    while getopts 'd:hlx' option
     do
-        case "${OPTION}" in
+        case "${option}" in
             d)
                 OPTION_MEMO_DIR="${OPTARG}"
                 ;;

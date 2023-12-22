@@ -77,9 +77,11 @@ function parse_options
         OPTION_C89_VERSION=true
     fi
 
-    for OPTION in "$@"
+    declare option
+
+    for option in "$@"
     do
-        case "${OPTION}" in
+        case "${option}" in
             -h)
                 OPTION_HELP=true
                 ;;

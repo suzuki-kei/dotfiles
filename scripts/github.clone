@@ -50,9 +50,11 @@ function print_help
 
 function parse_options
 {
-    while getopts 'd:h' OPTION
+    declare option
+
+    while getopts 'd:h' option
     do
-        case "${OPTION}" in
+        case "${option}" in
             d)
                 OPTION_WORKSPACE_DIR="${OPTARG}"
                 ;;
