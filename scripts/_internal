@@ -12,7 +12,7 @@ shopt -s inherit_errexit
 # このファイルを source で読み込んだファイルが置かれているディレクトリの絶対パス.
 declare SCRIPT_DIR
 SCRIPT_DIR="$(cd -- "$(dirname -- '$0')" && pwd)"
-declare -gr SCRIPT_DIR="${SCRIPT_DIR}"
+declare -gr SCRIPT_DIR
 
 # このファイルを source で読み込んだファイルの名前.
 declare SCRIPT_NAME
@@ -22,12 +22,12 @@ declare -gr SCRIPT_NAME
 # このファイルが置かれているディレクトリの絶対パス.
 declare SOURCE_DIR
 SOURCE_DIR="$(cd -- "$(dirname -- '${BASH_SOURCE[0]}')" && pwd)"
-declare -gr SOURCE_DIR="${SOURCE_DIR}"
+declare -gr SOURCE_DIR
 
 # このファイルの名前.
 declare SOURCE_NAME
 SOURCE_NAME="$(basename -- "${BASH_SOURCE[0]}")"
-declare -gr SOURCE_NAME="${SOURCE_NAME}"
+declare -gr SOURCE_NAME
 
 #
 # ヒアドキュメントの不要なインデントを削除します.
