@@ -1,15 +1,15 @@
 # NOTE
 
-## パスワードを生成する
+## [Linux] パスワードを生成する
 
     pwgen -1cnysv 16 1
 
-## Launchpad の並び順をリセットする (Mac only)
+## [Mac] Launchpad の並び順をリセットする
 
     defaults write com.apple.dock ResetLaunchPad -bool true
     killall Dock
 
-## Chrome で常にシークレットモードにする (Mac only)
+## [Mac] Chrome で常にシークレットモードにする
 
     # シークレットモードで起動する.
     open -n -a "Google Chrome" --args --incognito "https://example.com"
