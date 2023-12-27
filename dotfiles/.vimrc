@@ -24,6 +24,7 @@ set termencoding=utf-8
 highlight MatchParen cterm=underline ctermbg=NONE
 set ambiwidth=double
 set tabstop=4
+set wildmenu
 
 " options for editing
 set backspace=indent,eol,start
