@@ -61,6 +61,6 @@ vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
 
 " yank date/datetime string to unnamed register
-nnoremap ydd <Cmd>let @" = strftime('%Y-%m-%d')<CR>
-nnoremap ydt <Cmd>let @" = strftime('%Y-%m-%d %H:%M:%S')<CR>
+command! YankDate let @" = strftime('%Y-%m-%d')
+command! YankDateTime let @" = strftime('%Y-%m-%d %H:%M:%S')
 
