@@ -49,7 +49,7 @@ nnoremap * msHmt`s*`tzt`s
 nnoremap # msHmt`s#`tzt`s
 
 " execute some command before Ctrl+l in normal mode
-nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
 
 " return to normal mode in insert/visual mode
 inoremap <C-l> <Esc>
