@@ -5,3 +5,9 @@
 	quotepath = false
 [init]
 	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[fetch]
+	prune = true
+[commit]
+	verbose = true
