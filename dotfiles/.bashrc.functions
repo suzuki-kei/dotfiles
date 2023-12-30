@@ -1,6 +1,6 @@
 
-# クリップボードとコマンド履歴を消去する.
-function clear.history
+# クリップボードや履歴, 不要ファイルを削除する.
+function prune
 {
     history -cw
 
