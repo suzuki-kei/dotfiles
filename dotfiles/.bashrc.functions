@@ -14,7 +14,10 @@ function prune
         screen -S "${STY}" -X register . ''
     fi
 
-    rm -vrf ~/.DS_Store
+    # ユーザ作成ディレクトリから .DS_Store を全て削除する.
+    # ユーザ作成ディレクトリは小文字始まりであることを前提とする.
+    find ~/[a-z]* -type f -name .DS_Store | xargs -I{} rm -v -- '{}'
+
     rm -vrf ~/.bash_history
     rm -vrf ~/.gforth-history
     rm -vrf ~/.ghc/ghci_history
