@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+
+declare -gr CHROME_BOOKMARKS_FILE_PATH="${HOME}/Library/Application Support/Google/Chrome/Default/Bookmarks"
+
+case "${1:-csv}" in
+    --csv)
+        jq_query=`cat <<-EOS
+			.roots.bookmark_bar.children[]
+			    | {path: [], node: .}
+			    | recurse(.
+			        | select(.node.type == "folder")
+			        | {path: [.path[], .node.name], node: .node.children[]})
+			    | select(.node.type == "url")
+			    | [(.path | join(" / ")), .node.name, .node.url]
+			    | @csv
+		EOS`
+        ;;
+    *)
+        jq_query=`cat <<-EOS
+			.roots.bookmark_bar.children[]
+			    | {path: [], node: .}
+			    | recurse(.
+			        | select(.node.type == "folder")
+			        | {path: [.path[], .node.name], node: .node.children[]})
+			    | select(.node.type == "url" and (.node.url | test("^https?://"; "ix")))
+			    | "\([.path[], .node.name] | join(" > "))\ng '\(.node.url)'\n"
+			    | @text
+		EOS`
+        ;;
+esac
+
+cat "${CHROME_BOOKMARKS_FILE_PATH}" | jq -r "${jq_query}"
+
