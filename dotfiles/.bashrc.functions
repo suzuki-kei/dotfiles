@@ -14,19 +14,17 @@ function prune
         screen -S "${STY}" -X register . ''
     fi
 
-    rm -rf ~/.DS_Store
-    rm -rf ~/.bash_history
-    rm -rf ~/.gforth-history
-    rm -rf ~/.ghc/ghci_history
-    rm -rf ~/.gosh_history
-    rm -rf ~/.irb_history
-    rm -rf ~/.lesshst
-    rm -rf ~/.node_repl_history
-    rm -rf ~/.python_history
-    rm -rf ~/.tig_history
-    rm -rf ~/.vim/.netrwhist
-
-    clear
+    rm -vrf ~/.DS_Store
+    rm -vrf ~/.bash_history
+    rm -vrf ~/.gforth-history
+    rm -vrf ~/.ghc/ghci_history
+    rm -vrf ~/.gosh_history
+    rm -vrf ~/.irb_history
+    rm -vrf ~/.lesshst
+    rm -vrf ~/.node_repl_history
+    rm -vrf ~/.python_history
+    rm -vrf ~/.tig_history
+    rm -vrf ~/.vim/.netrwhist
 }
 
 # date のデフォルトフォーマットを変更する.
