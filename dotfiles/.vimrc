@@ -65,7 +65,7 @@ vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
 
 " disable <S-k> in normal mode.
-nnoremap <S-k> <C-l>
+nnoremap <S-k> <Nop>
 
 " execute highlighted text well in visual mode.
 vnoremap <S-k> "vy:!<C-r>=TextToShellCommands(@v)<CR><CR>
