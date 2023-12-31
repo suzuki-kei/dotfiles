@@ -4,32 +4,92 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 
 declare -gr CHROME_BOOKMARKS_FILE_PATH="${HOME}/Library/Application Support/Google/Chrome/Default/Bookmarks"
 
-case "${1:-csv}" in
-    --csv)
-        jq_query=`cat <<-EOS
-			.roots.bookmark_bar.children[]
-			    | {path: [], node: .}
-			    | recurse(.
-			        | select(.node.type == "folder")
-			        | {path: [.path[], .node.name], node: .node.children[]})
-			    | select(.node.type == "url")
-			    | [(.path | join(" / ")), .node.name, .node.url]
-			    | @csv
-		EOS`
-        ;;
-    *)
-        jq_query=`cat <<-EOS
-			.roots.bookmark_bar.children[]
-			    | {path: [], node: .}
-			    | recurse(.
-			        | select(.node.type == "folder")
-			        | {path: [.path[], .node.name], node: .node.children[]})
-			    | select(.node.type == "url" and (.node.url | test("^https?://"; "ix")))
-			    | "\([.path[], .node.name] | join(" > "))\ng '\(.node.url)'\n"
-			    | @text
-		EOS`
-        ;;
-esac
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
 
-cat "${CHROME_BOOKMARKS_FILE_PATH}" | jq -r "${jq_query}"
+declare -gr USAGE=`cat <<EOS | strip_heredoc
+    NAME
+        ${SCRIPT_NAME} - extract chrome bookmarks
+
+    SYNOPSIS
+        ${SCRIPT_NAME} [OPTION...]
+
+    DESCRIPTION
+        Extract Chrome bookmarks.
+
+    OPTIONS
+        -h, --help
+            Print the help message.
+
+        --csv
+            Output as CSV format.
+
+        --jsonl
+            Output as JSONL format.
+
+        --text
+            Output as text format.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+EOS`
+
+function main
+{
+    case "${1:---text}" in
+        -h | --help)
+            print_help
+            exit ${EXIT_STATUS_SUCCESS}
+            ;;
+        --csv)
+            chrome_bookmarks_jsonl | jq -r '[.path, .name, .url] | @csv'
+            exit ${EXIT_STATUS_SUCCESS}
+            ;;
+        --jsonl)
+            chrome_bookmarks_jsonl
+            exit ${EXIT_STATUS_SUCCESS}
+            ;;
+        --text)
+            chrome_bookmarks_jsonl | jq -r '"\([.path, .name, .url] | join("\n    "))\n" | @text'
+            exit ${EXIT_STATUS_SUCCESS}
+            ;;
+        *)
+            echo "ERROR: invalid option - $@" >&2
+            exit ${EXIT_STATUS_INVALID_ARGUMENT}
+            ;;
+    esac
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+#
+# Chrome のブックマークファイルを以下の形式の JSONL に変換する.
+#
+#     {path: <string>, name: <string>, url: <string>}
+#
+# Example:
+#     {path: "folder 1 > folder 2", name: "example.com", "https://example.com"}
+#     {path: "folder 1 > folder 2", name: "example.com", "https://example.com"}
+#     {path: "folder 1 > folder 2", name: "example.com", "https://example.com"}
+#
+function chrome_bookmarks_jsonl
+{
+    cat "${CHROME_BOOKMARKS_FILE_PATH}" | jq -cr '
+        .roots.bookmark_bar.children[]
+            | {path: [], node: .}
+            | recurse(.
+                | select(.node.type == "folder")
+                | {path: [.path[], .node.name], node: .node.children[]})
+            | select(.node.type == "url")
+            | {path: (.path | join(" / ")), name: .node.name, url: .node.url}
+    '
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
 
