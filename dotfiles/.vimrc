@@ -63,8 +63,21 @@ vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 " disable <S-k> in normal mode.
 nnoremap <S-k> <C-l>
 
-" execute highlighted text as shell commands silently in visual mode.
-vnoremap <S-k> "vy:silent !<C-r>=substitute(@v, "\n", ';', 'g')<CR><CR><C-l>
+" execute highlighted text well in visual mode.
+vnoremap <S-k> "vy:!<C-r>=TextToShellCommands(@v)<CR><CR>
+
+function! TextToShellCommands(text) abort
+    let lines = split(trim(a:text), "\n")
+    let commands = map(lines, function('LineToShellCommand'))
+    return join(commands, '; ')
+endfunction
+
+function! LineToShellCommand(i, line) abort
+    if match(a:line, '^https\?://') >= 0
+        return "g '" . a:line . "'"
+    endif
+    return a:line
+endfunction
 
 " yank date/datetime string to unnamed register.
 command! YankDate let @" = strftime('%Y-%m-%d')
