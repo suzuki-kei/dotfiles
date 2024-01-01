@@ -68,7 +68,7 @@ vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 nnoremap <S-k> <Nop>
 
 " execute highlighted text well in visual mode.
-vnoremap <S-k> "vy:!<C-r>=TextToShellCommands(@v)<CR><CR>
+vnoremap <S-k> "vy:!<C-r>=escape(TextToShellCommands(@v), '%')<CR><CR>
 
 function! TextToShellCommands(text) abort
     let lines = split(trim(a:text), "\n")
