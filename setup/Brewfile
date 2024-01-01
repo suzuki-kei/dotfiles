@@ -37,6 +37,7 @@ brew "rlwrap"           # https://github.com/hanslub42/rlwrap
 brew "screen"           # https://www.gnu.org/software/screen
 #brew "semgrep"          # https://semgrep.dev
 brew "vim"              # https://www.vim.org/
+brew "w3m"              # https://w3m.sourceforge.net/
 
 # data processing
 #brew "jc"               # https://github.com/kellyjonbrazil/jc
