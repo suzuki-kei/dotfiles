@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+
+function main
+{
+    declare keyword
+    keyword=$(echo -n "$1" | jq -sMRr '@uri')
+
+    declare url
+    url="https://eow.alc.co.jp/search?q=${keyword}"
+
+    w3m -dump -cols 7777 "${url}" \
+        | sed -rf "${SCRIPT_DIR}/alc.sed"
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
+
