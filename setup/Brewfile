@@ -1,5 +1,7 @@
 
 # adapt for Linux
+brew "bash"             # https://www.gnu.org/software/bash/
+brew "bash-completion"  # https://salsa.debian.org/debian/bash-completion
 brew "coreutils"        # https://www.gnu.org/software/coreutils
 brew "curl"             # https://curl.se
 brew "diffutils"        # https://www.gnu.org/s/diffutils/
@@ -15,43 +17,19 @@ brew "util-linux"       # https://github.com/util-linux/util-linux
 brew "watch"            # https://gitlab.com/procps-ng/procps
 brew "wget"             # https://www.gnu.org/software/wget/
 
-# bash
-brew "bash"             # https://www.gnu.org/software/bash/
-brew "bash-completion"  # https://salsa.debian.org/debian/bash-completion
-
-# git
-brew "git"              # https://git-scm.com
-brew "tig"              # https://github.com/jonas/tig
-
-# terraform
-tap "hashicorp/tap"
-brew "hashicorp/tap/terraform"
-
 # general command
 brew "bat"              # https://github.com/sharkdp/bat
+brew "git"              # https://git-scm.com
 brew "htop"             # https://htop.dev/
+brew "jq"               # https://github.com/stedolan/jq
 brew "moreutils"        # https://joeyh.name/code/moreutils/
 brew "num-utils"        # https://suso.suso.org/xulu/Num-utils
 brew "pwgen"            # https://pwgen.sourceforge.io/
 brew "rlwrap"           # https://github.com/hanslub42/rlwrap
 brew "screen"           # https://www.gnu.org/software/screen
-#brew "semgrep"          # https://semgrep.dev
+brew "tig"              # https://github.com/jonas/tig
 brew "vim"              # https://www.vim.org/
 brew "w3m"              # https://w3m.sourceforge.net/
-
-# data processing
-#brew "jc"               # https://github.com/kellyjonbrazil/jc
-brew "jq"               # https://github.com/stedolan/jq
-#brew "yq"               # https://github.com/mikefarah/yq
-
-# entertainment
-#brew "cmatrix"          # https://github.com/abishekvashok/cmatrix/
-#brew "cowsay"           # https://github.com/tnalpgge/rank-amateur-cowsay
-#brew "figlet"           # http://www.figlet.org/
-#brew "fortune"          # https://www.ibiblio.org/pub/linux/games/amusements/fortune/!INDEX.html
-#brew "nyancat"          # https://github.com/klange/nyancat
-#brew "sl"               # https://github.com/mtoyoda/sl
-#brew "toilet"           # http://caca.zoy.org/wiki/toilet
 
 # programming
 brew "cabal-install"    # https://www.haskell.org/cabal/
@@ -64,8 +42,11 @@ brew "go"               # https://go.dev/
 brew "node"             # https://nodejs.org/
 brew "php"              # https://www.php.net/
 brew "python@3.12"      # https://www.python.org/
-brew "r"                # https://www.r-project.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
 brew "swi-prolog"       # https://www.swi-prolog.org/
+
+# terraform
+tap "hashicorp/tap"
+brew "hashicorp/tap/terraform"
 
