@@ -64,11 +64,18 @@ vnoremap ? y?<C-r>"
 vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sN
 vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
 
-" disable <S-k> in normal mode.
+" disable <S-k> in normal/visual mode.
 nnoremap <S-k> <Nop>
+vnoremap <S-k> <Nop>
+
+" execute command in response to subsequent keystrokes after <S-k> in visual mode.
+vnoremap <S-k>help "vy:help <C-r>v<CR><CR>
+vnoremap <S-k>man "vy:terminal ++shell man <C-r>=escape(trim(@v), '%')<CR><CR>
+vnoremap <S-k>alc "vy:terminal ++shell alc '<C-r>=escape(trim(@v), '%')<CR>'<CR>
+vnoremap <S-k>goo "vy:terminal ++shell goo '<C-r>=escape(trim(@v), '%')<CR>'<CR>
 
 " execute highlighted text well in visual mode.
-vnoremap <S-k> "vy:!<C-r>=escape(TextToShellCommands(@v), '%')<CR><CR>
+vnoremap <S-k><S-k> "vy:terminal ++shell <C-r>=escape(TextToShellCommands(@v), '%')<CR><CR>
 
 function! TextToShellCommands(text) abort
     let lines = split(trim(a:text), "\n")
