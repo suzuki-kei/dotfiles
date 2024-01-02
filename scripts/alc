@@ -5,13 +5,22 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 function main
 {
     declare keyword
-    keyword=$(echo -n "$1" | jq -sMRr '@uri')
+    keyword="$1"
 
     declare url
-    url="https://eow.alc.co.jp/search?q=${keyword}"
+    url="https://eow.alc.co.jp/search?q=$(echo -n "$1" | jq -sMRr '@uri')"
 
-    LANG=ja_JP.UTF-8 w3m -dump -cols 7777 -o use_history=false -o use_cookie=false "${url}" \
-        | sed -rf "${SCRIPT_DIR}/alc.sed"
+    declare result
+    result="$(
+        LANG=ja_JP.UTF-8 w3m -dump -cols 7777 -o use_history=false -o use_cookie=false "${url}" \
+            | sed -rf "${SCRIPT_DIR}/alc.sed"
+    )"
+
+    if [[ "${result}" == '' ]]; then
+        echo "${keyword} - not found"
+    else
+        echo "${result}"
+    fi
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
