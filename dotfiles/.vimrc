@@ -55,9 +55,9 @@ nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>d
 inoremap <C-l> <Esc>
 vnoremap <C-l> <Esc>
 
-" search for selected text in visual mode.
-vnoremap / y/<C-r>"<CR>
-vnoremap ? y?<C-r>"<CR>
+" enter search command with selected text in visual mode.
+vnoremap / y/<C-r>"
+vnoremap ? y?<C-r>"
 
 " search for selected text in visual mode. however, cursor does not move.
 " see help "v_y", "/", "c_<C-R>", "/\V", "c_CTRL-R_=", "builtin-functions", "@", "<CR>"
