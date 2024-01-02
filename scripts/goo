@@ -5,16 +5,25 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 function main
 {
     declare keyword
-    keyword=$(echo -n "$1" | jq -sMRr '@uri')
+    keyword="$1"
 
     declare url
-    url="https://dictionary.goo.ne.jp/srch/jn/${keyword}/m1u/"
+    url="https://dictionary.goo.ne.jp/srch/jn/$(echo -n "${keyword}" | jq -SMRr '@uri')/m1u/"
 
-    curl -sL "${url}" \
-        | sed -nr 's/^ *"(headline|description)": "(.+)",$/\2/p' \
-        | sed -r '1s/$/\n/' \
-        | sed -r '$s/$/\n/' \
-        | sed -r 's/([２３４５６７８９] )/\n\n\1/g'
+    declare result
+    result="$(
+        curl -sL "${url}" \
+            | sed -nr 's/^ *"(headline|description)": "(.+)",$/\2/p' \
+            | sed -r '1s/$/\n/' \
+            | sed -r '$s/$/\n/' \
+            | sed -r 's/([２３４５６７８９] )/\n\n\1/g'
+    )"
+
+    if [[ "${result}" == '' ]]; then
+        echo "${keyword} - not found"
+    else
+        echo "${result}"
+    fi
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
