@@ -91,6 +91,9 @@ function! LineToShellCommand(i, line) abort
     return a:line
 endfunction
 
+" enter visual mode and select a word under the cursor.
+nnoremap <S-k>v lb<C-v>e
+
 " yank date/datetime string to unnamed register.
 command! YankDate let @" = strftime('%Y-%m-%d')
 command! YankDateTime let @" = strftime('%Y-%m-%d %H:%M:%S')
