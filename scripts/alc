@@ -10,7 +10,7 @@ function main
     declare url
     url="https://eow.alc.co.jp/search?q=${keyword}"
 
-    w3m -dump -cols 7777 -o use_history=false -o use_cookie=false "${url}" \
+    LANG=ja_JP.UTF-8 w3m -dump -cols 7777 -o use_history=false -o use_cookie=false "${url}" \
         | sed -rf "${SCRIPT_DIR}/alc.sed"
 }
 
