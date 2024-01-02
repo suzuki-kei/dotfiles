@@ -71,6 +71,7 @@ vnoremap <S-k> <Nop>
 " execute command in response to subsequent keystrokes after <S-k> in visual mode.
 vnoremap <S-k>help "vy:help <C-r>v<CR><CR>
 vnoremap <S-k>man "vy:terminal ++shell man <C-r>=escape(trim(@v), '%')<CR><CR>
+vnoremap <S-k>g "vy:terminal ++shell g '<C-r>=escape(trim(@v), '%')<CR>'<CR>
 vnoremap <S-k>alc "vy:terminal ++shell alc '<C-r>=escape(trim(@v), '%')<CR>'<CR>
 vnoremap <S-k>goo "vy:terminal ++shell goo '<C-r>=escape(trim(@v), '%')<CR>'<CR>
 
