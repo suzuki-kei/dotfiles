@@ -64,24 +64,24 @@ vnoremap ? y?<C-r>"
 vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sN
 vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
 
-" disable <S-k> in normal/visual mode.
-nnoremap <S-k> <Nop>
-vnoremap <S-k> <Nop>
+" enter visual mode and select a word under the cursor.
+nnoremap <S-k> lb<C-v>e
 
-" execute command in response to subsequent keystrokes after <S-k> in visual mode.
-vnoremap <S-k>help "vy:help <C-r>v<CR><CR>
-vnoremap <S-k>man "vy:terminal ++shell man <C-r>=escape(trim(@v), '%')<CR><CR>
-vnoremap <S-k>g "vy:terminal ++shell g '<C-r>=escape(trim(@v), '%')<CR>'<CR>
-vnoremap <S-k>alc "vy:terminal ++shell alc '<C-r>=escape(trim(@v), '%')<CR>'<CR>
-vnoremap <S-k>goo "vy:terminal ++shell goo '<C-r>=escape(trim(@v), '%')<CR>'<CR>
+" expand selected text to ex commands and open command-line window.
+vnoremap <S-k> "vy<Cmd>call TextToExCommands(@v)<CR>q:G"vpkdgg
 
-" execute highlighted text well in visual mode.
-vnoremap <S-k><S-k> "vy:terminal ++shell <C-r>=escape(TextToShellCommands(@v), '%')<CR><CR>
-
-function! TextToShellCommands(text) abort
+function! TextToExCommands(text) abort
+    let commands = []
     let lines = split(trim(a:text), "\n")
-    let commands = map(lines, function('LineToShellCommand'))
-    return join(commands, '; ')
+    let words = split(a:text, '[^[:keyword:]]\+')
+    let quoted_words = map(words, "\"'\" . v:val . \"'\"")
+    call add(commands, len(words) > 1 ? '' : 'help ' . words[0])
+    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell man ' . quoted_words[0])
+    call add(commands, 'terminal ++shell ' . join(map(lines, function('LineToShellCommand')), '; '))
+    call add(commands, 'terminal ++shell g ' . join(uniq(sort(quoted_words)), ' '))
+    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell goo ' . quoted_words[0])
+    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell alc ' . quoted_words[0])
+    let @v = join(filter(commands, 'v:val != ""'), "\n")
 endfunction
 
 function! LineToShellCommand(i, line) abort
@@ -90,7 +90,4 @@ function! LineToShellCommand(i, line) abort
     endif
     return a:line
 endfunction
-
-" enter visual mode and select a word under the cursor.
-nnoremap <S-k>v lb<C-v>e
 
