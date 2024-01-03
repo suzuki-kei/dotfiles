@@ -93,3 +93,5 @@ function! LineToShellCommand(i, line) abort
     return a:line
 endfunction
 
+command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
+
