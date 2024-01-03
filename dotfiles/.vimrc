@@ -44,24 +44,24 @@ set whichwrap=b,s,h,l,<,>
 " options for diff mode.
 set diffopt=vertical,closeoff,context:77777
 
+" return to normal mode.
+inoremap <C-l> <Esc>
+vnoremap <C-l> <Esc>
+
+" reset before <C-l>.
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
+
+" enter search command with selected text.
+vnoremap / y/<C-r>"
+vnoremap ? y?<C-r>"
+
 " highlight a word under the cursor.
 nnoremap * msHmt`s*`tzt`s
 nnoremap # msHmt`s#`tzt`s
 nnoremap g* msHmt`sg*`tzt`s
 nnoremap g# msHmt`sg#`tzt`s
 
-" execute some command before Ctrl+l in normal mode.
-nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
-
-" return to normal mode in insert/visual mode.
-inoremap <C-l> <Esc>
-vnoremap <C-l> <Esc>
-
-" enter search command with selected text in visual mode.
-vnoremap / y/<C-r>"
-vnoremap ? y?<C-r>"
-
-" search for selected text in visual mode. however, cursor does not move.
+" searches selected text, but cursor does not move.
 " see help "v_y", "/", "c_<C-R>", "/\V", "c_CTRL-R_=", "builtin-functions", "@", "<CR>"
 vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sN
 vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
