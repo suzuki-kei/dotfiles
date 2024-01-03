@@ -44,9 +44,11 @@ set whichwrap=b,s,h,l,<,>
 " options for diff mode.
 set diffopt=vertical,closeoff,context:77777
 
-" highlight a word under the cursor when searched by '*' or '#' in normal mode.
+" highlight a word under the cursor.
 nnoremap * msHmt`s*`tzt`s
 nnoremap # msHmt`s#`tzt`s
+nnoremap g* msHmt`sg*`tzt`s
+nnoremap g# msHmt`sg#`tzt`s
 
 " execute some command before Ctrl+l in normal mode.
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
