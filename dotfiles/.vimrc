@@ -74,16 +74,16 @@ vnoremap <S-k> "vy<Cmd>call TextToExCommands(@v)<CR>q:G"vpkdgg
 
 function! TextToExCommands(text) abort
     let commands = []
-    let lines = split(trim(a:text), "\n")
-    let words = split(a:text, '[^[:keyword:]]\+')
-    let quoted_words = map(words, "\"'\" . v:val . \"'\"")
+    let lines = filter(map(split(a:text, "\n"), 'trim(v:val)'), 'v:val != ""')
+    let words = map(split(a:text, '[ \t\n]\+'), 'trim(v:val)')
     call add(commands, len(words) > 1 ? '' : 'help ' . words[0])
-    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell man ' . quoted_words[0])
-    call add(commands, 'terminal ++shell ' . join(map(lines, function('LineToShellCommand')), '; '))
-    call add(commands, 'terminal ++shell g ' . join(uniq(sort(quoted_words)), ' '))
-    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell goo ' . quoted_words[0])
-    call add(commands, len(quoted_words) > 1 ? '' : 'terminal ++shell alc ' . quoted_words[0])
-    let @v = join(filter(commands, 'v:val != ""'), "\n")
+    call add(commands, 'terminal ++shell ' . join(map(copy(lines), function('LineToShellCommand')), '; '))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell man ' . shellescape(words[0]))
+    call add(commands, 'terminal ++shell g ' . join(map(uniq(sort(copy(words))), 'shellescape(v:val)'), ' '))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell goo ' . shellescape(words[0]))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell alc ' . shellescape(words[0]))
+    " see help "cmdline-special" to know escape '#%'.
+    let @v = escape(join(filter(commands, 'v:val != ""'), "\n"), '#%')
 endfunction
 
 function! LineToShellCommand(i, line) abort
