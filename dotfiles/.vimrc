@@ -78,10 +78,10 @@ function! TextToExCommands(text) abort
     let words = map(split(a:text, '[ \t\n]\+'), 'trim(v:val)')
     call add(commands, len(words) > 1 ? '' : 'help ' . words[0])
     call add(commands, 'terminal ++shell ' . join(map(copy(lines), function('LineToShellCommand')), '; '))
-    call add(commands, len(words) > 1 ? '' : 'terminal ++shell man ' . shellescape(words[0]))
-    call add(commands, 'terminal ++shell g ' . join(map(uniq(sort(copy(words))), 'shellescape(v:val)'), ' '))
-    call add(commands, len(words) > 1 ? '' : 'terminal ++shell goo ' . shellescape(words[0]))
-    call add(commands, len(words) > 1 ? '' : 'terminal ++shell alc ' . shellescape(words[0]))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell ++close man ' . shellescape(words[0]))
+    call add(commands, 'terminal ++shell ++hidden ++close g ' . join(map(uniq(sort(copy(words))), 'shellescape(v:val)'), ' '))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell ++hidden ++open goo ' . shellescape(words[0]))
+    call add(commands, len(words) > 1 ? '' : 'terminal ++shell ++hidden ++open alc ' . shellescape(words[0]))
     " see help "cmdline-special" to know escape '#%'.
     let @v = escape(join(filter(commands, 'v:val != ""'), "\n"), '#%')
 endfunction
