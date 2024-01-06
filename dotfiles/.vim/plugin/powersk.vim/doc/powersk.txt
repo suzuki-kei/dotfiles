@@ -1,0 +1,33 @@
+*powersk.txt*
+
+==============================================================================
+CONTENTS                                                    *powersk-contents*
+
+INTRODUCTION                                            |powersk-introduction|
+INTERFACE                                                  |powersk-interface|
+    VARIABLES                                              |powersk-variables|
+    KEY-MAPPINGS                                        |powersk-key-mappings|
+
+==============================================================================
+INTRODUCTION                                            *powersk-introduction*
+
+powersk (Power Shift-k) is plugin that enpower <S-k>.
+
+==============================================================================
+INTERFACE                                                  *powersk-interface*
+
+------------------------------------------------------------------------------
+VARIABLES                                                  *powersk-variables*
+
+g:powersk_plugin_disable
+    Disable this plugin if truthy value set.
+
+------------------------------------------------------------------------------
+KEY-MAPPINGS                                            *powersk-key-mappings*
+
+<S-k>                                      *powersk-<S-k>* *powersk-n_SHIFT-K*
+    Enter visual mode and select a word under the cursor.
+
+{Visual}<S-k>                            *powersk-v_<S-k>* *powersk-v_SHIFT-K*
+    Expand selected text to ex commands and open command-line window.
+

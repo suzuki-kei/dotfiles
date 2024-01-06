@@ -41,6 +41,9 @@ function setup_dotfiles
             cp -p {"${dotfiles_dir}",~}/"${file_name}"
         fi
     done
+
+    mkdir -p ~/.vim
+    ln -fsT "${dotfiles_dir}/.vim/plugin" ~/.vim/plugin
 }
 
 function setup_brew_packages
