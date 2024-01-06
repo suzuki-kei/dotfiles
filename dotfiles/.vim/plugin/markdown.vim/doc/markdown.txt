@@ -1,0 +1,41 @@
+*markdown.txt*
+
+==============================================================================
+CONTENTS                                                   *markdown-contents*
+
+INTRODUCTION                                           |markdown-introduction|
+INTERFACE                                                 |markdown-interface|
+    VARIABLES                                             |markdown-variables|
+    COMMANDS                                               |markdown-commands|
+    KEY-MAPPINGS                                       |markdown-key-mappings|
+
+==============================================================================
+INTRODUCTION                                           *markdown-introduction*
+
+markdown is plugin for markdown.
+
+==============================================================================
+INTERFACE                                                 *markdown-interface*
+
+------------------------------------------------------------------------------
+VARIABLES                                                 *markdown-variables*
+
+g:markdown_plugin_disable
+    Disable this plugin if truthy value set.
+
+------------------------------------------------------------------------------
+COMMANDS                                                   *markdown-commands*
+
+ListMarkdownTitles                             *markdown-c_ListMarkdownTitles*
+    List markdown titles in <markdown-titles> window.
+    see |markdown-key-mappings| for operations in <markdown-titles> window.
+
+------------------------------------------------------------------------------
+KEY-MAPPINGS                                           *markdown-key-mappings*
+
+q                                                               *markdown-n_q*
+    Close <markdown-titles> widnow.
+
+<Enter>                                                   *markdown-n_<Enter>*
+    Close <markdown-titles> window and move cursor to selected title line.
+
