@@ -139,5 +139,6 @@ function! Unique(values) abort
     return uniqued_values
 endfunction
 
+" open the same page in vim-jp.org as vim help.
 command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
 
