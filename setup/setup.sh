@@ -28,14 +28,14 @@ function setup_dotfiles
         echo "source '${dotfiles_dir}/.bashrc.clear-if-new-screen-window'" >> ~/.bashrc
     fi
 
-    declare -r FILE_NAMES=(
+    declare -r file_names=(
         .bash_profile
         .gitconfig
         .screenrc
         .vimrc
         .docker/config.json
     )
-    for file_name in "${FILE_NAMES[@]}"
+    for file_name in "${file_names[@]}"
     do
         if [[ ! -f ~/${file_name} ]]; then
             cp -p {"${dotfiles_dir}",~}/"${file_name}"
