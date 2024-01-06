@@ -52,8 +52,8 @@ vnoremap <C-l> <Esc>
 nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
 
 " enter search command with selected text.
-vnoremap / y/<C-r>"
-vnoremap ? y?<C-r>"
+vnoremap / "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
+vnoremap ? "vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 
 " highlight a word under the cursor.
 nnoremap * msHmt`s*`tzt`s
