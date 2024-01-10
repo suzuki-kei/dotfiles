@@ -70,3 +70,6 @@ vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 " open the same page in vim-jp.org as vim help.
 command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
 
+" clear status line.
+autocmd VimEnter * ++once echo ''
+
