@@ -10,6 +10,7 @@ set nonumber
 set noruler
 set noswapfile
 set nowrap
+set shortmess+=I
 set viminfo=
 set viminfofile=NONE
 syntax off
