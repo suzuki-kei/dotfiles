@@ -89,3 +89,37 @@ function mkcd
     mkdir -p "$1" && cd "$_"
 }
 
+function github.list
+{
+    declare -r workspace_dir=~/workspace/github.com
+    find "${workspace_dir}" -mindepth 2 -maxdepth 2 -type d -printf '%P\n' | sort
+}
+
+function github.cd
+{
+    declare -r workspace_dir=~/workspace/github.com/suzuki-kei
+
+    if [[ $# == 0 ]]; then
+        cd -- "${workspace_dir}"
+    else
+        cd -- "${workspace_dir}/$1"
+    fi
+}
+
+function _github.cd.bash_complete
+{
+    declare -r workspace_dir=~/workspace/github.com/suzuki-kei
+
+    declare -r word="${COMP_WORDS[${COMP_CWORD}]}"
+
+    if [[ ${COMP_CWORD} == 1 ]]; then
+        declare dirnames
+        dirnames="$(find "${workspace_dir}" -mindepth 1 -maxdepth 1 -type d -printf '%P\n' | sort)"
+        (( $? == 0 )) || return
+
+        COMPREPLY=($(compgen -W "${dirnames}" -- "${word}"))
+    fi
+}
+
+complete -F _github.cd.complete github.cd
+
