@@ -121,5 +121,5 @@ function _github.cd.bash_complete
     fi
 }
 
-complete -F _github.cd.complete github.cd
+complete -F _github.cd.bash_complete github.cd
 
