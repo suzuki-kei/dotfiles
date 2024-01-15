@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+
+source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
+declare -gr EXIT_STATUS_NOT_IN_SCREEN=2
+
+declare -gr USAGE=`cat <<EOS | strip_heredoc
+    NAME
+        ${SCRIPT_NAME} - clear current window of screen
+
+    SYNOPSIS
+        ${SCRIPT_NAME} [OPTION...]
+
+    DESCRIPTION
+        Clear the current window of attached screen session.
+
+    OPTIONS
+        -h
+            Print the help message.
+
+    EXIT STATUS
+        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
+        ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
+EOS`
+
+function main
+{
+    parse_options "$@"
+    set -- "${OPTION_ARGS[@]}"
+
+    if ${OPTION_HELP}; then
+        print_help
+        exit ${EXIT_STATUS_SUCCESS}
+    fi
+
+    screen_clear "${1:-$(pwd)}"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_help
+{
+    echo "${USAGE}"
+}
+
+function parse_options
+{
+    declare option
+
+    while getopts 'h' option
+    do
+        case "${option}" in
+            h)
+                OPTION_HELP=true
+                ;;
+            *)
+                print_help
+                exit ${EXIT_STATUS_INVALID_ARGUMENT}
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+    declare -agr OPTION_ARGS=("$@")
+    declare -gr OPTION_HELP=${OPTION_HELP:-false}
+
+    if [[ $# -gt 1 ]]; then
+        echo "illegal option(s) -- $@" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    fi
+}
+
+function screen_clear
+{
+    if [[ -z "${STY:-}" ]]; then
+        echo 'Not in screen.' >&2
+        exit 1
+    fi
+
+    declare scrollback
+    scrollback=$(screen -S "${STY}" -Q info | cut -d' ' -f1 | cut -d'+' -f2)
+
+    screen -S "${STY}" -X scrollback 0
+    screen -S "${STY}" -X clear
+    screen -S "${STY}" -X pow_break
+    screen -S "${STY}" -X scrollback ${scrollback}
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
+
