@@ -9,9 +9,7 @@ function prune
     fi
 
     if [[ "${STY:-}" != '' ]]; then
-        screen -S "${STY}" -X scrollback 0
-        screen -S "${STY}" -X source ~/.screenrc
-        screen -S "${STY}" -X register . ''
+        screen.clear -p
     fi
 
     # ユーザ作成ディレクトリから .DS_Store を全て削除する.
