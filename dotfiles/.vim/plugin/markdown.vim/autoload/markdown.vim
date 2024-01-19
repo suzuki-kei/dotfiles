@@ -30,6 +30,7 @@ function! markdown#list() abort
         call setpos('.', [0, cursor_lnum_in_markdown_window, 1, 0])
         set buftype=nofile
         set cursorline
+        set nomodifiable
         nnoremap <buffer><silent> q :q<CR>
         nnoremap <buffer> <Enter> <Cmd>call markdown#title_selected()<CR>
     else
