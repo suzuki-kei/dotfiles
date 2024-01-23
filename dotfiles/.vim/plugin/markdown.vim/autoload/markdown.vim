@@ -11,7 +11,6 @@ function! markdown#list() abort
     let numbered_lines = map(copy(lines), {-> [v:key + 1, v:val]})
     let numbered_title_lines = filter(copy(numbered_lines), {-> match(v:val[1], '^#\+ ') != -1})
     let descriptions = map(copy(numbered_title_lines), {-> printf('%6d: %s', v:val[0], v:val[1])})
-    call setbufline(s:buffer_name, 1, descriptions)
 
     " determine cursor lnum in markdown title window.
     let cursor_lnum_in_markdown_window = len(numbered_title_lines)
@@ -27,6 +26,8 @@ function! markdown#list() abort
     let window_ids = win_findbuf(bufnr(s:buffer_name))
     if len(window_ids) == 0
         execute printf('split %s', s:buffer_name)
+        set modifiable
+        call setbufline(s:buffer_name, 1, descriptions)
         call setpos('.', [0, cursor_lnum_in_markdown_window, 1, 0])
         set buftype=nofile
         set cursorline
@@ -35,6 +36,9 @@ function! markdown#list() abort
         nnoremap <buffer> <Enter> <Cmd>call markdown#title_selected()<CR>
     else
         call win_gotoid(window_ids[0])
+        set modifiable
+        call setbufline(s:buffer_name, 1, descriptions)
+        set nomodifiable
         call setpos('.', [window_ids[0], cursor_lnum_in_markdown_window, 1, 0])
     endif
 endfunction
