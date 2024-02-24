@@ -1,4 +1,9 @@
 
+# homebrew
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/core"
+
 # adapt for Linux
 brew "bash"             # https://www.gnu.org/software/bash/
 brew "bash-completion"  # https://salsa.debian.org/debian/bash-completion
@@ -45,6 +50,9 @@ brew "python@3.12"      # https://www.python.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
 brew "swi-prolog"       # https://www.swi-prolog.org/
+
+# Visual Studio Code
+cask "visual-studio-code"
 
 # terraform
 tap "hashicorp/tap"
