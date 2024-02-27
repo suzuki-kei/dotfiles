@@ -74,3 +74,6 @@ command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape(
 " clear status line.
 autocmd VimEnter * ++once echo ''
 
+" konami command.
+nnoremap <Up><Up><Down><Down><Left><Right><Left><Right>ba <Cmd>echo '↑↑↓↓←→←→ＢＡ'<CR>
+
