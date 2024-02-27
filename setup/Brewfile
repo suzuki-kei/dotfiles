@@ -44,6 +44,7 @@ brew "gforth"           # https://www.gnu.org/software/gforth
 brew "ghc"              # https://haskell.org/ghc/
 brew "go"               # https://go.dev/
 brew "node"             # https://nodejs.org/
+brew "openjdk"          # https://openjdk.java.net/
 brew "php"              # https://www.php.net/
 brew "python@3.12"      # https://www.python.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme

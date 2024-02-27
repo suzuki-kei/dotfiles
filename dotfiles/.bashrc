@@ -45,6 +45,7 @@ if which brew > /dev/null; then
     export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
     export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
     export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="${BREW_PREFIX}/opt/openjdk/bin:$PATH"
     export PATH="${BREW_PREFIX}/opt/python3/bin:${PATH}"
     export PATH="${BREW_PREFIX}/opt/ruby/bin:${PATH}"
     export PATH="${BREW_PREFIX}/opt/util-linux/bin:${PATH}"
