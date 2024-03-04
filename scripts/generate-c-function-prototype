@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
 #
-# C 言語のソースファイルから関数プロトタイプを生成する.
+# C/C++ 言語のソースファイルから関数プロトタイプを生成する.
 #
 
 source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
 
-grep -oP '^\w+ +\w+\([\w,* ]*\)$' "$@" | grep -vF 'int main(void)' | sed 's/$/;/'
+function main
+{
+    cat "$@" \
+        | grep -v ');$' \
+        | grep -oP '^\w[\w*&:<>]* +[^ ]+\([\w*&:<>, ]*\)' \
+        | grep -vF 'int main()' \
+        | grep -vF 'int main(void)' \
+        | sed 's/$/;/' \
+        || true
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
 
