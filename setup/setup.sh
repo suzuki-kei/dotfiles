@@ -24,9 +24,6 @@ function setup_dotfiles
     if ! grep -E "^source '${bashrc_path}'$" ~/.bashrc > /dev/null; then
         echo "source '${bashrc_path}'" >> ~/.bashrc
     fi
-    if ! grep -E "^source '${dotfiles_dir}/.bashrc.clear-if-new-screen-window'$" ~/.bashrc > /dev/null; then
-        echo "source '${dotfiles_dir}/.bashrc.clear-if-new-screen-window'" >> ~/.bashrc
-    fi
 
     declare -r file_names=(
         .bash_profile
