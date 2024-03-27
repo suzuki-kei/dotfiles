@@ -37,21 +37,19 @@ if which brew > /dev/null; then
     # see https://github.com/Homebrew/brew/blob/master/docs/Analytics.md
     export HOMEBREW_NO_ANALYTICS=1
 
-    declare -r BREW_PREFIX="$(brew --prefix)"
+    export MANPATH="$(brew --prefix)/opt/*/libexec/gnuman:${MANPATH}"
+    export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:${PATH}"
+    export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:${PATH}"
+    export PATH="$(brew --prefix)/opt/gawk/libexec/gnubin:${PATH}"
+    export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:${PATH}"
+    export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="$(brew --prefix)/opt/openjdk/bin:$PATH"
+    export PATH="$(brew --prefix)/opt/python3/bin:${PATH}"
+    export PATH="$(brew --prefix)/opt/ruby/bin:${PATH}"
+    export PATH="$(brew --prefix)/opt/util-linux/bin:${PATH}"
+    export PATH="$(brew --prefix)/opt/util-linux/sbin:${PATH}"
 
-    export MANPATH="${BREW_PREFIX}/opt/*/libexec/gnuman:${MANPATH}"
-    export PATH="${BREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/findutils/libexec/gnubin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/openjdk/bin:$PATH"
-    export PATH="${BREW_PREFIX}/opt/python3/bin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/ruby/bin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/util-linux/bin:${PATH}"
-    export PATH="${BREW_PREFIX}/opt/util-linux/sbin:${PATH}"
-
-    source "${BREW_PREFIX}/etc/profile.d/bash_completion.sh"
+    source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 fi
 
 # Ruby (rbenv)
