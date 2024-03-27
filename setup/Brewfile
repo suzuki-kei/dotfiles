@@ -51,6 +51,9 @@ brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
 brew "swi-prolog"       # https://www.swi-prolog.org/
 
+# AWS
+brew "awscli"           # https://aws.amazon.com/cli/
+
 # Visual Studio Code
 cask "visual-studio-code"
 
