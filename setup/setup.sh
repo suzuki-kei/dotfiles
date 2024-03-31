@@ -53,8 +53,8 @@ function setup_brew_packages
 function setup_python_packages
 {
     if $(which pip3 > /dev/null); then
-        pip3 install --upgrade pip
-        pip3 install -Ur "${SETUP_DIR}/requirements.txt"
+        pip3 install --break-system-packages --upgrade pip
+        pip3 install --break-system-packages -Ur "${SETUP_DIR}/requirements.txt"
     fi
 }
 
