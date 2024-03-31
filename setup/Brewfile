@@ -1,7 +1,6 @@
 
 # homebrew
 tap "homebrew/bundle"
-tap "homebrew/cask"
 tap "homebrew/core"
 
 # adapt for Linux
