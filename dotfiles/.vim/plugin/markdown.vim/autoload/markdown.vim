@@ -25,7 +25,7 @@ function! markdown#list() abort
     " open window with buffer.
     let window_ids = win_findbuf(bufnr(s:buffer_name))
     if len(window_ids) == 0
-        execute printf('split %s', s:buffer_name)
+        execute printf('tabnew %s', s:buffer_name)
         set modifiable
         call setbufline(s:buffer_name, 1, descriptions)
         call setpos('.', [0, cursor_lnum_in_markdown_window, 1, 0])
