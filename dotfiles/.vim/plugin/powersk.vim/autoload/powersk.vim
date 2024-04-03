@@ -19,7 +19,7 @@ function! powersk#prepare_ex_commands_from_text(regname) abort
 
         let words = map(split(line, '[ \t\n]\+'), 'trim(v:val)')
 
-        if len(taglist(words[0])) != 0
+        if powersk#help_exists(words[0])
             call add(help_commands, 'help ' . words[0])
         endif
 
@@ -50,6 +50,11 @@ function! powersk#prepare_ex_commands_from_text(regname) abort
 
     " see help "cmdline-special" to know escape '#%'.
     call setreg(a:regname, escape(join(commands, "\n"), '#%'))
+endfunction
+
+function! powersk#help_exists(keyword) abort
+    let tag_file_path = $VIMRUNTIME . '/doc/tags'
+    return system('cut -d" " -f1 ' . tag_file_path . ' | grep -F ' . shellescape(a:keyword)) != ''
 endfunction
 
 function! powersk#unique(values) abort
