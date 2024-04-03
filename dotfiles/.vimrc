@@ -1,8 +1,7 @@
 
+" turn off various options for quiet.
+syntax off
 language messages C
-
-" turn off various options.
-let g:netrw_dirhistmax=0
 set nobackup
 set noerrorbells
 set nomodeline " prevent CVE-2007-2438
@@ -13,7 +12,8 @@ set nowrap
 set shortmess+=I
 set viminfo=
 set viminfofile=NONE
-syntax off
+let g:netrw_dirhistmax=0
+autocmd VimEnter * ++once echo ''
 
 " options for encoding.
 set encoding=utf-8
@@ -69,9 +69,6 @@ vnoremap # "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/'), "\n", '\\n', 'g'
 
 " open the same page in vim-jp.org as vim help.
 command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
-
-" clear status line.
-autocmd VimEnter * ++once echo ''
 
 " konami command.
 nnoremap <Up><Up><Down><Down><Left><Right><Left><Right>ba <Cmd>echo '↑↑↓↓←→←→ＢＡ'<CR>
