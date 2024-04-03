@@ -1,5 +1,5 @@
 
-language C
+language messages C
 
 " turn off various options.
 let g:netrw_dirhistmax=0
