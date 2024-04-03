@@ -58,15 +58,14 @@ vnoremap / "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 vnoremap ? "vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 
 " highlight a word under the cursor.
-nnoremap * msHmt`s*`tzt`s
-nnoremap # msHmt`s#`tzt`s
-nnoremap g* msHmt`sg*`tzt`s
-nnoremap g# msHmt`sg#`tzt`s
+nnoremap * <Cmd>let @/ = '\(\<' . expand('<cword>') . '\>\)'<CR><Cmd>set hlsearch<CR>
+nnoremap # <Cmd>let @/ = '\(\<' . expand('<cword>') . '\>\)'<CR><Cmd>set hlsearch<CR>
+nnoremap g* <Cmd>let @/ = '\(' . expand('<cword>') . '\)'<CR><Cmd>set hlsearch<CR>
+nnoremap g# <Cmd>let @/ = '\(' . expand('<cword>') . '\)'<CR><Cmd>set hlsearch<CR>
 
-" searches selected text, but cursor does not move.
-" see help "v_y", "/", "c_<C-R>", "/\V", "c_CTRL-R_=", "builtin-functions", "@", "<CR>"
-vnoremap * msHmt`s"vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sN
-vnoremap # msHmt`s"vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR><CR>`tzt`sn
+" highlight a selected text.
+vnoremap * "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
+vnoremap # "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
 
 " open the same page in vim-jp.org as vim help.
 command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
