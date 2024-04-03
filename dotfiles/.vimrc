@@ -51,7 +51,7 @@ inoremap <C-l> <Esc>
 vnoremap <C-l> <Esc>
 
 " reset before <C-l>.
-nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><C-l>
+nnoremap <C-l> <Cmd>nohlsearch<CR><Cmd>set nonumber<CR><Cmd>set nolist<CR><Cmd>diffupdate<CR><Esc><C-l>
 
 " enter search command with selected text.
 vnoremap / "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
