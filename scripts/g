@@ -109,8 +109,8 @@ function make_open_command
     declare keyword
 
     case "${target}" in
-        "")
-            url="https://google.com"
+        '')
+            url='https://google.com'
             ;;
         http://* | https://*)
             url="${target}"
