@@ -68,7 +68,7 @@ function main
 
 function print_help
 {
-    echo "${USAGE}"
+    echo "${USAGE}" | less -F
 }
 
 function parse_options
