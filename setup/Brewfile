@@ -45,6 +45,7 @@ brew "go"               # https://go.dev/
 brew "node"             # https://nodejs.org/
 brew "openjdk"          # https://openjdk.java.net/
 brew "php"              # https://www.php.net/
+brew "pnpm"             # https://pnpm.io/
 brew "python@3.12"      # https://www.python.org/
 brew "rbenv"            # https://github.com/rbenv/rbenv#readme
 brew "rust"             # https://www.rust-lang.org/
