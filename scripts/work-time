@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+
+set -eu -o posix -o pipefail
+
+shopt -s inherit_errexit
+
+declare SCRIPT_NAME
+SCRIPT_NAME="$(basename -- "$0")"
+declare -gr SCRIPT_NAME
+
+declare -gr EXIT_STATUS_SUCCESS=0
+declare -gr EXIT_STATUS_NO_ARGUMENTS=1
+declare -gr EXIT_STATUS_INVALID_ARGUMENT=2
+
+declare -gr STANDARD_BREAK_TIME_IN_MINUTES=60
+
+declare -gr USAGE=$(cat <<EOS | sed 's/^    //'
+    NAME
+        ${SCRIPT_NAME} -- 労働時間を計算します
+
+    SYNOPSIS
+        ${SCRIPT_NAME} [OPTION...] [TERM|BREAK_TIME]...
+
+    DESCRIPTION
+        勤務開始時間, 勤務終了時間, 途中休憩時間から一日の労働時間を計算します.
+        労働時間とは, 休憩時間を除いた労働に従事した時間です.
+
+            労働時間 = 勤務終了時間 - 勤務開始時間 - 休憩時間
+            休憩時間 = 昼休憩時間 + 途中休憩時間
+
+        TERM
+            勤務の開始時間と終了時間を指定します.
+            有効な形式は "HH:MM-HH:MM" または "HHMM-HHMM" です (例: "09:00-18:00", "0900-1800").
+
+        BREAK_TIME
+            途中休憩した時間 (昼休憩以外の休憩時間) を分単位で指定します.
+            有効な形式は "-M" です (例: "-30").
+
+    OPTIONS
+        -h | --help
+            このコマンドの使い方を表示します.
+
+    EXAMPLES
+        # 勤務の開始時間と終了時間を指定します
+        $ ${SCRIPT_NAME} 09:00-18:00
+
+        # 途中休憩した場合は以下のように働いた時間帯を指定します
+        $ ${SCRIPT_NAME} 09:00-18:00 19:00-20:00
+
+        # 次のように途中休憩の時間を指定しても同じ結果になります
+        $ ${SCRIPT_NAME} 09:00-20:00 -60
+EOS
+)
+
+function main
+{
+    if [[ $# == 0 ]]; then
+        print_usage
+        exit ${EXIT_STATUS_NO_ARGUMENTS}
+    fi
+
+    declare work_time_in_minutes=-${STANDARD_BREAK_TIME_IN_MINUTES}
+    declare break_time_in_minutes=0
+
+    for argument in "$@"; do
+        if [[ "${argument}" == '-h' ]] || [[ "${argument}" == '--help' ]]; then
+            print_usage
+            exit ${EXIT_STATUS_SUCCESS}
+        fi
+
+        # TERM の形式にマッチする場合.
+        # 正式には HH:MM-HH:MM 形式と HHMM-HHMM 形式を認める.
+        # ただし, 利便性のためにゼロ埋めしない形式 (H:MM や HH:M など) も許容する.
+        if [[ "${argument}" =~ ^([0-9][0-9]?):?([0-9][0-9]?)-([0-9][0-9]?):?([0-9][0-9]?)$ ]]; then
+            declare lower=$(echo "${BASH_REMATCH[1]} * 60 + ${BASH_REMATCH[2]}" | bc)
+            declare upper=$(echo "${BASH_REMATCH[3]} * 60 + ${BASH_REMATCH[4]}" | bc)
+
+            if [[ ${lower} -gt ${upper} ]]; then
+                upper=$((upper + 24 * 60))
+            fi
+
+            work_time_in_minutes=$((work_time_in_minutes + (upper - lower)))
+            continue
+        fi
+
+        # BREAK_TIME の形式にマッチする場合.
+        if [[ "${argument}" =~ ^-([0-9]+)$ ]]; then
+            work_time_in_minutes=$((work_time_in_minutes - BASH_REMATCH[1]))
+            break_time_in_minutes=$((break_time_in_minutes + BASH_REMATCH[1]))
+            continue
+        fi
+
+        echo "Invalid argument: ${argument}" >&2
+        exit ${EXIT_STATUS_INVALID_ARGUMENT}
+    done
+
+    declare -r hours=$((work_time_in_minutes / 60))
+    declare -r minutes=$((work_time_in_minutes % 60))
+    declare -r work_time="${hours}$(echo "${minutes} / 60" | bc -l | sed -r 's/0+$//')"
+    echo "労働時間 = ${work_time}H"
+    echo "昼休憩   = ${STANDARD_BREAK_TIME_IN_MINUTES}min"
+    echo "途中休憩 = ${break_time_in_minutes}min"
+    exit ${EXIT_STATUS_SUCCESS}
+}
+
+function print_usage
+{
+    echo "${USAGE}" | less -F
+}
+
+if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
+    main "$@"
+fi
+
