@@ -24,6 +24,7 @@ function prune
     rm -vrf ~/.lesshst
     rm -vrf ~/.node_repl_history
     rm -vrf ~/.python_history
+    rm -vrf ~/.sqlite_history
     rm -vrf ~/.tig_history
     rm -vrf ~/.vim/.netrwhist
 }
