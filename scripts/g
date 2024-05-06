@@ -27,6 +27,9 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
         G_CHROME_OPTIONS
             Specify the arguments to open Chrome. (default: "--incognito")
 
+        G_DEFAULT_URL
+            Specify the default url to open Chrome. (default: "https://example.com/")
+
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if successfly.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
@@ -110,7 +113,7 @@ function make_open_command
 
     case "${target}" in
         '')
-            url='https://google.com'
+            url="${G_DEFAULT_URL:-https://example.com/}"
             ;;
         http://* | https://*)
             url="${target}"
