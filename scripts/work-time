@@ -19,7 +19,7 @@ declare -gr USAGE=$(cat <<EOS | sed 's/^    //'
         ${SCRIPT_NAME} -- 労働時間を計算します
 
     SYNOPSIS
-        ${SCRIPT_NAME} [OPTION...] [TERM|BREAK_TIME]...
+        ${SCRIPT_NAME} [OPTION...] [TERM|BREAK_TIME|ENTERED_TIME]...
 
     DESCRIPTION
         勤務開始時間, 勤務終了時間, 途中休憩時間から一日の労働時間を計算します.
@@ -30,13 +30,24 @@ declare -gr USAGE=$(cat <<EOS | sed 's/^    //'
 
         TERM
             勤務の開始時間と終了時間を指定します.
-            有効な形式は "HH:MM-HH:MM" または "HHMM-HHMM" です (例: "09:00-18:00", "0900-1800").
+            有効な形式は "HH:MM-HH:MM" または "HHMM-HHMM" です.
+            具体例: "09:00-18:00", "0900-1800"
 
         BREAK_TIME
             途中休憩した時間 (昼休憩以外の休憩時間) を分単位で指定します.
-            有効な形式は "-M" です (例: "-30").
+            具体例: "-30", "-120"
+
+        ENTERED_TIME
+            作業時間を管理するシステムに記入済みの時間を時間単位で指定します.
+            具体例: "1.5", "2"
 
     OPTIONS
+        --
+            何もおこないません.
+            次のように用いると BREAK_TIME と ENTERED_TIME を視覚的に区別しやすくなります.
+
+                ${SCRIPT_NAME} 09:00-20:00 -60 -- 1 3 5
+
         -h | --help
             このコマンドの使い方を表示します.
 
@@ -49,6 +60,10 @@ declare -gr USAGE=$(cat <<EOS | sed 's/^    //'
 
         # 次のように途中休憩の時間を指定しても同じ結果になります
         $ ${SCRIPT_NAME} 09:00-20:00 -60
+
+        # 作業時間の管理システムを使用している場合,
+        # 次のように入力済みの時間を指定すると未入力時間を確認できます
+        $ ${SCRIPT_NAME} 09:00-20:00 -60 -- 1 2 4
 EOS
 )
 
@@ -61,8 +76,13 @@ function main
 
     declare work_time_in_minutes=-${STANDARD_BREAK_TIME_IN_MINUTES}
     declare break_time_in_minutes=0
+    declare entered_time_in_hours=0
 
     for argument in "$@"; do
+        if [[ "${argument}" == '--' ]]; then
+            continue
+        fi
+
         if [[ "${argument}" == '-h' ]] || [[ "${argument}" == '--help' ]]; then
             print_usage
             exit ${EXIT_STATUS_SUCCESS}
@@ -90,6 +110,12 @@ function main
             continue
         fi
 
+        # ENTERED_TIME の形式にマッチする場合.
+        if [[ "${argument}" =~ ^([0-9]+(\.[0-9]+)?)H?$ ]]; then
+            entered_time_in_hours="$(echo "${entered_time_in_hours} + ${BASH_REMATCH[1]}" | bc)"
+            continue
+        fi
+
         echo "Invalid argument: ${argument}" >&2
         exit ${EXIT_STATUS_INVALID_ARGUMENT}
     done
@@ -97,9 +123,11 @@ function main
     declare -r hours=$((work_time_in_minutes / 60))
     declare -r minutes=$((work_time_in_minutes % 60))
     declare -r work_time="${hours}$(echo "${minutes} / 60" | bc -l | sed -r 's/0+$//')"
-    echo "労働時間 = ${work_time}H"
-    echo "昼休憩   = ${STANDARD_BREAK_TIME_IN_MINUTES}min"
-    echo "途中休憩 = ${break_time_in_minutes}min"
+    declare -r unentered_time="$(echo "${work_time} - ${entered_time_in_hours}" | bc | sed -r 's/^(-?)\./\10./')"
+    echo "労働時間   = ${work_time}H"
+    echo "昼休憩     = ${STANDARD_BREAK_TIME_IN_MINUTES}min"
+    echo "途中休憩   = ${break_time_in_minutes}min"
+    echo "未入力時間 = ${unentered_time}H"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
