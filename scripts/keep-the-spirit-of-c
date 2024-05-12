@@ -112,16 +112,16 @@ function parse_options
 
 function print_keep_the_spirit_of_c
 {
-    declare delimiter=''
+    declare separator=''
 
     if ${OPTION_C89_VERSION}; then
-        echo -e "${delimiter}${C89_VERSION}"
-        delimiter="\n"
+        echo -e "${separator}${C89_VERSION}"
+        separator="\n"
     fi
 
     if ${OPTION_C11_VERSION}; then
-        echo -e "${delimiter}${C11_VERSION}"
-        delimiter="\n"
+        echo -e "${separator}${C11_VERSION}"
+        separator="\n"
     fi
 }
 
