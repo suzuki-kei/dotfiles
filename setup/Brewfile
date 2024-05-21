@@ -61,3 +61,6 @@ cask "visual-studio-code"
 tap "hashicorp/tap"
 brew "hashicorp/tap/terraform"
 
+# Burp Suite
+cask "burp-suite"
+
