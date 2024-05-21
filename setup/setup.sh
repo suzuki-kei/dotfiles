@@ -46,6 +46,7 @@ function setup_dotfiles
 function setup_brew_packages
 {
     if $(which brew > /dev/null); then
+        brew upgrade
         brew bundle --cleanup --no-lock --file "${SETUP_DIR}/Brewfile"
     fi
 }
