@@ -64,3 +64,6 @@ brew "hashicorp/tap/terraform"
 # Burp Suite
 cask "burp-suite"
 
+# Wireshark
+cask "wireshark"
+
