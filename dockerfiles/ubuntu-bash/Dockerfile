@@ -2,7 +2,7 @@
 # base image - install and setup OS packages only
 #-------------------------------------------------------------------------------
 
-FROM ubuntu:23.10 as base
+FROM ubuntu:24.04 as base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
