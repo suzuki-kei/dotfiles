@@ -2,6 +2,7 @@
 # homebrew
 tap "homebrew/bundle"
 tap "homebrew/core"
+tap "homebrew/cask"
 
 # adapt for Linux
 brew "bash"             # https://www.gnu.org/software/bash/
@@ -53,6 +54,9 @@ brew "swi-prolog"       # https://www.swi-prolog.org/
 
 # AWS
 brew "awscli"           # https://aws.amazon.com/cli/
+
+# Docker
+cask "docker"
 
 # Visual Studio Code
 cask "visual-studio-code"
