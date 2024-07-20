@@ -2,7 +2,6 @@
 # homebrew
 tap "homebrew/bundle"
 tap "homebrew/core"
-tap "homebrew/cask"
 
 # adapt for Linux
 brew "bash"             # https://www.gnu.org/software/bash/
