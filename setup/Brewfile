@@ -28,6 +28,7 @@ brew "htop"             # https://htop.dev/
 brew "jq"               # https://github.com/stedolan/jq
 brew "moreutils"        # https://joeyh.name/code/moreutils/
 brew "num-utils"        # https://suso.suso.org/xulu/Num-utils
+brew "plantuml"         # https://plantuml.com/
 brew "pwgen"            # https://pwgen.sourceforge.io/
 brew "rlwrap"           # https://github.com/hanslub42/rlwrap
 brew "screen"           # https://www.gnu.org/software/screen
