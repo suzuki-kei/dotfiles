@@ -1,74 +1,58 @@
 
-# homebrew
 tap "homebrew/bundle"
 tap "homebrew/core"
 
-# adapt for Linux
-brew "bash"             # https://www.gnu.org/software/bash/
-brew "bash-completion"  # https://salsa.debian.org/debian/bash-completion
-brew "coreutils"        # https://www.gnu.org/software/coreutils
-brew "curl"             # https://curl.se
-brew "diffutils"        # https://www.gnu.org/s/diffutils/
-brew "findutils"        # https://www.gnu.org/software/findutils/
-brew "gawk"             # https://www.gnu.org/software/gawk/
-brew "gnu-sed"          # https://www.gnu.org/software/sed/
-brew "grep"             # https://www.gnu.org/software/grep/
-brew "nkf"              # https://osdn.net/projects/nkf/
-brew "pstree"           # https://github.com/FredHucht/pstree
-brew "telnet"           # https://opensource.apple.com/
-brew "tree"             # http://mama.indstate.edu/users/ice/tree/
-brew "util-linux"       # https://github.com/util-linux/util-linux
-brew "watch"            # https://gitlab.com/procps-ng/procps
-brew "wget"             # https://www.gnu.org/software/wget/
+brew "awscli"
+brew "bash"
+brew "bash-completion"
+brew "bat"
+brew "cabal-install"
+brew "coreutils"
+brew "curl"
+brew "diffutils"
+brew "erlang"
+brew "findutils"
+brew "gauche"
+brew "gawk"
+brew "gforth"
+brew "ghc"
+brew "git"
+brew "gnu-sed"
+brew "go"
+brew "grep"
+brew "htop"
+brew "jq"
+brew "k6"
+brew "moreutils"
+brew "nkf"
+brew "node"
+brew "num-utils"
+brew "openjdk"
+brew "php"
+brew "plantuml"
+brew "pnpm"
+brew "pstree"
+brew "pwgen"
+brew "python@3.12"
+brew "rbenv"
+brew "rlwrap"
+brew "rust"
+brew "screen"
+brew "swi-prolog"
+brew "telnet"
+brew "tig"
+brew "tree"
+brew "util-linux"
+brew "vim"
+brew "w3m"
+brew "watch"
+brew "wget"
 
-# general command
-brew "bat"              # https://github.com/sharkdp/bat
-brew "git"              # https://git-scm.com
-brew "htop"             # https://htop.dev/
-brew "jq"               # https://github.com/stedolan/jq
-brew "k6"               # https://k6.io
-brew "moreutils"        # https://joeyh.name/code/moreutils/
-brew "num-utils"        # https://suso.suso.org/xulu/Num-utils
-brew "plantuml"         # https://plantuml.com/
-brew "pwgen"            # https://pwgen.sourceforge.io/
-brew "rlwrap"           # https://github.com/hanslub42/rlwrap
-brew "screen"           # https://www.gnu.org/software/screen
-brew "tig"              # https://github.com/jonas/tig
-brew "vim"              # https://www.vim.org/
-brew "w3m"              # https://w3m.sourceforge.net/
-
-# programming
-brew "cabal-install"    # https://www.haskell.org/cabal/
-brew "erlang"           # https://www.erlang.org/
-brew "gauche"           # https://practical-scheme.net/gauche/
-brew "gforth"           # https://www.gnu.org/software/gforth
-brew "ghc"              # https://haskell.org/ghc/
-brew "go"               # https://go.dev/
-brew "node"             # https://nodejs.org/
-brew "openjdk"          # https://openjdk.java.net/
-brew "php"              # https://www.php.net/
-brew "pnpm"             # https://pnpm.io/
-brew "python@3.12"      # https://www.python.org/
-brew "rbenv"            # https://github.com/rbenv/rbenv#readme
-brew "rust"             # https://www.rust-lang.org/
-brew "swi-prolog"       # https://www.swi-prolog.org/
-
-# AWS
-brew "awscli"           # https://aws.amazon.com/cli/
-
-# Docker
+cask "burp-suite"
 cask "docker"
-
-# Visual Studio Code
 cask "visual-studio-code"
+cask "wireshark"
 
-# terraform
 tap "hashicorp/tap"
 brew "hashicorp/tap/terraform"
-
-# Burp Suite
-cask "burp-suite"
-
-# Wireshark
-cask "wireshark"
 
