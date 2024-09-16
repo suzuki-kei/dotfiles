@@ -3,7 +3,7 @@ cjkwidth off
 defencoding UTF-8
 defscrollback 10240
 escape ^Z^Z
-hardstatus alwayslastline "%H | %w %= | %Y-%m-%d %0c"
+hardstatus alwayslastline "%{= r} %H | %-w *%n %t* %+w %= | %Y-%m-%d %0c"
 startup_message off
 vbell off
 
