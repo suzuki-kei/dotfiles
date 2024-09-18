@@ -46,6 +46,10 @@ RUN apt install \
         vim             \
         wget            \
         -y
+RUN apt upgrade
+RUN apt dist-upgrade
+RUN apt clean
+RUN apt autoremove
 
 # apt-file
 RUN apt-file update
