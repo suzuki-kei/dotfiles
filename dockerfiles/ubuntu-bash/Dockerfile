@@ -6,9 +6,10 @@ FROM ubuntu:24.04 as base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt update
+RUN apt install -y unminimize
 RUN yes | unminimize
 
-RUN apt update
 
 RUN apt install \
         apache2         \
