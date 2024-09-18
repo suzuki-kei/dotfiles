@@ -17,7 +17,6 @@ RUN apt install -y bc
 RUN apt install -y curl
 RUN apt install -y dnsutils
 RUN apt install -y figlet
-RUN apt install -y gauche
 RUN apt install -y git
 RUN apt install -y iputils-ping
 RUN apt install -y jc
