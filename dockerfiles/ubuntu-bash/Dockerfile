@@ -28,6 +28,8 @@ RUN apt install -y man
 RUN apt install -y moreutils
 RUN apt install -y net-tools
 RUN apt install -y nkf
+RUN apt install -y nodejs
+RUN apt install -y npm
 RUN apt install -y num-utils
 RUN apt install -y php
 RUN apt install -y plocate
@@ -50,6 +52,9 @@ RUN apt autoremove
 
 # apt-file
 RUN apt-file update
+
+# npm
+RUN npm install -g typescript
 
 # tldr
 RUN mkdir -p ~/.local/share
