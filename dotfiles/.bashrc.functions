@@ -55,7 +55,7 @@ alias date=date_with_default_format
 # screen 内で screen コマンドを実行した場合は screen.chdir に置き換える.
 function screen_with_double_execution_prevention
 {
-    if [[ $# == 0 && "${TERM}" == 'screen' ]]; then
+    if [[ $# == 0 && "${STY:-}" != "" ]]; then
         screen.chdir
     else
         \screen "$@"
