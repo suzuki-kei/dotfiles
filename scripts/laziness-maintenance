@@ -24,6 +24,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
             * setup
             * brew
             * docker
+            * gem
             * pip
             * ubuntu-bash
 
@@ -84,6 +85,7 @@ function laziness_maintenance
         laziness_maintenance.setup
         laziness_maintenance.brew
         laziness_maintenance.docker
+        laziness_maintenance.gem
         laziness_maintenance.pip
         laziness_maintenance.ubuntu-bash
     else
@@ -92,7 +94,7 @@ function laziness_maintenance
         for target in "$@"
         do
             case "${target}" in
-                setup | brew | docker | pip | ubuntu-bash)
+                setup | brew | docker | gem | pip | ubuntu-bash)
                     laziness_maintenance.${target}
                     ;;
                 *)
@@ -142,6 +144,19 @@ function laziness_maintenance.docker
             docker volume prune -f
         else
             echo 'docker is not installed.'
+        fi
+    ) 2>&1 | sed -r 's/^/    /'
+}
+
+function laziness_maintenance.gem
+{
+    echo '==== gem'
+    (
+        if which gem > /dev/null; then
+            gem update
+            gem cleanup
+        else
+            echo 'gem is not installed.'
         fi
     ) 2>&1 | sed -r 's/^/    /'
 }
