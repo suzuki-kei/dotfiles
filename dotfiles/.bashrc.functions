@@ -14,6 +14,7 @@ function prune
 
     # ユーザ作成ディレクトリから .DS_Store を全て削除する.
     # ユーザ作成ディレクトリは小文字始まりであることを前提とする.
+    rm -vrf ~/.DS_Store
     find ~/[a-z]* -type f -name .DS_Store | xargs -I{} rm -v -- '{}'
 
     rm -vrf ~/.bash_history
@@ -27,6 +28,10 @@ function prune
     rm -vrf ~/.sqlite_history
     rm -vrf ~/.tig_history
     rm -vrf ~/.vim/.netrwhist
+
+    if which gem > /dev/null; then
+        gem cleanup
+    fi
 }
 
 # date のデフォルトフォーマットを変更する.
