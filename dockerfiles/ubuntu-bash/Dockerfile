@@ -38,6 +38,7 @@ RUN apt install -y python3
 RUN apt install -y python3-pip
 RUN apt install -y rlwrap
 RUN apt install -y ruby
+RUN apt install -y rustc
 RUN apt install -y sysstat
 RUN apt install -y tig
 RUN apt install -y tldr
