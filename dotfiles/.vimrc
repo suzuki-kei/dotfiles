@@ -58,14 +58,14 @@ vnoremap / "vy/\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 vnoremap ? "vy?\V<C-r>=substitute(escape(@v, '\/'), "\n", '\\n', 'g')<CR>
 
 " highlight a word under the cursor.
-nnoremap * <Cmd>let @/ = '\(\<' . expand('<cword>') . '\>\)'<CR><Cmd>set hlsearch<CR>
-nnoremap # <Cmd>let @/ = '\(\<' . expand('<cword>') . '\>\)'<CR><Cmd>set hlsearch<CR>
-nnoremap g* <Cmd>let @/ = '\(' . expand('<cword>') . '\)'<CR><Cmd>set hlsearch<CR>
-nnoremap g# <Cmd>let @/ = '\(' . expand('<cword>') . '\)'<CR><Cmd>set hlsearch<CR>
+nnoremap * <Cmd>let @/ = '\(\<' . escape(expand('<cword>'), '.*+') . '\>\)'<CR><Cmd>set hlsearch<CR>
+nnoremap # <Cmd>let @/ = '\(\<' . escape(expand('<cword>'), '.*+') . '\>\)'<CR><Cmd>set hlsearch<CR>
+nnoremap g* <Cmd>let @/ = '\(' . escape(expand('<cword>'), '.*+') . '\)'<CR><Cmd>set hlsearch<CR>
+nnoremap g# <Cmd>let @/ = '\(' . escape(expand('<cword>'), '.*+') . '\)'<CR><Cmd>set hlsearch<CR>
 
 " highlight a selected text.
-vnoremap * "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
-vnoremap # "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
+vnoremap * "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/.*+'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
+vnoremap # "vy<Cmd>let @/ = '\(' . substitute(escape(@v, '\/.*+'), "\n", '\\n', 'g') . '\)'<CR><Cmd>set hlsearch<CR>
 
 " open the same page in vim-jp.org as vim help.
 command! OpenVimJp execute 'terminal ++shell ++close ++hidden g ' . shellescape('https://vim-jp.org/vimdoc-ja/' . expand('%:t:r') . '.html')
