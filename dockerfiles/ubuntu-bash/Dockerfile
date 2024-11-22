@@ -31,6 +31,7 @@ RUN apt install -y nkf
 RUN apt install -y nodejs
 RUN apt install -y npm
 RUN apt install -y num-utils
+RUN apt install -y openjdk-24-jdk
 RUN apt install -y php
 RUN apt install -y plocate
 RUN apt install -y pwgen
