@@ -2,7 +2,7 @@
 # base image - install and setup OS packages only
 #-------------------------------------------------------------------------------
 
-FROM ubuntu:24.10 as base
+FROM ubuntu:24.10 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -68,7 +68,7 @@ RUN updatedb
 # final image
 #-------------------------------------------------------------------------------
 
-FROM base as final
+FROM base AS final
 
 WORKDIR /root
 
