@@ -24,7 +24,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
             Print the help message.
 
     EXIT STATUS
-        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_SUCCESS} if success.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
         ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
 EOS`

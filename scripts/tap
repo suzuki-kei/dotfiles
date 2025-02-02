@@ -27,7 +27,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
         seq 10 | ${SCRIPT_NAME} | wc -l
 
     EXIT STATUS
-        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_SUCCESS} if success.
 EOS`
 
 function main

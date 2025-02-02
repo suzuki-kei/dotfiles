@@ -29,7 +29,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
             List the existing memo titles.
 
     EXIT STATUS
-        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_SUCCESS} if success.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 EOS`
 

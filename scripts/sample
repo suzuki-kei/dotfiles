@@ -23,7 +23,7 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
             Number of elements to select. (default is 1)
 
     EXIT STATUS
-        ${EXIT_STATUS_SUCCESS} if successfly.
+        ${EXIT_STATUS_SUCCESS} if success.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
 
     EXAMPLE
