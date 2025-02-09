@@ -22,6 +22,7 @@ set fileformats=unix,dos,mac
 set termencoding=utf-8
 
 " options for drawing.
+highlight ColorColumn ctermbg=DarkGray
 highlight MatchParen cterm=underline ctermbg=NONE
 highlight Search ctermbg=LightGray
 set ambiwidth=double
