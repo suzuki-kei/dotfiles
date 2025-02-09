@@ -1,0 +1,32 @@
+*toggle_colorcolumn.txt*
+
+==============================================================================
+CONTENTS                                         *toggle_colorcolumn-contents*
+
+INTRODUCTION                                 |toggle_colorcolumn-introduction|
+INTERFACE                                       |toggle_colorcolumn-interface|
+    VARIABLES                                   |toggle_colorcolumn-variables|
+    KEY-MAPPINGS                             |toggle_colorcolumn-key-mappings|
+
+==============================================================================
+INTRODUCTION                                 *toggle_colorcolumn-introduction*
+
+toggle_colorcolumn is plugin that toggles colorcolumn.
+
+==============================================================================
+INTERFACE                                       *toggle_colorcolumn-interface*
+
+------------------------------------------------------------------------------
+VARIABLES                                       *toggle_colorcolumn-variables*
+
+g:toggle_colorcolumn_disable
+    Disable this plugin if truthy value set.
+
+------------------------------------------------------------------------------
+KEY-MAPPINGS                                 *toggle_colorcolumn-key-mappings*
+
+<C-k>                                               *toggle_colorcolumn-<C-k>*
+    Toggles colorcolumn.
+    If colorcolumn is set, save the value and turn it off.
+    If colorcolumn is not set, turn it on (restore value).
+
