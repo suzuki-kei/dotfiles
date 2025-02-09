@@ -22,8 +22,8 @@ set fileformats=unix,dos,mac
 set termencoding=utf-8
 
 " options for drawing.
-highlight Search ctermbg=LightGray
 highlight MatchParen cterm=underline ctermbg=NONE
+highlight Search ctermbg=LightGray
 set ambiwidth=double
 set tabstop=4
 set wildmenu
