@@ -58,7 +58,6 @@ nnoremap <C-l>
     \<Cmd>set nonumber<CR>
     \<Cmd>set norelativenumber<CR>
     \<Cmd>set nolist<CR>
-    \<Cmd>set colorcolumn=<CR>
     \<Cmd>diffupdate<CR>
     \<Esc>
     \<C-l>
