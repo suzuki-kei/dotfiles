@@ -26,7 +26,7 @@ highlight ColorColumn ctermbg=DarkGray
 highlight MatchParen cterm=underline ctermbg=NONE
 highlight Search ctermbg=LightGray
 set ambiwidth=double
-set scrolloff=10
+set scrolloff=3
 set tabstop=4
 set wildmenu
 
