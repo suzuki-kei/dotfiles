@@ -21,6 +21,9 @@ alias la='ll -a'
 # vimdiff - always disable folding
 alias vimdiff="vimdiff '+windo set nofoldenable' '+windo set foldcolumn=0' '+wincmd t' +1"
 
+# screen
+alias s='screen'
+
 # settings for Linux only
 if [[ "$(uname)" == 'Linux' ]]; then
     :
