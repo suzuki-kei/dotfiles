@@ -24,6 +24,9 @@ alias vimdiff="vimdiff '+windo set nofoldenable' '+windo set foldcolumn=0' '+win
 # screen
 alias s='screen'
 
+# touch
+alias t='touch'
+
 # settings for Linux only
 if [[ "$(uname)" == 'Linux' ]]; then
     :
