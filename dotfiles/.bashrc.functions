@@ -138,3 +138,8 @@ function cat-files
     done
 }
 
+function pbcopy-files
+{
+    cat-files "$@" | pbcopy
+}
+
