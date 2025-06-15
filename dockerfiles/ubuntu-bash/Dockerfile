@@ -14,9 +14,11 @@ RUN apt install -y apache2
 RUN apt install -y apt-file
 RUN apt install -y bash-completion
 RUN apt install -y bc
+RUN apt install -y cabal-install
 RUN apt install -y curl
 RUN apt install -y dnsutils
 RUN apt install -y figlet
+RUN apt install -y ghc
 RUN apt install -y git
 RUN apt install -y iputils-ping
 RUN apt install -y jc
