@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 docker ps -q --filter 'status=exited' | xargs -r docker rm
 

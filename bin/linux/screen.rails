@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
@@ -8,18 +8,15 @@ declare -gr EXIT_STATUS_NOT_IN_SCREEN=2
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${SCRIPT_NAME} - clear current window of screen
+        ${SCRIPT_NAME} - create new windows for rails in screen.
 
     SYNOPSIS
-        ${SCRIPT_NAME} [OPTION...]
+        ${SCRIPT_NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
-        Clear the current window of attached screen session.
+        Creates new windows for Ruby on Rails in GNU Screen.
 
     OPTIONS
-        -p
-            Clear paste buffer.
-
         -h
             Print the help message.
 
@@ -39,7 +36,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    screen_clear "${1:-$(pwd)}"
+    screen_rails "${1:-$(pwd)}"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -52,14 +49,11 @@ function parse_options
 {
     declare option
 
-    while getopts 'hp' option
+    while getopts 'h' option
     do
         case "${option}" in
             h)
                 OPTION_HELP=true
-                ;;
-            p)
-                OPTION_CLEAR_PASTE_BUFFER=true
                 ;;
             *)
                 print_help
@@ -71,7 +65,6 @@ function parse_options
     shift $((OPTIND - 1))
     declare -agr OPTION_ARGS=("$@")
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
-    declare -gr OPTION_CLEAR_PASTE_BUFFER=${OPTION_CLEAR_PASTE_BUFFER:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
@@ -79,24 +72,22 @@ function parse_options
     fi
 }
 
-function screen_clear
+function screen_rails
 {
-    if [[ -z "${STY:-}" ]]; then
-        echo 'Not in screen.' >&2
-        exit 1
+    if [[ "${STY:-}" == '' ]]; then
+        echo "Not in screen." >&2
+        exit ${EXIT_STATUS_NOT_IN_SCREEN}
     fi
 
-    declare scrollback
-    scrollback=$(screen -S "${STY}" -Q info | cut -d' ' -f1 | cut -d'+' -f2)
-
-    screen -S "${STY}" -X scrollback 0
-    screen -S "${STY}" -X clear
-    screen -S "${STY}" -X pow_break
-    screen -S "${STY}" -X scrollback ${scrollback}
-
-    if ${OPTION_CLEAR_PASTE_BUFFER}; then
-        screen -S "${STY}" -X register . ''
-    fi
+    declare -r target="$1"
+    screen -S "${STY}" -X screen -t server
+    screen -S "${STY}" -X screen -t models
+    screen -S "${STY}" -X stuff 'cd app/models^M^L'
+    screen -S "${STY}" -X screen -t views
+    screen -S "${STY}" -X stuff 'cd app/views^M^L'
+    screen -S "${STY}" -X screen -t controllers 
+    screen -S "${STY}" -X stuff 'cd app/controllers^M^L'
+    screen -S "${STY}" -X select 0
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

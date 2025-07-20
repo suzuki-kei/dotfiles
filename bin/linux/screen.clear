@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
@@ -8,37 +8,25 @@ declare -gr EXIT_STATUS_NOT_IN_SCREEN=2
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${SCRIPT_NAME} - changes the current directory of screen.
+        ${SCRIPT_NAME} - clear current window of screen
 
     SYNOPSIS
-        ${SCRIPT_NAME} [OPTION...] [TARGET]
+        ${SCRIPT_NAME} [OPTION...]
 
     DESCRIPTION
-        Changes the current directory of attached screen session.
-        TARGET is new current directory (default is pwd).
+        Clear the current window of attached screen session.
 
     OPTIONS
+        -p
+            Clear paste buffer.
+
         -h
             Print the help message.
-
-        -v
-            Print message verbosely.
 
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if success.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
         ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
-
-    EXAMPLE
-        Change screen's current directory to bash's current directory.
-        Maybe this form is most used.
-
-            ${SCRIPT_NAME}
-
-        You can specify new current directory path.
-        Maybe this form is rarely used.
-
-            ${SCRIPT_NAME} /tmp
 EOS`
 
 function main
@@ -51,7 +39,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    screen_chdir "${1:-$(pwd)}"
+    screen_clear "${1:-$(pwd)}"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -64,14 +52,14 @@ function parse_options
 {
     declare option
 
-    while getopts 'hv' option
+    while getopts 'hp' option
     do
         case "${option}" in
             h)
                 OPTION_HELP=true
                 ;;
-            v)
-                OPTION_VERBOSE=true
+            p)
+                OPTION_CLEAR_PASTE_BUFFER=true
                 ;;
             *)
                 print_help
@@ -83,7 +71,7 @@ function parse_options
     shift $((OPTIND - 1))
     declare -agr OPTION_ARGS=("$@")
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
-    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
+    declare -gr OPTION_CLEAR_PASTE_BUFFER=${OPTION_CLEAR_PASTE_BUFFER:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
@@ -91,18 +79,23 @@ function parse_options
     fi
 }
 
-function screen_chdir
+function screen_clear
 {
-    if [[ "${STY:-}" == '' ]]; then
-        echo "Not in screen." >&2
-        exit ${EXIT_STATUS_NOT_IN_SCREEN}
+    if [[ -z "${STY:-}" ]]; then
+        echo 'Not in screen.' >&2
+        exit 1
     fi
 
-    declare -r target="$1"
-    screen -S "${STY}" -X chdir "${target}"
+    declare scrollback
+    scrollback=$(screen -S "${STY}" -Q info | cut -d' ' -f1 | cut -d'+' -f2)
 
-    if ${OPTION_VERBOSE:-false}; then
-        echo "change to ${target}"
+    screen -S "${STY}" -X scrollback 0
+    screen -S "${STY}" -X clear
+    screen -S "${STY}" -X pow_break
+    screen -S "${STY}" -X scrollback ${scrollback}
+
+    if ${OPTION_CLEAR_PASTE_BUFFER}; then
+        screen -S "${STY}" -X register . ''
     fi
 }
 

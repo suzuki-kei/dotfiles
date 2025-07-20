@@ -56,7 +56,13 @@ if [[ "$(uname)" == 'Darwin' ]]; then
 fi
 
 # custom executables
-export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/bin:${PATH}"
+if [[ "$(uname)" == 'Linux' ]]; then
+    export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/bin/linux:${PATH}"
+fi
+if [[ "$(uname)" == 'Darwin' ]]; then
+    export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/bin/mac:${PATH}"
+    export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/bin/linux:${PATH}"
+fi
 
 # custom functions
 source "$(dirname -- "${BASH_SOURCE[0]}")/.bashrc.functions"

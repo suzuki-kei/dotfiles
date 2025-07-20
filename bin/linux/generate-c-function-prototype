@@ -3,7 +3,7 @@
 # C/C++ 言語のソースファイルから関数プロトタイプを生成する.
 #
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 function main
 {

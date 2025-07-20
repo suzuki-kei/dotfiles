@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 declare -gr EXIT_STATUS_SUCCESS=0
 declare -gr EXIT_STATUS_INVALID_ARGUMENT=1
@@ -8,22 +8,37 @@ declare -gr EXIT_STATUS_NOT_IN_SCREEN=2
 
 declare -gr USAGE=`cat <<EOS | strip_heredoc
     NAME
-        ${SCRIPT_NAME} - create new windows for rails in screen.
+        ${SCRIPT_NAME} - changes the current directory of screen.
 
     SYNOPSIS
         ${SCRIPT_NAME} [OPTION...] [TARGET]
 
     DESCRIPTION
-        Creates new windows for Ruby on Rails in GNU Screen.
+        Changes the current directory of attached screen session.
+        TARGET is new current directory (default is pwd).
 
     OPTIONS
         -h
             Print the help message.
 
+        -v
+            Print message verbosely.
+
     EXIT STATUS
         ${EXIT_STATUS_SUCCESS} if success.
         ${EXIT_STATUS_INVALID_ARGUMENT} if the argument is invalid.
         ${EXIT_STATUS_NOT_IN_SCREEN} if there is no attached screen.
+
+    EXAMPLE
+        Change screen's current directory to bash's current directory.
+        Maybe this form is most used.
+
+            ${SCRIPT_NAME}
+
+        You can specify new current directory path.
+        Maybe this form is rarely used.
+
+            ${SCRIPT_NAME} /tmp
 EOS`
 
 function main
@@ -36,7 +51,7 @@ function main
         exit ${EXIT_STATUS_SUCCESS}
     fi
 
-    screen_rails "${1:-$(pwd)}"
+    screen_chdir "${1:-$(pwd)}"
     exit ${EXIT_STATUS_SUCCESS}
 }
 
@@ -49,11 +64,14 @@ function parse_options
 {
     declare option
 
-    while getopts 'h' option
+    while getopts 'hv' option
     do
         case "${option}" in
             h)
                 OPTION_HELP=true
+                ;;
+            v)
+                OPTION_VERBOSE=true
                 ;;
             *)
                 print_help
@@ -65,6 +83,7 @@ function parse_options
     shift $((OPTIND - 1))
     declare -agr OPTION_ARGS=("$@")
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
+    declare -gr OPTION_VERBOSE=${OPTION_VERBOSE:-false}
 
     if [[ $# -gt 1 ]]; then
         echo "illegal option(s) -- $@" >&2
@@ -72,7 +91,7 @@ function parse_options
     fi
 }
 
-function screen_rails
+function screen_chdir
 {
     if [[ "${STY:-}" == '' ]]; then
         echo "Not in screen." >&2
@@ -80,14 +99,11 @@ function screen_rails
     fi
 
     declare -r target="$1"
-    screen -S "${STY}" -X screen -t server
-    screen -S "${STY}" -X screen -t models
-    screen -S "${STY}" -X stuff 'cd app/models^M^L'
-    screen -S "${STY}" -X screen -t views
-    screen -S "${STY}" -X stuff 'cd app/views^M^L'
-    screen -S "${STY}" -X screen -t controllers 
-    screen -S "${STY}" -X stuff 'cd app/controllers^M^L'
-    screen -S "${STY}" -X select 0
+    screen -S "${STY}" -X chdir "${target}"
+
+    if ${OPTION_VERBOSE:-false}; then
+        echo "change to ${target}"
+    fi
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

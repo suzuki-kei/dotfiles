@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname -- "${BASH_SOURCE[0]}")/_internal"
+source "$(dirname -- "${BASH_SOURCE[0]}")/../_internal"
 
 declare -gr CHROME_BOOKMARKS_FILE_PATH="${HOME}/Library/Application Support/Google/Chrome/Default/Bookmarks"
 
