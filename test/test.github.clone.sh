@@ -4,7 +4,7 @@ set -eu -o errtrace -o pipefail
 trap 'echo "Assertion failed at line ${LINENO}: ${BASH_COMMAND}"' ERR
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-source "${ROOT_DIR}/bin/github.clone"
+source "${ROOT_DIR}/bin/linux/github.clone"
 
 function test_main
 {
