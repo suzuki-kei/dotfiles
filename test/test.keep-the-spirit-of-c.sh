@@ -4,7 +4,7 @@ set -eu -o errtrace -o pipefail
 trap 'echo "Assertion failed at line ${LINENO}: ${BASH_COMMAND}"' ERR
 
 declare -r ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-source "${ROOT_DIR}/scripts/keep-the-spirit-of-c"
+source "${ROOT_DIR}/bin/keep-the-spirit-of-c"
 
 function test_main
 {

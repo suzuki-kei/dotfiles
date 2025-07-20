@@ -55,8 +55,8 @@ if [[ "$(uname)" == 'Darwin' ]]; then
     export BASH_SILENCE_DEPRECATION_WARNING=1
 fi
 
-# custom scripts
-export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/scripts:${PATH}"
+# custom executables
+export PATH="$(cd -- $(dirname -- "${BASH_SOURCE[0]}")/.. && pwd)/bin:${PATH}"
 
 # custom functions
 source "$(dirname -- "${BASH_SOURCE[0]}")/.bashrc.functions"
