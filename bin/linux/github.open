@@ -10,13 +10,13 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
         ${SCRIPT_NAME} - open git remote in browser
 
     SYNOPSIS
-        ${SCRIPT_NAME} [DIR]
+        ${SCRIPT_NAME} [PATH]
 
     DESCRIPTION
         Open git remote in browser.
 
-        DIR
-            The directory path of cloned git repository from GitHub.
+        PATH
+            The file/directory path in cloned git repository from GitHub.
 
     ENVIRONMENT VARIABLES
         GITHUB_OPEN_COMMAND
@@ -75,25 +75,50 @@ function parse_options
 
 function open_git_remote_in_browser
 {
-    declare repository_dir
-    repository_dir="${1:-$(pwd)}"
+    declare path
+    path="${1:-$(pwd)}"
 
     declare command
-    command="$(make_open_command "${repository_dir}")"
+    command="$(make_open_command "${path}")"
 
     eval "${command}"
 }
 
 function make_open_command
 {
+    declare path
+    if [[ -z "${1:-}" ]]; then
+        path="$(pwd)"
+    else
+        path="$(realpath -- "$1")"
+    fi
+
     declare repository_dir
-    repository_dir="${1:-$(pwd)}"
+    if [[ -d "${path}" ]]; then
+        repository_dir="$(git -C "${path}" rev-parse --show-toplevel)"
+    else
+        repository_dir="$(git -C "$(dirname "${path}")" rev-parse --show-toplevel)"
+    fi
+
+    declare relative_path
+    if [[ "${path}" == "${repository_dir}" ]]; then
+        relative_path=''
+    else
+        relative_path="$(realpath --relative-to "${repository_dir}" "${path}")"
+    fi
+
+    declare git_branch_name
+    git_branch_name="$(git -C "${repository_dir}" branch --show-current)"
 
     declare git_remote_url
     git_remote_url="$(to_git_remote_url_from_repository_dir "${repository_dir}")"
 
     declare github_url
-    github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
+    if [[ -z "${relative_path}" ]]; then
+        github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")"
+    else
+        github_url="$(to_github_url_from_git_remote_url "${git_remote_url}")/tree/${git_branch_name}/${relative_path}"
+    fi
 
     declare open_command
     open_command="$(to_open_command_from_github_url "${github_url}")"
