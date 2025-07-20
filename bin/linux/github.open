@@ -50,7 +50,7 @@ function parse_options
 {
     declare option
 
-    while getopts 'd:h' option
+    while getopts 'h' option
     do
         case "${option}" in
             h)
