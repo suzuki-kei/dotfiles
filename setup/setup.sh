@@ -45,15 +45,16 @@ function setup_dotfiles
 
 function setup_brew_packages
 {
-    if $(which brew > /dev/null); then
+    if which brew 2>&1 >/dev/null; then
+        :
         brew upgrade
-        brew bundle --cleanup --no-lock --file "${SETUP_DIR}/Brewfile"
+        brew bundle --cleanup --file "${SETUP_DIR}/Brewfile"
     fi
 }
 
 function setup_python_packages
 {
-    if $(which pip3 > /dev/null); then
+    if which pip3 2>&1 >/dev/null; then
         pip3 install --break-system-packages --upgrade pip
         pip3 install --break-system-packages -Ur "${SETUP_DIR}/requirements.txt"
     fi
@@ -61,7 +62,7 @@ function setup_python_packages
 
 function setup_go_packages
 {
-    if $(which go > /dev/null); then
+    if which go 2>&1 >/dev/null; then
         go install golang.org/x/tools/cmd/godoc@latest
     fi
 }
