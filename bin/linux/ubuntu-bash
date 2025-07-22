@@ -120,7 +120,7 @@ function subcommand_build
 {
     declare -r work_dir="${DOCKERFILE_DIR}/files"
     declare -r dotfiles_target_dir="${work_dir}/dotfiles"
-    declare -r dotfiles_source_dir="${SCRIPT_DIR}/../dotfiles"
+    declare -r dotfiles_source_dir="${SCRIPT_DIR}/../../dotfiles"
 
     mkdir -p "${dotfiles_target_dir}"
 
