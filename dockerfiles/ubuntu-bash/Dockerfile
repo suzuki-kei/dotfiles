@@ -18,6 +18,7 @@ RUN apt install -y cabal-install
 RUN apt install -y cargo
 RUN apt install -y curl
 RUN apt install -y dnsutils
+RUN apt install -y erlang
 RUN apt install -y figlet
 RUN apt install -y ghc
 RUN apt install -y git
