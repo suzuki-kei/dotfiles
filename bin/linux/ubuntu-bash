@@ -22,6 +22,10 @@ declare -gr USAGE=`cat <<EOS | strip_heredoc
         see SUBCOMMANDS section for details.
 
     OPTIONS
+        -d, --dry-run
+            Don't actually run docker command, just show what would be done.
+            This is useful, if you want to customize docker command options.
+
         -h, --help
             Print the help message.
 
@@ -89,6 +93,9 @@ function parse_options
     for option in "$@"
     do
         case "${option}" in
+            -d | --dry-run)
+                OPTION_DRY_RUN=true
+                ;;
             -h | --help)
                 OPTION_HELP=true
                 ;;
@@ -106,9 +113,16 @@ function parse_options
     done
 
     declare -agr OPTION_ARGS=("${OPTION_ARGS[@]}")
+    declare -gr OPTION_DRY_RUN=${OPTION_DRY_RUN:-false}
     declare -gr OPTION_HELP=${OPTION_HELP:-false}
     declare -gr OPTION_SUBCOMMAND=${OPTION_SUBCOMMAND:-run}
     declare -gr OPTION_MOUNT_VOLUME=${OPTION_MOUNT_VOLUME:-}
+
+    if ${OPTION_DRY_RUN}; then
+        declare -gr ECHO_OR_EMPTY=echo
+    else
+        declare -gr ECHO_OR_EMPTY=
+    fi
 
     if [[ "${OPTION_SUBCOMMAND}" != 'run' ]] && [[ ${#OPTION_ARGS[@]} != 0 ]]; then
         echo "illegal option(s) -- $@" >&2
@@ -134,7 +148,7 @@ function subcommand_build
     export DOCKER_SCAN_SUGGEST=false
     docker build -t "${DOCKER_IMAGE_NAME}" "${DOCKERFILE_DIR}"
 
-    rm -rf "${work_dir}"
+    ${ECHO_OR_EMPTY} rm -rf "${work_dir}"
 }
 
 function subcommand_help
@@ -145,7 +159,7 @@ function subcommand_help
 function subcommand_rmi
 {
     if docker images --format '{{.Repository}}:{{.Tag}}' | grep -E "^${DOCKER_IMAGE_NAME}\$"; then
-        docker rmi "${DOCKER_IMAGE_NAME}"
+        ${ECHO_OR_EMPTY} docker rmi "${DOCKER_IMAGE_NAME}"
     fi
 }
 
@@ -168,7 +182,7 @@ function subcommand_run
         workdir_option="--workdir ${target}"
     fi
 
-    docker run -it --rm ${volume_option} ${workdir_option} "${DOCKER_IMAGE_NAME}" || true
+    ${ECHO_OR_EMPTY} docker run -it --rm ${volume_option} ${workdir_option} "${DOCKER_IMAGE_NAME}" || true
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
