@@ -30,6 +30,7 @@ RUN apt install -y less
 RUN apt install -y make
 RUN apt install -y man
 RUN apt install -y moreutils
+RUN apt install -y mypy
 RUN apt install -y net-tools
 RUN apt install -y nkf
 RUN apt install -y nodejs
