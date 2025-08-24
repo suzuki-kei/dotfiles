@@ -130,11 +130,15 @@ complete -F _github.cd.bash_complete github.cd
 function cat-files
 {
     for file in "$@"; do
-        echo "$file"
-        echo '```'
-        cat "$file" | sed '/./,$!d' | tac | sed '/./,$!d' | tac
-        echo '```'
-        echo
+        if [[ -d "${file}" ]]; then
+            cat-files "${file%/}"/*
+        else
+            echo "$file"
+            echo '```'
+            cat "$file" | sed '/./,$!d' | tac | sed '/./,$!d' | tac
+            echo '```'
+            echo
+        fi
     done
 }
 
