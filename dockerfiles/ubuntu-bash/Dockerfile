@@ -2,7 +2,7 @@
 # base image - install and setup OS packages only
 #-------------------------------------------------------------------------------
 
-FROM ubuntu:24.10 AS base
+FROM ubuntu:24.04 AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -36,7 +36,7 @@ RUN apt install -y nkf
 RUN apt install -y nodejs
 RUN apt install -y npm
 RUN apt install -y num-utils
-RUN apt install -y openjdk-24-jdk
+RUN apt install -y openjdk-25-jdk
 RUN apt install -y php
 RUN apt install -y plocate
 RUN apt install -y pwgen

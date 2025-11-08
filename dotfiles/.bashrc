@@ -26,7 +26,11 @@ export HISTTIMEFORMAT="%Y-%m-%d %T "
 # ------------------------------------------------------------------------------
 
 # ls
-alias ls='\ls --color=never --time-style=long-iso'
+if \ls --time-style=long-iso >/dev/null 2>&1; then
+    alias ls='\ls --color=never --time-style=long-iso'
+else
+    alias ls='\ls --color=never'
+fi
 alias l='ls -1F'
 alias ll='ls -lhF'
 alias la='ll -a'
@@ -53,6 +57,11 @@ fi
 if [[ "$(uname)" == 'Darwin' ]]; then
     # see https://support.apple.com/en-us/HT208050
     export BASH_SILENCE_DEPRECATION_WARNING=1
+
+    # /etc/bashrc で読み込まれる /etc/bashrc_Apple_Terminal を無効化する
+    if [[ ! -e ~/.bash_sessions_disabled ]]; then
+        touch ~/.bash_sessions_disabled
+    fi
 fi
 
 # custom executables
@@ -72,19 +81,23 @@ if which brew > /dev/null; then
     # see https://github.com/Homebrew/brew/blob/master/docs/Analytics.md
     export HOMEBREW_NO_ANALYTICS=1
 
-    export MANPATH="$(brew --prefix)/opt/*/libexec/gnuman:${MANPATH}"
-    export PATH="$(brew --prefix)/opt/coreutils/libexec/gnubin:${PATH}"
-    export PATH="$(brew --prefix)/opt/findutils/libexec/gnubin:${PATH}"
-    export PATH="$(brew --prefix)/opt/gawk/libexec/gnubin:${PATH}"
-    export PATH="$(brew --prefix)/opt/gnu-sed/libexec/gnubin:${PATH}"
-    export PATH="$(brew --prefix)/opt/grep/libexec/gnubin:${PATH}"
-    export PATH="$(brew --prefix)/opt/openjdk/bin:$PATH"
-    export PATH="$(brew --prefix)/opt/python3/bin:${PATH}"
-    export PATH="$(brew --prefix)/opt/ruby/bin:${PATH}"
-    export PATH="$(brew --prefix)/opt/util-linux/bin:${PATH}"
-    export PATH="$(brew --prefix)/opt/util-linux/sbin:${PATH}"
+    eval "$(brew shellenv)"
 
-    source "$(brew --prefix)/etc/profile.d/bash_completion.sh"
+    export MANPATH="${HOMEBREW_PREFIX}/opt/*/libexec/gnuman:${MANPATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/findutils/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/openjdk/bin:$PATH"
+    export PATH="${HOMEBREW_PREFIX}/opt/python3/bin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/ruby/bin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:${PATH}"
+
+    if [[ -e "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
+        source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
+    fi
 fi
 
 # Ruby (rbenv)

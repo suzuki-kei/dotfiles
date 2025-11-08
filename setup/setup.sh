@@ -35,17 +35,19 @@ function setup_dotfiles
     for file_name in "${file_names[@]}"
     do
         if [[ ! -f ~/${file_name} ]]; then
+            mkdir -p ~/"$(dirname -- "${file_name}")"
             cp -p {"${dotfiles_dir}",~}/"${file_name}"
         fi
     done
 
+    # NOTE: GNU 版の ln がインストールされていない状態でも動作するように /bin/ln を使用する.
     mkdir -p ~/.vim
-    ln -fsT "${dotfiles_dir}/.vim/plugin" ~/.vim/plugin
+    /bin/ln -sF "${dotfiles_dir}/.vim/plugin" ~/.vim/plugin
 }
 
 function setup_brew_packages
 {
-    if which brew 2>&1 >/dev/null; then
+    if which brew > /dev/null; then
         brew upgrade
         brew bundle --cleanup --file "${SETUP_DIR}/Brewfile"
     fi
@@ -53,7 +55,7 @@ function setup_brew_packages
 
 function setup_python_packages
 {
-    if which pip3 2>&1 >/dev/null; then
+    if which pip3 > /dev/null; then
         pip3 install --break-system-packages --upgrade pip
         pip3 install --break-system-packages -Ur "${SETUP_DIR}/requirements.txt"
     fi
@@ -61,7 +63,7 @@ function setup_python_packages
 
 function setup_go_packages
 {
-    if which go 2>&1 >/dev/null; then
+    if which go > /dev/null; then
         go install golang.org/x/tools/cmd/godoc@latest
     fi
 }
