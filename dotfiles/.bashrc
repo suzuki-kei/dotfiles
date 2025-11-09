@@ -14,6 +14,13 @@ export PAGER=less
 export PS1="$(test "$(whoami)" == 'root' && echo '# ' || echo '$ ')"
 export TZ='Asia/Tokyo'
 
+# locale
+export LANG=ja_JP.UTF-8
+export LC_CTYPE=ja_JP.UTF-8
+export LC_NUMERIC=C
+export LC_TIME=C
+export LC_MESSAGES=C
+
 # history
 export HISTCONTROL=ignoredups
 export HISTFILESIZE=7777777
