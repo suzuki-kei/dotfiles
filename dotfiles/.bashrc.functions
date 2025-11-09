@@ -52,7 +52,7 @@ function date_with_default_format
         set -- "$@" "${default_format}"
     fi
 
-    date "$@"
+    \date "$@"
 }
 alias date=date_with_default_format
 
