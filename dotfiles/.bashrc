@@ -95,6 +95,7 @@ if which brew > /dev/null; then
     export PATH="${HOMEBREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/mysql-client/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/openjdk/bin:$PATH"
     export PATH="${HOMEBREW_PREFIX}/opt/python3/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/ruby/bin:${PATH}"
