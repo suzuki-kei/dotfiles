@@ -41,6 +41,7 @@ brew "util-linux"
 brew "vim"
 brew "watch"
 
+cask "antigravity"
 cask "burp-suite"
 cask "cursor"
 cask "docker-desktop"
