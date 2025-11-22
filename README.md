@@ -20,6 +20,13 @@
 
     source ~/.bashrc
 
+(5) cabal でライブラリをインストールする
+
+    cabal update
+    cabal install --lib HUnit
+
+TODO setup/setup.sh に組み込む
+
 ## Maintenance
 
     laziness-maintenance
