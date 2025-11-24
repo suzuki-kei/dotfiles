@@ -27,6 +27,7 @@ RUN apt install -y jc
 RUN apt install -y jq
 RUN apt install -y knot-dnsutils
 RUN apt install -y less
+RUN apt install -y locales
 RUN apt install -y make
 RUN apt install -y man
 RUN apt install -y moreutils
@@ -51,6 +52,8 @@ RUN apt install -y tldr
 RUN apt install -y tree
 RUN apt install -y vim
 RUN apt install -y wget
+
+RUN locale-gen ja_JP.UTF-8
 
 RUN apt upgrade
 RUN apt dist-upgrade
