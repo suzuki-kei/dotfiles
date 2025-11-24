@@ -111,7 +111,7 @@ function laziness_maintenance.setup
     echo '==== setup'
     (
         declare root_dir
-        root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"/.. && pwd)"
+        root_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")"/../.. && pwd)"
         declare -r script_path="${root_dir}/setup/setup.sh"
 
         if [[ -f "${script_path}" ]]; then
