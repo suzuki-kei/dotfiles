@@ -24,6 +24,7 @@
 
     cabal update
     cabal install --lib HUnit
+    cabal install --lib random
 
 TODO setup/setup.sh に組み込む
 
