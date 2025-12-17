@@ -146,6 +146,7 @@ function subcommand_build
         "${dotfiles_target_dir}"
 
     export DOCKER_SCAN_SUGGEST=false
+    docker build -t "${DOCKER_IMAGE_NAME}" "${DOCKERFILE_DIR}" --check
     docker build -t "${DOCKER_IMAGE_NAME}" "${DOCKERFILE_DIR}"
 
     ${ECHO_OR_EMPTY} rm -rf "${work_dir}"
