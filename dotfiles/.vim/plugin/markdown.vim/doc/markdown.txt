@@ -12,7 +12,8 @@ INTERFACE                                                 |markdown-interface|
 ==============================================================================
 INTRODUCTION                                           *markdown-introduction*
 
-markdown is plugin for markdown.
+This plugin creates a list of headings from Markdown and provides fast
+navigation to each heading.
 
 ==============================================================================
 INTERFACE                                                 *markdown-interface*
@@ -26,16 +27,20 @@ g:markdown_plugin_disable
 ------------------------------------------------------------------------------
 COMMANDS                                                   *markdown-commands*
 
-ListMarkdownTitles                             *markdown-c_ListMarkdownTitles*
-    List markdown titles in <markdown-titles> window.
-    see |markdown-key-mappings| for operations in <markdown-titles> window.
+ListMarkdownHeadings                         *markdown-c_ListMarkdownHeadings*
+    Reads the contents of the current window as Markdown and creates a list of
+    headings in the <markdown-headings> window.
+
+    See |markdown-key_mappings| for operations in the <markdown-headings>
+    window.
 
 ------------------------------------------------------------------------------
 KEY-MAPPINGS                                           *markdown-key-mappings*
 
 q                                                               *markdown-n_q*
-    Close <markdown-titles> widnow.
+    Closes the <markdown-headings> window.
 
 <Enter>                                                   *markdown-n_<Enter>*
-    Close <markdown-titles> window and move cursor to selected title line.
+    Closes the <markdown-headings> window and moves to the selected heading
+    line.
 

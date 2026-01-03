@@ -11,5 +11,5 @@ endif
 
 " 現状は "list<Tab>" で高速に入力できることを優先する.
 " "list" から始まるコマンドが増えた場合はプラグイン名をプレフィックスにするように変更する.
-command! ListMarkdownTitles call markdown#list()
+command! ListMarkdownHeadings call markdown#list_headings()
 
