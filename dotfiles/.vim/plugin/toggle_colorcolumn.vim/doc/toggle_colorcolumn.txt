@@ -11,7 +11,7 @@ INTERFACE                                       |toggle_colorcolumn-interface|
 ==============================================================================
 INTRODUCTION                                 *toggle_colorcolumn-introduction*
 
-toggle_colorcolumn is plugin that toggles colorcolumn.
+This plugin toggles the colorcolumn option value.
 
 ==============================================================================
 INTERFACE                                       *toggle_colorcolumn-interface*
@@ -26,7 +26,7 @@ g:toggle_colorcolumn_disable
 KEY-MAPPINGS                                 *toggle_colorcolumn-key-mappings*
 
 <C-k>                                               *toggle_colorcolumn-<C-k>*
-    Toggles colorcolumn.
-    If colorcolumn is set, save the value and turn it off.
-    If colorcolumn is not set, turn it on (restore value).
+    Toggles the value of colorcolumn option.
+    If colorcolumn is set, it saves the current value and turns it off.
+    If colorcolumn is not set, it turns it on by restoring the previous value.
 
