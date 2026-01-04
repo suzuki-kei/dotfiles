@@ -19,7 +19,7 @@ INTERFACE                                       *toggle_colorcolumn-interface*
 ------------------------------------------------------------------------------
 VARIABLES                                       *toggle_colorcolumn-variables*
 
-g:toggle_colorcolumn_disable
+g:toggle_colorcolumn_plugin_disable
     Disable this plugin if truthy value set.
 
 ------------------------------------------------------------------------------
