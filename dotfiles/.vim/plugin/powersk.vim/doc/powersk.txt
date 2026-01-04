@@ -11,7 +11,10 @@ INTERFACE                                                  |powersk-interface|
 ==============================================================================
 INTRODUCTION                                            *powersk-introduction*
 
-powersk (Power Shift-k) is plugin that enpower <S-k>.
+This plugin empowers <S-k> (Shift + k).
+
+In normal mode, pressing <S-k> (Shift + k) switches to visual mode and selects
+the word directly under the cursor.
 
 ==============================================================================
 INTERFACE                                                  *powersk-interface*
@@ -26,8 +29,9 @@ g:powersk_plugin_disable
 KEY-MAPPINGS                                            *powersk-key-mappings*
 
 <S-k>                                      *powersk-<S-k>* *powersk-n_SHIFT-K*
-    Enter visual mode and select a word under the cursor.
+    Enters visual mode and selects the word under the cursor.
 
 {Visual}<S-k>                            *powersk-v_<S-k>* *powersk-v_SHIFT-K*
-    Expand selected text to ex commands and open command-line window.
+    Opens a command-line window and displays the Ex command converted from the
+    selected text.
 
