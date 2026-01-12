@@ -47,6 +47,7 @@ cask "antigravity"
 cask "burp-suite"
 cask "cursor"
 cask "docker-desktop"
+cask "racket"
 cask "visual-studio-code"
 cask "wireshark-app"
 
