@@ -25,6 +25,7 @@
     cabal update
     cabal install --lib HUnit
     cabal install --lib random
+    cabal install fourmolu
 
 TODO setup/setup.sh に組み込む
 

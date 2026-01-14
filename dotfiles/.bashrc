@@ -107,6 +107,11 @@ if which brew > /dev/null; then
     fi
 fi
 
+# cabal
+if [[ -d '/Users/suzuki.kei/.local/bin' ]]; then
+    export PATH=~/.local/bin":${PATH}"
+fi
+
 # Ruby (rbenv)
 if [[ -d "${HOME}/.rbenv/shims" ]]; then
     export PATH="${HOME}/.rbenv/shims:${PATH}"
