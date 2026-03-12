@@ -44,6 +44,7 @@ brew "vim"
 brew "watch"
 
 cask "burp-suite"
+cask "claude"
 cask "cursor"
 cask "docker-desktop"
 cask "racket"
