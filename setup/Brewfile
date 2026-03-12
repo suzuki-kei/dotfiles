@@ -1,4 +1,5 @@
 
+brew "ast-grep"
 brew "bash-completion"
 brew "bash"
 brew "cabal-install"
