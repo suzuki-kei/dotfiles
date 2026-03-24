@@ -46,6 +46,7 @@ brew "watch"
 
 cask "burp-suite"
 cask "claude"
+cask "cmux"
 cask "cursor"
 cask "docker-desktop"
 cask "racket"
