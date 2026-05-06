@@ -41,6 +41,9 @@ alias l='ls -1F'
 alias ll='ls -lhF'
 alias la='ll -a'
 
+# sort
+alias sort='LC_ALL=C sort'
+
 # screen
 alias s='screen'
 
