@@ -28,11 +28,13 @@ function prune
     rm -vrf ~/.gosh_history
     rm -vrf ~/.irb_history
     rm -vrf ~/.lesshst
+    rm -vrf ~/.mysql_history
     rm -vrf ~/.node_repl_history
     rm -vrf ~/.python_history
     rm -vrf ~/.sqlite_history
     rm -vrf ~/.tig_history
     rm -vrf ~/.vim/.netrwhist
+    rm -vrf ~/.zsh_history
 
     if which gem > /dev/null; then
         gem cleanup
