@@ -27,7 +27,7 @@ highlight MatchParen cterm=underline ctermbg=NONE
 highlight Search ctermbg=LightGray
 set ambiwidth=double
 set background=light
-set scrolloff=3
+set scrolloff=0
 set tabstop=4
 set wildmenu
 
