@@ -9,7 +9,7 @@ function main
 {
     cat "$@" \
         | grep -v ');$' \
-        | grep -oP '^\w[\w*&:<>]* +[^ ]+\([\w*&:<>, ]*\)' \
+        | grep -oP '^(?:static +)?\w[\w*&:<>]* +[^ ]+\([\w*&:<>, ]*\)' \
         | grep -vF 'int main()' \
         | grep -vF 'int main(void)' \
         | sed 's/$/;/' \
