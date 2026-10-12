@@ -17,6 +17,7 @@ export TZ='Asia/Tokyo'
 # locale
 export LANG=ja_JP.UTF-8
 export LC_CTYPE=ja_JP.UTF-8
+export LC_COLLATE=C
 export LC_NUMERIC=C
 export LC_TIME=C
 export LC_MESSAGES=C
