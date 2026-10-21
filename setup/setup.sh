@@ -49,7 +49,8 @@ function setup_brew_packages
 {
     if which brew > /dev/null; then
         brew upgrade
-        brew bundle --file "${SETUP_DIR}/Brewfile"
+        brew bundle install --file "${SETUP_DIR}/Brewfile"
+        brew bundle cleanup --file "${SETUP_DIR}/Brewfile"
         brew cleanup --prune=all
     fi
 }
