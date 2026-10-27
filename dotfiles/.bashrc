@@ -105,6 +105,7 @@ if which brew > /dev/null; then
     export PATH="${HOMEBREW_PREFIX}/opt/ruby/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/curl/bin:${PATH}"
 
     if [[ -e "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
         source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
