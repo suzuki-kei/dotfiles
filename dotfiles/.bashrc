@@ -95,17 +95,18 @@ if which brew > /dev/null; then
 
     export MANPATH="${HOMEBREW_PREFIX}/opt/*/libexec/gnuman:${MANPATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/coreutils/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/curl/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/findutils/libexec/gnubin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/gawk/libexec/gnubin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/gnu-sed/libexec/gnubin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/grep/libexec/gnubin:${PATH}"
+    export PATH="${HOMEBREW_PREFIX}/opt/make/libexec/gnubin:$PATH"
     export PATH="${HOMEBREW_PREFIX}/opt/mysql-client/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/openjdk/bin:$PATH"
     export PATH="${HOMEBREW_PREFIX}/opt/python3/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/ruby/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/util-linux/bin:${PATH}"
     export PATH="${HOMEBREW_PREFIX}/opt/util-linux/sbin:${PATH}"
-    export PATH="${HOMEBREW_PREFIX}/opt/curl/bin:${PATH}"
 
     if [[ -e "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
         source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
